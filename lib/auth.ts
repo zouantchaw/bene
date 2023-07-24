@@ -60,6 +60,16 @@ export const authOptions: NextAuthOptions = {
       };
       return session;
     },
+    signIn: async ({ user }) => {
+      const isAllowed = user.id === process.env.ADMIN_ID;
+      // const isAllowed = true;
+      if (isAllowed) {
+        console.log("user", user)
+        return true
+      } else {
+        return false
+      }
+    }
   },
 };
 
