@@ -15,6 +15,7 @@ module.exports = {
       "www.google.com",
       "flag.vercel.app",
       "illustrations.popsy.co",
+      "lnpzzrkfflhnr9j2.public.blob.vercel-storage.com"
     ],
   },
   reactStrictMode: false,
