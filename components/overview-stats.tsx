@@ -5,7 +5,7 @@ import { Card, Metric, Text, AreaChart, BadgeDelta, Flex } from "@tremor/react";
 import { useMemo } from "react";
 
 export default function OverviewStats() {
-  const data = useMemo(() => {
+  const visitorData = useMemo(() => {
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"];
     return [
       ...months.map((month) => ({
@@ -15,6 +15,20 @@ export default function OverviewStats() {
       {
         Month: "Jul 23",
         "Total Visitors": 170418,
+      },
+    ];
+  }, []);
+
+  const rentalData = useMemo(() => {
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"];
+    return [
+      ...months.map((month) => ({
+        Month: `${month} 23`,
+        "Total Rentals": random(10000, 85409),
+      })),
+      {
+        Month: "Jul 23",
+        "Total Rentals": 85409,
       },
     ];
   }, []);
@@ -38,13 +52,45 @@ export default function OverviewStats() {
         </Flex>
         <AreaChart
           className="mt-6 h-28"
-          data={data}
+          data={visitorData}
           index="Month"
           valueFormatter={(number: number) =>
             `${Intl.NumberFormat("us").format(number).toString()}`
           }
           categories={["Total Visitors"]}
           colors={["blue"]}
+          showXAxis={true}
+          showGridLines={false}
+          startEndOnly={true}
+          showYAxis={false}
+          showLegend={false}
+        />
+      </Card>
+
+      <Card className="dark:!bg-stone-900">
+        <Text>Total Rentals</Text>
+        <Flex
+          className="space-x-3 truncate"
+          justifyContent="start"
+          alignItems="baseline"
+        >
+          <Metric className="font-cal">85,409</Metric>
+          <BadgeDelta
+            deltaType="moderateIncrease"
+            className="dark:bg-green-900 dark:bg-opacity-50 dark:text-green-400"
+          >
+            24.1%
+          </BadgeDelta>
+        </Flex>
+        <AreaChart
+          className="mt-6 h-28"
+          data={rentalData}
+          index="Month"
+          valueFormatter={(number: number) =>
+            `${Intl.NumberFormat("us").format(number).toString()}`
+          }
+          categories={["Total Rentals"]}
+          colors={["red"]}
           showXAxis={true}
           showGridLines={false}
           startEndOnly={true}
