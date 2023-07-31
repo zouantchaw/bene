@@ -9,12 +9,12 @@ const title =
   "Rent Bene - Party & Event Rental Software";
 const description =
   "Rent Bene is a party and event rental software that helps you manage your inventory, customers, and orders.  ";
-const image = "https://vercel.pub/thumbnail.png";
+const image = "/logo-square.png";
 
 export const metadata: Metadata = {
   title,
   description,
-  icons: ["https://vercel.pub/favicon.ico"],
+  icons: ["/favicon.ico"],
   openGraph: {
     title,
     description,
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     images: [image],
     creator: "@vercel",
   },
-  metadataBase: new URL("https://vercel.pub"),
+  metadataBase: new URL("https://rentbene.com"),
 };
 
 export default function RootLayout({
