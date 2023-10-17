@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { NumberInput, Card, Grid, Badge } from "@tremor/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 
 interface Product {
@@ -120,31 +120,47 @@ const kingChairSvg = () => (
 const products = [
   {
     name: "Folding Chair",
-    price: 2.5,
+    price: 2.50,
     image: foldingChairSvg(),
   },
   {
     name: "Round Table",
-    price: 10,
+    price: 5.00,
     image: roundTableSvg(),
   },
   {
     name: "Square Table",
-    price: 10,
+    price: 5.00,
     image: squareTableSvg(),
   },
   {
     name: "King Chair",
-    price: 10,
+    price: 200,
     image: kingChairSvg(),
   },
 ];
 
 export default function SiteHomePage() {
-  const [quote, setQuote] = useState<QuoteItem[]>([]);
+  const [quote, setQuote] = useState(() => {
+    // Get the existing quote data from localStorage if available
+    const savedQuote = window.localStorage.getItem("quote");
+    return savedQuote ? JSON.parse(savedQuote) : {};
+  });
+
+  useEffect(() => {
+    // Update localStorage whenever the quote state changes
+    window.localStorage.setItem("quote", JSON.stringify(quote));
+  }, [quote]);
 
   const addToQuote = (product: Product, quantity: number) => {
-    setQuote([...quote, { ...product, quantity }]);
+    const updatedQuote = {
+      ...quote,
+      [product.name]: {
+        price: product.price,
+        quantity,
+      },
+    };
+    setQuote(updatedQuote);
   };
 
   return (
