@@ -9,7 +9,7 @@ import va from "@vercel/analytics";
 import { toast } from "sonner";
 
 interface Item {
-  id: number;
+  id: string;
   name: string;
   price: number;
 }
