@@ -427,3 +427,7 @@ export const editUser = async (
     }
   }
 };
+
+export const createProduct = async (formData: FormData) => {
+  console.log("Creating product...");
+};

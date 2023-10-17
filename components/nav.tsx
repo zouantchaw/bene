@@ -12,6 +12,7 @@ import {
   Menu,
   Newspaper,
   Settings,
+  Warehouse
 } from "lucide-react";
 import {
   useParams,
@@ -99,6 +100,12 @@ export default function Nav({ children }: { children: ReactNode }) {
         href: "/",
         isActive: segments.length === 0,
         icon: <LayoutDashboard width={18} />,
+      },
+      {
+        name: "Inventory",
+        href: "/inventory",
+        isActive: segments[0] === "inventory",
+        icon: <Warehouse width={18} />,
       },
       {
         name: "Sites",
