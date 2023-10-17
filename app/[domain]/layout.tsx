@@ -125,19 +125,6 @@ export default async function SiteLayout({
           </div>
         </div>
       </div>
-      {/* TODO: Add tabs */}
-      {/* <div className="mx-auto flex max-w-screen-xl px-10 sm:px-20">
-        <TabGroup defaultIndex={0}>
-          <TabList className="mt-8">
-            <Tab>
-              <Link href="/">Home</Link>
-            </Tab>
-            <Tab>
-              <Link href="/blog">Blog</Link>
-            </Tab>
-          </TabList>
-        </TabGroup>
-      </div> */}
 
       <div className="mt-20">{children}</div>
 

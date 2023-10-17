@@ -3,6 +3,9 @@ import Link from "next/link";
 import { NumberInput, Card, Grid, Badge } from "@tremor/react";
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import CreateEventModal from "@/components/modal/create-event";
+import { useModal } from "@/components/modal/provider";
+
 
 interface Product {
   name: string;
@@ -146,6 +149,15 @@ export default function SiteHomePage() {
     const savedQuote = window.localStorage.getItem("quote");
     return savedQuote ? JSON.parse(savedQuote) : {};
   });
+  const modal = useModal();
+
+  useEffect(() => {
+    if (modal) {
+      modal.show(<CreateEventModal />);
+    }
+  }, []);
+
+
 
   useEffect(() => {
     // Update localStorage whenever the quote state changes
