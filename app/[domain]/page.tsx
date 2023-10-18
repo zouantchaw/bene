@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { NumberInput, Card, Grid, Badge } from "@tremor/react";
+import { NumberInput, Card, Grid, Badge, Select, SelectItem, DateRangePicker } from "@tremor/react";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import CreateEventModal from "@/components/modal/create-event";
@@ -144,10 +144,10 @@ const products = [
 ];
 
 export default function SiteHomePage() {
-  const [quote, setQuote] = useState(() => {
+  const [selectedProducts, setSelectedProducts] = useState(() => {
     // Get the existing quote data from localStorage if available
-    const savedQuote = window.localStorage.getItem("quote");
-    return savedQuote ? JSON.parse(savedQuote) : {};
+    const savedProducts = window.localStorage.getItem("selectedProducts");
+    return savedProducts ? JSON.parse(savedProducts) : {};
   });
   const modal = useModal();
 
@@ -161,18 +161,18 @@ export default function SiteHomePage() {
 
   useEffect(() => {
     // Update localStorage whenever the quote state changes
-    window.localStorage.setItem("quote", JSON.stringify(quote));
-  }, [quote]);
+    window.localStorage.setItem("selectedProducts", JSON.stringify(selectedProducts));
+  }, [selectedProducts]);
 
   const addToQuote = (product: Product, quantity: number) => {
-    const updatedQuote = {
-      ...quote,
+    const updatedProducts = {
+      ...selectedProducts,
       [product.name]: {
         price: product.price,
         quantity,
       },
     };
-    setQuote(updatedQuote);
+    setSelectedProducts(updatedProducts);
   };
 
   return (
@@ -193,7 +193,7 @@ export default function SiteHomePage() {
 
         <div className="mx-5 mb-20 lg:mx-24 2xl:mx-auto">
           <Grid className="grid-cols-1 gap-x-4 gap-y-8 md:grid-cols-2 xl:grid-cols-3">
-            {products.map((product, index) => (
+            {products.map((product: Product, index: number) => (
               <Card key={index}>
                 <div className="h-44">{product.image}</div>
                 <Badge size="lg" className="m-2 my-2">
@@ -215,4 +215,4 @@ export default function SiteHomePage() {
       </div>
     </>
   );
-}
+} 
