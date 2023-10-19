@@ -25,7 +25,9 @@ interface Product {
 }
 
 export default function ShoppingCartComponent() {
-  const [selectedProducts, setSelectedProducts] = useState(() => {
+  const [selectedProducts, setSelectedProducts] = useState<
+    Record<string, { price: number; quantity: number }>
+  >(() => {
     const savedProducts = window.localStorage.getItem("selectedProducts");
     return savedProducts ? JSON.parse(savedProducts) : {};
   });
@@ -46,7 +48,7 @@ export default function ShoppingCartComponent() {
   const [deliveryFee, setDeliveryFee] = useState(50);
   const [pending, setPending] = useState(false);
 
-  const handleTabChange = (index) => {
+  const handleTabChange = (index: number) => {
     setTabIndex(index);
   };
 
@@ -136,7 +138,8 @@ export default function ShoppingCartComponent() {
   const { isMobile, isDesktop } = useWindowSize();
 
   const totalCost = Object.values(selectedProducts).reduce(
-    (acc, item) => acc + item.price * item.quantity + securityDeposit + deliveryFee,
+    (acc: number, item: { price: number; quantity: number }) =>
+      acc + item.price * item.quantity + securityDeposit + deliveryFee,
     0,
   );
 
@@ -217,7 +220,7 @@ export default function ShoppingCartComponent() {
           value={details.quantity}
           onChange={(e) => {
             const updatedProduct = { ...selectedProducts };
-            updatedProduct[product].quantity = e.target.value;
+            updatedProduct[product].quantity = Number(e.target.value);
             setSelectedProducts(updatedProduct);
           }}
         />
