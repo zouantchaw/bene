@@ -10,46 +10,42 @@ import { useModal } from "./provider";
 import va from "@vercel/analytics";
 import { useEffect, useState } from "react";
 import {
-  NumberInput,
-  Card,
-  Grid,
-  Badge,
+  TextInput,
   Select,
   SelectItem,
-  DateRangePicker,
+  DatePicker, 
+  DatePickerValue,
 } from "@tremor/react";
 
-interface Product {
-  name: string;
-  price: number;
-  image: JSX.Element;
-}
-
 interface Event {
-  name: string;
-  description: string;
-  date: string;
-  location: string;
   delivery: boolean;
   pickup: boolean;
-  dropoff: string;
-  return: string;
+  deliveryAddress: string;
+  deliveryDate: Date;
+  deliveryTime: string;
+  pickupDate: Date;
+  pickupTime: string;
+  returnDate: Date;
+  returnTime: string;
 }
 
 export default function CreateEventModal() {
   const router = useRouter();
   const modal = useModal();
 
-  const [data, setData] = useState<Event>({
-    name: "",
-    description: "",
-    date: "",
-    location: "",
+  const initialEventState: Event = {
     delivery: false,
     pickup: false,
-    dropoff: "",
-    return: "",
-  });
+    deliveryAddress: "",
+    deliveryDate: new Date(),
+    deliveryTime: "",
+    pickupDate: new Date(),
+    pickupTime: "",
+    returnDate: new Date(),
+    returnTime: "",
+  };
+
+  const [data, setData] = useState<Event>(initialEventState);
 
   useEffect(() => {
     // Update localStorage whenever the event details change
@@ -76,46 +72,8 @@ export default function CreateEventModal() {
     >
       <div className="relative flex flex-col space-y-4 p-5 md:p-10">
         <h2 className="font-cal text-2xl dark:text-white">
-          Create a new event
+          Welcome, tell us more about your event
         </h2>
-
-        <div className="flex flex-col space-y-2">
-          <label
-            htmlFor="name"
-            className="text-sm font-medium text-stone-500 dark:text-stone-400"
-          >
-            Event Name
-          </label>
-          <input
-            name="name"
-            type="text"
-            placeholder="My Awesome Event"
-            autoFocus
-            value={data.name}
-            onChange={(e) => setData({ ...data, name: e.target.value })}
-            maxLength={32}
-            required
-            className="w-full rounded-md border border-stone-200 bg-stone-50 px-4 py-2 text-sm text-stone-600 placeholder:text-stone-400 focus:border-black focus:outline-none focus:ring-black dark:border-stone-600 dark:bg-black dark:text-white dark:placeholder-stone-700 dark:focus:ring-white"
-          />
-        </div>
-
-        <div className="flex flex-col space-y-2">
-          <label
-            htmlFor="description"
-            className="text-sm font-medium text-stone-500"
-          >
-            Description
-          </label>
-          <textarea
-            name="description"
-            placeholder="Description about why my event is so awesome"
-            value={data.description}
-            onChange={(e) => setData({ ...data, description: e.target.value })}
-            maxLength={140}
-            rows={3}
-            className="w-full rounded-md border border-stone-200 bg-stone-50 px-4 py-2 text-sm text-stone-600 placeholder:text-stone-400 focus:border-black  focus:outline-none focus:ring-black dark:border-stone-600 dark:bg-black dark:text-white dark:placeholder-stone-700 dark:focus:ring-white"
-          />
-        </div>
 
         <div className="flex flex-col space-y-2">
           <label
@@ -125,7 +83,7 @@ export default function CreateEventModal() {
             Delivery or Pickup
           </label>
           <Select
-            value={data.delivery ? "Delivery" : "Pickup"}
+            value={data.pickup ? "Pickup" : "Delivery"}
             onValueChange={(value) =>
               setData({
                 ...data,
@@ -143,57 +101,98 @@ export default function CreateEventModal() {
         {data.delivery && (
           <div className="flex flex-col space-y-2">
             <label
-              htmlFor="date"
+              htmlFor="deliveryDate"
               className="text-sm font-medium text-stone-500"
             >
-              Dropoff and Pickup Date
+              Delivery Date
             </label>
-            <DateRangePicker
-              // onValueChange={(value) =>
-              //   setData({ ...data, dropoff: value.from, return: value.to })
-              // }
-              className="w-full rounded-md border border-stone-200 bg-stone-50 px-4 py-2 text-sm text-stone-600 placeholder:text-stone-400 focus:border-black focus:outline-none focus:ring-black dark:border-stone-600 dark:bg-black dark:text-white dark:placeholder-stone-700 dark:focus:ring-white"
-              enableSelect={false}
+            <DatePicker
+              value={data.deliveryDate}
+              onValueChange={(value: DatePickerValue) => setData({ ...data, deliveryDate: new Date(value) })}
             />
+            <label
+              htmlFor="deliveryAddress"
+              className="text-sm font-medium text-stone-500"
+            >
+              Delivery Address
+            </label>
+            <TextInput
+              name="deliveryAddress"
+              placeholder="Enter delivery address"
+              value={data.deliveryAddress}
+              onChange={(e) => setData({ ...data, deliveryAddress: e.target.value })}
+              required
+              className="w-full rounded-md border border-stone-200 bg-stone-50 px-4 py-2 text-sm text-stone-600 placeholder:text-stone-400 focus:border-black focus:outline-none focus:ring-black dark:border-stone-600 dark:bg-black dark:text-white dark:placeholder-stone-700 dark:focus:ring-white"
+            />
+            <label
+              htmlFor="deliveryTime"
+              className="text-sm font-medium text-stone-500"
+            >
+              Delivery Time
+            </label>
+            <Select
+              className="mb-40"
+              value={data.deliveryTime}
+              onValueChange={(value) => setData({ ...data, deliveryTime: value })}
+            >
+              <SelectItem value="Morning">Morning</SelectItem>
+              <SelectItem value="Afternoon">Afternoon</SelectItem>
+              <SelectItem value="Evening">Evening</SelectItem>
+            </Select>
           </div>
         )}
 
         {data.pickup && (
           <div className="flex flex-col space-y-2">
             <label
-              htmlFor="date"
+              htmlFor="pickupDate"
               className="text-sm font-medium text-stone-500"
             >
-              Pickup and Return Date
+              Pickup Date
             </label>
-            <DateRangePicker
-              onValueChange={(value: any) =>
-                setData({ ...data, dropoff: value.from, return: value.to })
-              }
-              className="w-full rounded-md border border-stone-200 bg-stone-50 px-4 py-2 text-sm text-stone-600 placeholder:text-stone-400 focus:border-black focus:outline-none focus:ring-black dark:border-stone-600 dark:bg-black dark:text-white dark:placeholder-stone-700 dark:focus:ring-white"
-              enableSelect={false}
+            <DatePicker
+              value={data.pickupDate}
+              onValueChange={(value: DatePickerValue) => setData({ ...data, pickupDate: new Date(value)})}
             />
-          </div>
-        )}
-
-        {data.delivery && (
-          <div className="flex flex-col space-y-2">
+            <span className="text-sm text-stone-500">Address: 123 Main St, Anytown, USA</span>
             <label
-              htmlFor="location"
+              htmlFor="pickupTime"
               className="text-sm font-medium text-stone-500"
             >
-              Location
+              Pickup Time
             </label>
-            <input
-              name="location"
-              type="text"
-              placeholder="Event Location"
-              value={data.location}
-              onChange={(e) => setData({ ...data, location: e.target.value })}
-              maxLength={32}
-              required
-              className="w-full rounded-md border border-stone-200 bg-stone-50 px-4 py-2 text-sm text-stone-600 placeholder:text-stone-400 focus:border-black focus:outline-none focus:ring-black dark:border-stone-600 dark:bg-black dark:text-white dark:placeholder-stone-700 dark:focus:ring-white"
+            <Select
+              value={data.pickupTime}
+              onValueChange={(value) => setData({ ...data, pickupTime: value })}
+            >
+              <SelectItem value="Morning">Morning</SelectItem>
+              <SelectItem value="Afternoon">Afternoon</SelectItem>
+              <SelectItem value="Evening">Evening</SelectItem>
+            </Select>
+            <label
+              htmlFor="returnDate"
+              className="text-sm font-medium text-stone-500"
+            >
+              Return Date
+            </label>
+            <DatePicker
+              value={data.returnDate}
+              onValueChange={(value: DatePickerValue) => setData({ ...data, returnDate: new Date(value) })}
             />
+            <label
+              htmlFor="returnTime"
+              className="text-sm font-medium text-stone-500"
+            >
+              Return Time
+            </label>
+            <Select
+              value={data.returnTime}
+              onValueChange={(value) => setData({ ...data, returnTime: value })}
+            >
+              <SelectItem value="Morning">Morning</SelectItem>
+              <SelectItem value="Afternoon">Afternoon</SelectItem>
+              <SelectItem value="Evening">Evening</SelectItem>
+            </Select>
           </div>
         )}
       </div>
@@ -219,3 +218,4 @@ function CreateEventFormButton() {
     </button>
   );
 }
+
