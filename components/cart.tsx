@@ -199,7 +199,7 @@ export default function ShoppingCartComponent() {
               <span className="text-sm">${totalCost.toFixed(2)}</span>
             </div>
           ) : (
-            "Next"
+            "Pay"
           )}
         </Button>
       </div>
