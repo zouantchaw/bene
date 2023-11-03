@@ -6,9 +6,11 @@ specifiers:
   '@types/react': ^18
   '@types/react-dom': ^18
   autoprefixer: ^10.0.1
+  class-variance-authority: ^0.7.0
   clsx: ^2.0.0
   eslint: ^8
   eslint-config-next: 14.0.1
+  lucide-react: ^0.292.0
   next: 14.0.1
   postcss: ^8
   react: ^18
@@ -20,7 +22,9 @@ specifiers:
 
 dependencies:
   '@tailwindcss/typography': 0.5.10_tailwindcss@3.3.5
+  class-variance-authority: 0.7.0
   clsx: 2.0.0
+  lucide-react: 0.292.0_react@18.2.0
   next: 14.0.1_biqbaboplfbrettd7655fr4n2y
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
@@ -622,6 +626,12 @@ packages:
       readdirp: 3.6.0
     optionalDependencies:
       fsevents: 2.3.3
+
+  /class-variance-authority/0.7.0:
+    resolution: {integrity: sha512-jFI8IQw4hczaL4ALINxqLEXQbWcNjoSkloa4IaufXCJr6QawJyw7tuRysRsrE8w2p/4gGaxKIt/hX3qz/IbD1A==}
+    dependencies:
+      clsx: 2.0.0
+    dev: false
 
   /client-only/0.0.1:
     resolution: {integrity: sha512-IV3Ou0jSMzZrd3pZ48nLkT9DA7Ag1pnPzaiQhpW7c3RbcqqzvzzVu+L8gfqMp/8IM2MQtSiqaCxrrcfu8I8rMA==}
@@ -1699,6 +1709,14 @@ packages:
     dependencies:
       yallist: 4.0.0
     dev: true
+
+  /lucide-react/0.292.0_react@18.2.0:
+    resolution: {integrity: sha512-rRgUkpEHWpa5VCT66YscInCQmQuPCB1RFRzkkxMxg4b+jaL0V12E3riWWR2Sh5OIiUhCwGW/ZExuEO4Az32E6Q==}
+    peerDependencies:
+      react: ^16.5.1 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
+    dev: false
 
   /merge2/1.4.1:
     resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}
