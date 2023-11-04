@@ -1,48 +1,82 @@
 import "@/styles/globals.css";
-import { cal, inter } from "@/styles/fonts";
-import { Analytics } from "@vercel/analytics/react";
-import { Providers } from "./providers";
-import { Metadata } from "next";
+
+import { fontHeading, fontSans, fontUrban } from "@/assets/fonts";
+import { Analytics } from "@/components/analytics";
+import { ModalProvider } from "@/components/modal-provider";
+import { Providers } from "@/components/providers";
+import { TailwindIndicator } from "@/components/tailwind-indicator";
+import { Toaster } from "@/components/ui/toaster";
+import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 
-const title =
-  "Rent Bene - Party & Event Rental Software";
-const description =
-  "Rent Bene is a party and event rental software that helps you manage your inventory, customers, and orders.  ";
-const image = "/logo-square.png";
+interface RootLayoutProps {
+  children: React.ReactNode
+}
 
-export const metadata: Metadata = {
-  title,
-  description,
-  icons: ["/favicon.ico"],
+export const metadata = {
+  title: {
+    default: siteConfig.name,
+    template: `%s | ${siteConfig.name}`,
+  },
+  description: siteConfig.description,
+  keywords: [
+    "Next.js",
+    "React",
+    "Tailwind CSS",
+    "Server Components",
+    "Radix UI",
+  ],
+  authors: [
+    {
+      name: "mickasmt",
+    },
+  ],
+  creator: "mickasmt",
+  metadataBase: new URL(siteConfig.url),
   openGraph: {
-    title,
-    description,
-    images: [image],
+    type: "website",
+    locale: "en_US",
+    url: siteConfig.url,
+    title: siteConfig.name,
+    description: siteConfig.description,
+    siteName: siteConfig.name,
   },
   twitter: {
     card: "summary_large_image",
-    title,
-    description,
-    images: [image],
-    creator: "@vercel",
+    title: siteConfig.name,
+    description: siteConfig.description,
+    images: [`${siteConfig.url}/og.jpg`],
+    creator: "@mickasmt",
   },
-  metadataBase: new URL("https://rentbene.com"),
-};
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon-16x16.png",
+    apple: "/apple-touch-icon.png",
+  },
+  manifest: `${siteConfig.url}/site.webmanifest`,
+}
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: RootLayoutProps) {
+
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn(cal.variable, inter.variable)}>
-        <Providers>
+      <head />
+      <body
+        className={cn(
+          "min-h-screen bg-background font-sans antialiased",
+          fontSans.variable,
+          fontUrban.variable,
+          fontHeading.variable
+        )}
+      >
+        <Providers attribute="class" defaultTheme="system" enableSystem>
           {children}
           <Analytics />
+          <Toaster />
+          <ModalProvider />
+          <TailwindIndicator />
         </Providers>
       </body>
     </html>
-  );
+  )
 }

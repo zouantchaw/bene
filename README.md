@@ -1,140 +1,123 @@
-<a href="https://app.vercel.pub">
-  <img alt="Platforms Starter Kit" src="/public/thumbnail.png">
-  <h1 align="center">Platforms Starter Kit</h1>
+<a href="https://next-saas-stripe-starter.vercel.app">
+  <img alt="SaaS Starter" src="public/og.jpg">
+  <h1 align="center">Next SaaS Stripe Starter</h1>
 </a>
 
 <p align="center">
-  The <em>all-in-one</em> starter kit <br/>
-  for building multi-tenant applications.
+  Start at full speed with SaaS Starter !
+</p>
+
+<p align="center">
+  <a href="https://twitter.com/miickasmt">
+    <img src="https://img.shields.io/twitter/follow/miickasmt?style=flat&label=miickasmt&logo=twitter&color=0bf&logoColor=fff" alt="Mickasmt Twitter follower count" />
+  </a>
 </p>
 
 <p align="center">
   <a href="#introduction"><strong>Introduction</strong></a> ·
-  <a href="https://app.vercel.pub/"><strong>Demo</strong></a> ·
-  <a href="#deploy-your-own"><strong>Deploy Your Own</strong></a> ·
-  <a href="https://vercel.com/guides/nextjs-multi-tenant-application"><strong>Guide</strong></a> ·
-  <a href="https://steven.vercel.pub/kitchen-sink"><strong>Kitchen Sink</strong></a> ·
-  <a href="#contributing"><strong>Contributing</strong></a>
+  <a href="#installation"><strong>Installation</strong></a> ·
+  <a href="#tech-stack--features"><strong>Tech Stack + Features</strong></a> ·
+  <a href="#author"><strong>Author</strong></a> ·
+  <a href="#credits"><strong>Credits</strong></a>
 </p>
 <br/>
 
 ## Introduction
 
-The [Platforms Starter Kit](https://app.vercel.pub/) is a full-stack Next.js app with multi-tenancy and custom domain support. Built with [Next.js App Router](https://nextjs.org/docs/app), [Vercel Postgres](https://vercel.com/storage/postgres) and the [Vercel Domains API](https://vercel.com/docs/rest-api/endpoints#domains).
+Empower your next project with the stack of Next.js 14, Prisma, Planetscale, Auth.js, Resend, React Email, Shadcn/ui, and Stripe.
+<br/>
+All seamlessly integrated with the SaaS Starter to accelerate your development and saas journey.
 
-Here's a quick 30-second demo:
+## Installation
 
-https://github.com/vercel/platforms/assets/28986134/bd370257-0c27-4cf5-8a56-28589f36f0ef
+Clone & create this repo locally with the following command:
 
-## Features
+```bash
+npx create-next-app my-saas-project --example "https://github.com/mickasmt/next-saas-stripe-starter"
+```
 
-1. **Multi-tenancy:** Programmatically assign unlimited custom domains, subdomains, and SSL certificates to your users using the [Vercel Domains API](https://vercel.com/docs/rest-api/endpoints#domains)
-2. **Performance**: Fast & beautiful blog posts cached via [Vercel's Edge Network](https://vercel.com/docs/concepts/edge-network/overview), with the ability to invalidate the cache on-demand (when users make changes) using [Incremental Static Regeneration](https://vercel.com/docs/concepts/next.js/incremental-static-regeneration) + Next.js' `revalidateTag` API
-3. **AI Editor**: AI-powered Markdown editor for a Notion-style writing experience powered by [Novel](https://novel.sh/)
-4. **Image Uploads**: Drag & drop / copy & paste image uploads, backed by [Vercel Blob](https://vercel.com/storage/blob)
-5. **Custom styles**: Custom fonts, 404 pages, favicons, sitemaps for each site via the [Next.js file-based Metadata API](https://nextjs.org/docs/app/api-reference/file-conventions/metadata)
-6. **Dynamic OG Cards**: Each blog post comes with a dynamic OG image powered by [@vercel/og](https://vercel.com/docs/concepts/functions/edge-functions/og-image-generation)
-7. **Dark Mode**: For a better user experience at night
+1. Install dependencies using pnpm:
 
-<picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://images.ctfassets.net/e5382hct74si/k7XpXIE0rDsHCAYvkKhff/ff44c07588068d8fefa334cd6a318c8a/CleanShot_2023-07-05_at_08.39.02.png">
-    <source media="(prefers-color-scheme: light)" srcset="https://images.ctfassets.net/e5382hct74si/7tiAitb8kdgUGktycr540c/d33f2834f9356bce25e0721c4ebe4f9a/CleanShot_2023-07-05_at_08.39.10.png">
-    <img alt="Demo" src="https://images.ctfassets.net/e5382hct74si/7tiAitb8kdgUGktycr540c/d33f2834f9356bce25e0721c4ebe4f9a/CleanShot_2023-07-05_at_08.39.10.png">
-</picture>
+```sh
+pnpm install
+```
 
-## Deploy Your Own
+2. Copy `.env.example` to `.env.local` and update the variables.
 
-Deploy your own version of this starter kit with Vercel.
+```sh
+cp .env.example .env.local
+```
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?demo-title=Platforms+Starter+Kit&demo-description=A+template+for+site+builders+and+low-code+tools.&demo-url=https%3A%2F%2Fdemo.vercel.pub%2F&demo-image=%2F%2Fimages.ctfassets.net%2Fe5382hct74si%2F40JwjdHlPr0Z575MPYbxUA%2Fd5903afc68cb34569a3886293414c37c%2FOG_Image.png&project-name=Platforms+Starter+Kit&repository-name=platforms-starter-kit&repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fplatforms&from=templates&env=NEXT_PUBLIC_ROOT_DOMAIN%2CNEXTAUTH_SECRET%2CAUTH_GITHUB_ID%2CAUTH_GITHUB_SECRET%2CAUTH_BEARER_TOKEN%2CPROJECT_ID_VERCEL%2CTEAM_ID_VERCEL%2COPENAI_API_KEY&envDescription=These+environment+variables+are+required+to+run+this+application.&envLink=https%3A%2F%2Fgithub.com%2Fvercel%2Fplatforms%2Fblob%2Fmain%2F.env.example&stores=%5B%7B%22type%22%3A%22postgres%22%7D%5D)
+3. Start the development server:
 
-You can also [read the guide](https://vercel.com/guides/nextjs-multi-tenant-application) to learn how to develop your own version of this template.
+```sh
+pnpm dev
+```
 
-## What is a multi-tenant application?
+## Roadmap
 
-Multi-tenant applications serve multiple customers across different subdomains/custom domains with a single unified codebase.
+- [x] ~Fix Vaul drawer for mobile sign in~  
+- [ ] Add resend for subscriptions  
+- [ ] Update OG image  
+- [ ] Update documentation
+- [ ] Use Server Actions
+- [ ] Switch subscription plan
 
-For example, our demo is a multi-tenant application:
+## Tech Stack + Features
 
-- Subdomain: [demo.vercel.pub](http://demo.vercel.pub)
-- Custom domain: [platformize.co](http://platformize.co) (maps to [demo.vercel.pub](http://demo.vercel.pub))
-- Build your own: [app.vercel.pub](http://app.vercel.pub)
+https://github.com/mickasmt/next-saas-stripe-starter/assets/62285783/828a4e0f-30e3-4cfe-96ff-4dfd9cd55124
 
-Another example is [Hashnode](https://vercel.com/customers/hashnode), a popular blogging platform. Each writer has their own unique `.hashnode.dev` subdomain for their blog:
+### Frameworks
 
-- [eda.hashnode.dev](https://eda.hashnode.dev/)
-- [katycodesstuff.hashnode.dev](https://katycodesstuff.hashnode.dev/)
-- [akoskm.hashnode.dev](https://akoskm.hashnode.dev/)
+- [Next.js](https://nextjs.org/) – React framework for building performant apps with the best developer experience
+- [Auth.js](https://authjs.dev/) – Handle user authentication with ease with providers like Google, Twitter, GitHub, etc.
+- [Prisma](https://www.prisma.io/) – Typescript-first ORM for Node.js
+- [React Email](https://react.email/) – Versatile email framework for efficient and flexible email development
 
-Users can also map custom domains to their `.hashnode.dev` subdomain:
+### Platforms
 
-- [akoskm.com](https://akoskm.com/) → [akoskm.hashnode.dev](https://akoskm.hashnode.dev/)
+- [Vercel](https://vercel.com/) – Easily preview & deploy changes with git
+- [PlanetScale](https://planetscale.com/) – A cutting-edge database platform for seamless, scalable data management
+- [Resend](https://resend.com/) – A powerful email framework for streamlined email development
 
-With the Platforms Starter Kit, you can offer unlimited custom domains at no extra cost to your customers as a premium feature, without having to worry about custom nameservers or configuring SSL certificates.
+### UI
 
-## Examples of platforms
+- [Tailwind CSS](https://tailwindcss.com/) – Utility-first CSS framework for rapid UI development
+- [Shadcn/ui](https://ui.shadcn.com/) – Re-usable components built using Radix UI and Tailwind CSS
+- [Framer Motion](https://framer.com/motion) – Motion library for React to animate components with ease
+- [Lucide](https://lucide.dev/) – Beautifully simple, pixel-perfect icons
+- [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) – Optimize custom fonts and remove external network requests for improved performance
+<!-- - [`ImageResponse`](https://nextjs.org/docs/app/api-reference/functions/image-response) – Generate dynamic Open Graph images at the edge -->
 
-Vercel customers like [Hashnode](https://vercel.com/customers/hashnode), [Super](https://super.so), and [Cal.com](https://cal.com) are building scalable platforms on top of Vercel and Next.js. There are multiple types of platforms you can build with this starter kit:
+### Hooks and Utilities
 
-### 1. Content creation platforms
+- `useIntersectionObserver` –  React hook to observe when an element enters or leaves the viewport
+- `useLocalStorage` – Persist data in the browser's local storage
+- `useScroll` – React hook to observe scroll position ([example](https://github.com/mickasmt/precedent/blob/main/components/layout/navbar.tsx#L12))
+- `nFormatter` – Format numbers with suffixes like `1.2k` or `1.2M`
+- `capitalize` – Capitalize the first letter of a string
+- `truncate` – Truncate a string to a specified length
+- [`use-debounce`](https://www.npmjs.com/package/use-debounce) – Debounce a function call / state update
 
-These are content-heavy platforms (blogs) with simple, standardized page layouts and route structure.
+### Code Quality
 
-> “With Vercel, we spend less time managing our infrastructure and more time delivering value to our users.” — Sandeep Panda, Co-founder, Hashnode
+- [TypeScript](https://www.typescriptlang.org/) – Static type checker for end-to-end typesafety
+- [Prettier](https://prettier.io/) – Opinionated code formatter for consistent code style
+- [ESLint](https://eslint.org/) – Pluggable linter for Next.js and TypeScript
 
-1. [Hashnode](https://hashnode.com)
-2. [Mirror.xyz](https://mirror.xyz/)
-3. [Read.cv](https://read.cv/)
+### Miscellaneous
 
-### 2. Website & e-commerce store builders
-
-No-code site builders with customizable pages.
-
-By using Next.js and Vercel, [Super](https://super.so/) has fast, globally distributed websites with a no-code editor (Notion). Their customers get all the benefits of Next.js (like [Image Optimization](https://nextjs.org/docs/basic-features/image-optimization)) without touching any code.
-
-1. [Super.so](https://super.so)
-2. [Typedream](https://typedream.com)
-3. [Makeswift](https://www.makeswift.com/)
-
-### 3. B2B2C platforms
-
-Multi-tenant authentication, login, and access controls.
-
-With Vercel and Next.js, platforms like [Instatus](https://instatus.com) are able to create status pages that are _10x faster_ than competitors.
-
-1. [Instatus](https://instatus.com/)
-2. [Cal.com](https://cal.com/)
-3. [Dub](https://dub.sh/)
-
-## Built on open source
-
-This working demo site was built using the Platforms Starter Kit and:
-
-- [Next.js](https://nextjs.org/) as the React framework
-- [Tailwind](https://tailwindcss.com/) for CSS styling
-- [Prisma](https://prisma.io/) as the ORM for database access
-- [Novel](https://novel.sh/) for the WYSIWYG editor
-- [Vercel Postgres](https://vercel.com/storage/postgres) for the database
-- [Vercel Blob](https://vercel.com/storage/blob) for image uploads
-- [NextAuth.js](https://next-auth.js.org/) for authentication
-- [Tremor](https://tremor.so/) for charts
-- [Vercel](http://vercel.com/) for deployment
-
-## Contributing
-
-- [Start a discussion](https://github.com/vercel/platforms/discussions) with a question, piece of feedback, or idea you want to share with the team.
-- [Open an issue](https://github.com/vercel/platforms/issues) if you believe you've encountered a bug with the starter kit.
+- [Vercel Analytics](https://vercel.com/analytics) – Track unique visitors, pageviews, and more in a privacy-friendly way
 
 ## Author
 
+Created by [@miickasmt](https://twitter.com/miickasmt) in 2023, released under the [MIT license](https://github.com/shadcn/taxonomy/blob/main/LICENSE.md).
+
+## Credits
+
+This project was inspired by shadcn's [Taxonomy](https://github.com/shadcn-ui/taxonomy), Steven Tey’s [Precedent](https://github.com/steven-tey/precedent), and Antonio Erdeljac's [Next 13 AI SaaS](https://github.com/AntonioErdeljac/next13-ai-saas).
+
+- Shadcn ([@shadcn](https://twitter.com/shadcn))
 - Steven Tey ([@steventey](https://twitter.com/steventey))
+- Antonio Erdeljac ([@YTCodeAntonio](https://twitter.com/AntonioErdeljac))
 
-## License
-
-The MIT License.
-
----
-
-<a aria-label="Vercel logo" href="https://vercel.com">
-  <img src="https://badgen.net/badge/icon/Made%20by%20Vercel?icon=zeit&label&color=black&labelColor=black">
-</a>
