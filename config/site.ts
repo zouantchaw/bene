@@ -4,14 +4,14 @@ import { SiteConfig } from "types"
 const site_url = env.NEXT_PUBLIC_APP_URL;
 
 export const siteConfig: SiteConfig = {
-  name: "SaaS Starter",
+  name: "Bene",
   description:
-    "An open source application built using the new router, server components and everything new in Next.js 14.",
+    "Manage your party rental business with ease.",
   url: site_url,
-  ogImage: `${site_url}/og.jpg`,
+  ogImage: `${site_url}/og.png`,
   links: {
-    twitter: "https://twitter.com/miickasmt",
+    twitter: "https://twitter.com/rentbene",
     github: "https://github.com/mickasmt/next-saas-stripe-starter",
   },
-  mailSupport: "support@saas-starter.com"
+  mailSupport: "support@rentbene.com"
 }
