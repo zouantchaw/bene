@@ -11,7 +11,7 @@ export const siteConfig: SiteConfig = {
   ogImage: `${site_url}/og.png`,
   links: {
     twitter: "https://twitter.com/rentbene",
-    github: "https://github.com/mickasmt/next-saas-stripe-starter",
+    github: "https://github.com/mickasmt/next-saas-stripe-starter", 
   },
   mailSupport: "support@rentbene.com"
 }
