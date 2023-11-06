@@ -24,36 +24,45 @@ export function NavBar({ user, items, children, rightElements, scroll = false }:
   const signInModal = useSigninModal();
 
   return (
-      <header
-        className={`sticky top-0 z-40 flex w-full justify-center bg-background/60 backdrop-blur-xl transition-all ${scroll ? scrolled
-          ? "border-b"
-          : "bg-background/0"
-          : "border-b"}`}
-      >
-        <div className="container flex h-16 items-center justify-between py-4">
-          <MainNav items={items}>{children}</MainNav>
+    <header
+      className={`sticky top-0 z-40 flex w-full justify-center bg-background/60 backdrop-blur-xl transition-all ${scroll ? scrolled
+        ? "border-b"
+        : "bg-background/0"
+        : "border-b"}`}
+    >
+      <div className="container flex h-16 items-center justify-between py-4">
+        <MainNav items={items}>{children}</MainNav>
 
-          <div className="flex items-center space-x-3">
-            {rightElements}
+        <div className="flex items-center space-x-3">
+          {rightElements}
 
-            {!user ? (
-              <Link
-                href="/login"
-                className={cn(
-                  buttonVariants({ variant: "outline", size: "sm" })
-                )}
-              >
-                Login Page
-              </Link>
-            ) : null}
+          {!user ? (
+            // <Button className="px-3" variant="outline" size="sm" onClick={signInModal.onOpen}>Sign In</Button>
+            <Link
+              href="/login"
+              className={cn(
+                buttonVariants({ variant: "outline", size: "sm" })
+              )}
+            >
+              Sign In
+            </Link>
+          ) : null}
 
-            {user ? (
-              <UserAccountNav user={user} />
-            ) : (
-              <Button className="px-3" variant="default" size="sm" onClick={signInModal.onOpen}>Sign In</Button>
-            )}
-          </div>
+          {user ? (
+            <UserAccountNav user={user} />
+          ) : (
+            // <Button className="px-3" variant="default" size="sm" onClick={signInModal.onOpen}>Sign In</Button>
+            <Link
+              href="/register"
+              className={cn(
+                buttonVariants({ variant: "default", size: "sm" })
+              )}
+            >
+              Get Started
+            </Link>
+          )}
         </div>
-      </header>
+      </div>
+    </header>
   );
 }
