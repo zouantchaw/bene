@@ -9,7 +9,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useSigninModal } from "@/hooks/use-signin-modal";
-
+import { Icons } from "@/components/shared/icons";
 
 interface NavBarProps {
   user: Pick<User, "name" | "image" | "email"> | undefined
@@ -59,6 +59,7 @@ export function NavBar({ user, items, children, rightElements, scroll = false }:
               )}
             >
               Get Started
+              <Icons.arrowRight className="w-4 h-4 ml-2" />
             </Link>
           )}
         </div>

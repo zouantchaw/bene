@@ -8,8 +8,6 @@ import { Icons } from "@/components/shared/icons";
 import { env } from "@/env.mjs";
 
 export default function IndexPage() {
-  const stars = 1000; // This should be dynamic in a live environment
-
   return (
     <>
       <section className="space-y-6 pb-12 pt-16 lg:py-28">
@@ -39,15 +37,15 @@ export default function IndexPage() {
             className="flex animate-fade-up justify-center space-x-2 opacity-0 md:space-x-4"
             style={{ animationDelay: "0.4s", animationFillMode: "forwards" }}
           >
-            <Link href="/demo" className={cn(buttonVariants({ size: "lg" }))}>
-              Book a Demo
+            <Link href="/register" className={cn(buttonVariants({ size: "lg" }))}>
+              Get Started <Icons.arrowRight className="w-4 h-4 ml-2" />
             </Link>
-            <Link
+            {/* <Link
               href="/features"
               className={cn(buttonVariants({ variant: "outline", size: "lg" }), "px-4")}
             >
               Explore Features
-            </Link>
+            </Link> */}
           </div>
         </div>
       </section>
