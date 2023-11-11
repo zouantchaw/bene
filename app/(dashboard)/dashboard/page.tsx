@@ -20,17 +20,17 @@ export default async function DashboardPage() {
 
   return (
     <DashboardShell>
-      <DashboardHeader heading="Panel" text="Create and manage content.">
-        <Button>Fake button</Button>
+      <DashboardHeader heading={Math.random() > 0.5 ? "Frederick Party Rentals" : "Diane Decorations"} text="Orders">
+        <Button>Create order</Button>
       </DashboardHeader>
       <div>
         <EmptyPlaceholder>
-          <EmptyPlaceholder.Icon name="post" />
-          <EmptyPlaceholder.Title>No content created</EmptyPlaceholder.Title>
+          <EmptyPlaceholder.Icon name="shoppingCart" />
+          <EmptyPlaceholder.Title>No orders</EmptyPlaceholder.Title>
           <EmptyPlaceholder.Description>
-            You don&apos;t have any content yet. Start creating content.
+            You don&apos;t have any orders yet. Get started by creating your first order.
           </EmptyPlaceholder.Description>
-          <Button variant="outline">Fake button</Button>
+          <Button variant="outline">Create order</Button>
         </EmptyPlaceholder>
       </div>
     </DashboardShell>
