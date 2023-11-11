@@ -24,6 +24,7 @@ import {
   User,
   X,
   LucideIcon,
+  Home,
 } from "lucide-react"
 
 export type Icon = LucideIcon
@@ -37,6 +38,7 @@ export const Icons = {
   check: Check,
   close: X,
   ellipsis: MoreVertical,
+  home: Home,
   gitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden="true"
