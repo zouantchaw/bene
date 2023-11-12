@@ -11,6 +11,8 @@ export const metadata = {
   title: "Dashboard",
 }
 
+
+// TODO: Add onboarding component and logic
 export default async function DashboardPage() {
   const user = await getCurrentUser()
 
@@ -20,7 +22,7 @@ export default async function DashboardPage() {
 
   return (
     <DashboardShell>
-      <DashboardHeader heading={Math.random() > 0.5 ? "Frederick Party Rentals" : "Diane Decorations"} text="Orders">
+      <DashboardHeader heading={Math.random() > 0.5 ? "Frederick Party Rentals" : "Diane Decorations"} text="Starter Plan. Upgrade">
         <Button>Create order</Button>
       </DashboardHeader>
       <div>
