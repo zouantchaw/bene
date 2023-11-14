@@ -4,11 +4,11 @@ import { env } from "@/env.mjs"
 export const pricingData: SubscriptionPlan[] = [
   {
     title: 'Starter',
-    description: 'For Beginners',
+    description: 'For Individuals and Small Businesses',
     benefits: [
-      'Up to 100 monthly posts',
+      'Rental website',
+      'Unlimited products',
       'Basic analytics and reporting',
-      'Access to standard templates',
     ],
     limitations: [
       'No priority access to new features.',
@@ -27,13 +27,12 @@ export const pricingData: SubscriptionPlan[] = [
   },
   {
     title: 'Pro',
-    description: 'Unlock Advanced Features',
+    description: 'For Small and Medium Businesses',
     benefits: [
-      'Up to 500 monthly posts',
+      'Rental website',
+      'Unlimited products',
       'Advanced analytics and reporting',
-      'Access to business templates',
       'Priority customer support',
-      'Exclusive webinars and training.',
     ],
     limitations: [
       'No custom branding',
@@ -50,9 +49,10 @@ export const pricingData: SubscriptionPlan[] = [
   },
   {
     title: 'Business',
-    description: 'For Power Users',
+    description: 'For Medium and Large Businesses',
     benefits: [
-      'Unlimited posts',
+      'Rental website',
+      'Unlimited products',
       'Real-time analytics and reporting',
       'Access to all templates, including custom branding',
       '24/7 business customer support',
