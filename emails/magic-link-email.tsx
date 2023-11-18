@@ -27,7 +27,7 @@ export const MagicLinkEmail = ({
   <Html>
     <Head />
     <Preview>
-      The sales intelligence platform that helps you uncover qualified leads.
+      Manage your party and event rentals.
     </Preview>
     <Tailwind>
       <Body className="bg-white font-sans">
