@@ -21,7 +21,12 @@ export const dashboardConfig: DashboardConfig = {
     {
       title: "Orders",
       href: "/dashboard/orders",
-      icon: "shoppingCart",
+      icon: "ganttChartSquare",
+    },
+    {
+      title: "Inventory",
+      href: "/dashboard/inventory",
+      icon: "warehouse",
     },
     {
       title: "Billing",
