@@ -8,12 +8,12 @@ import { DashboardShell } from "@/components/dashboard/shell"
 import { Button } from "@/components/ui/button"
 
 export const metadata = {
-  title: "Orders",
+  title: "Inventory",
 }
 
 
 // TODO: Add onboarding component and logic
-export default async function OrdersPage() {
+export default async function InventoryPage() {
   const user = await getCurrentUser()
 
   if (!user) {
@@ -22,17 +22,17 @@ export default async function OrdersPage() {
 
   return (
     <DashboardShell>
-      <DashboardHeader heading="Orders" text="">
-        <Button>Create order</Button>
+      <DashboardHeader heading="Inventory" text="">
+        <Button>Create Product</Button>
       </DashboardHeader>
       <div>
         <EmptyPlaceholder>
-          <EmptyPlaceholder.Icon name="shoppingCart" />
-          <EmptyPlaceholder.Title>No orders</EmptyPlaceholder.Title>
+          <EmptyPlaceholder.Icon name="warehouse" />
+          <EmptyPlaceholder.Title>No products</EmptyPlaceholder.Title>
           <EmptyPlaceholder.Description>
-            You don&apos;t have any orders yet. Get started by creating your first order.
+            You don&apos;t have any products yet. Get started by creating your first product.
           </EmptyPlaceholder.Description>
-          <Button variant="outline">Create order</Button>
+          <Button variant="outline">Create product</Button>
         </EmptyPlaceholder>
       </div>
     </DashboardShell>
