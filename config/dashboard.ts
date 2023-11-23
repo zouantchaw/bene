@@ -19,14 +19,14 @@ export const dashboardConfig: DashboardConfig = {
       icon: "home",
     },
     {
-      title: "Orders",
-      href: "/dashboard/orders",
-      icon: "ganttChartSquare",
-    },
-    {
       title: "Inventory",
       href: "/dashboard/inventory",
       icon: "warehouse",
+    },
+    {
+      title: "Orders",
+      href: "/dashboard/orders",
+      icon: "ganttChartSquare",
     },
     {
       title: "Billing",

@@ -27,7 +27,7 @@ export default async function DashboardPage() {
       </DashboardHeader>
       <div>
         <EmptyPlaceholder>
-          <EmptyPlaceholder.Icon name="shoppingCart" />
+          <EmptyPlaceholder.Icon name="ganttChartSquare" />
           <EmptyPlaceholder.Title>No orders</EmptyPlaceholder.Title>
           <EmptyPlaceholder.Description>
             You don&apos;t have any orders yet. Get started by creating your first order.
