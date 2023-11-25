@@ -13,6 +13,7 @@ export const ModalProvider = () => {
   return (
     <>
       <SignInModal />
+      {/* CreateProductModal */}
       {/* add your own modals here... */}
     </>
   );

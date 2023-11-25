@@ -5,7 +5,6 @@ import { getCurrentUser } from "@/lib/session"
 import { EmptyPlaceholder } from "@/components/shared/empty-placeholder"
 import { DashboardHeader } from "@/components/dashboard/header"
 import { DashboardShell } from "@/components/dashboard/shell"
-import { Button } from "@/components/ui/button"
 import { CreateProduct } from "@/components/dashboard/inventory/buttons"
 
 export const metadata = {

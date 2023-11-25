@@ -1,14 +1,12 @@
-import Link from 'next/link';
-import { cn } from '@/lib/utils';
-import { buttonVariants } from "@/components/ui/button"
+'use client';
+import { useSigninModal } from "@/hooks/use-signin-modal";
+import { Button } from "@/components/ui/button";
+
 
 export const CreateProduct = ({ variant }) => {
+  const signInModal = useSigninModal();
+
   return (
-    <Link 
-      className={cn(buttonVariants({ variant, size: "sm" }))}
-      href="/dashboard/inventory/create"
-    >
-      Create Product
-    </Link>
+    <Button className="px-3" variant="default" size="sm" onClick={signInModal.onOpen}>Create Product</Button>
   )
 };
