@@ -6,6 +6,7 @@ import { EmptyPlaceholder } from "@/components/shared/empty-placeholder"
 import { DashboardHeader } from "@/components/dashboard/header"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { Button } from "@/components/ui/button"
+import { CreateProduct } from "@/components/dashboard/inventory/buttons"
 
 export const metadata = {
   title: "Dashboard",
@@ -23,16 +24,16 @@ export default async function DashboardPage() {
   return (
     <DashboardShell>
       <DashboardHeader heading={Math.random() > 0.5 ? "Frederick Party Rentals" : "Diane Decorations"} text="Starter Plan. Upgrade">
-        <Button>Create order</Button>
+        <CreateProduct variant="default" />
       </DashboardHeader>
       <div>
         <EmptyPlaceholder>
-          <EmptyPlaceholder.Icon name="ganttChartSquare" />
-          <EmptyPlaceholder.Title>No orders</EmptyPlaceholder.Title>
+          <EmptyPlaceholder.Icon name="warehouse" />
+          <EmptyPlaceholder.Title>No products</EmptyPlaceholder.Title>
           <EmptyPlaceholder.Description>
-            You don&apos;t have any orders yet. Get started by creating your first order.
+            You don&apos;t have any products in your inventory yet. Get started by creating your first product.
           </EmptyPlaceholder.Description>
-          <Button variant="outline">Create order</Button>
+          <CreateProduct variant="default" />
         </EmptyPlaceholder>
       </div>
     </DashboardShell>

@@ -7,6 +7,6 @@ export const CreateProduct = ({ variant }) => {
   const signInModal = useSigninModal();
 
   return (
-    <Button className="px-3" variant="default" size="sm" onClick={signInModal.onOpen}>Create Product</Button>
+    <Button className="px-3" variant="default" size="lg" onClick={signInModal.onOpen}>Create Product</Button>
   )
 };
