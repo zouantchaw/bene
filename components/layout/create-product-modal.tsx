@@ -8,7 +8,7 @@ import { siteConfig } from "@/config/site";
 import { UserAuthForm } from "@/components/forms/user-auth-form"
 import Link from "next/link"
 import { useCreateProductModal } from "@/hooks/use-create-product";
-// import { CreateProductForm } from "@/components/forms/create-product-form";
+import { CreateProductForm } from "@/components/forms/create-product-form";
 
 export const CreateProductModal = () => {
   const createProductModal = useCreateProductModal();
@@ -29,7 +29,9 @@ export const CreateProductModal = () => {
             What is a product?
           </a>
         </div>
-        {/* <CreateBrandForm /> */}
+        <div className="flex flex-col space-y-4 bg-secondary/50 px-4 py-8 md:px-16">
+          <CreateProductForm />
+        </div>
       </div>
     </Modal>
   );
