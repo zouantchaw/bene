@@ -1,10 +1,10 @@
 {
-  "name": "saas-starter",
+  "name": "bene",
   "version": "0.1.0",
   "private": true,
   "author": {
-    "name": "mickasmt",
-    "url": "https://twitter.com/mickasmt"
+    "name": "lovethegame",
+    "url": "https://twitter.com/love_thegame_"
   },
   "scripts": {
     "dev": "next dev",
