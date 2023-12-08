@@ -1,6 +1,7 @@
 import {
   AlertTriangle,
   ArrowRight,
+  ArrowLeft,
   Check,
   ChevronLeft,
   ChevronRight,
@@ -36,6 +37,7 @@ export type Icon = LucideIcon
 export const Icons = {
   add: Plus,
   arrowRight: ArrowRight,
+  arrowLeft: ArrowLeft,
   billing: CreditCard,
   chevronLeft: ChevronLeft,
   chevronRight: ChevronRight,
