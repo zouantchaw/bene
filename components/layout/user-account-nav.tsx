@@ -43,7 +43,7 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
         <DropdownMenuItem asChild>
           <Link href="/dashboard" className="flex items-center space-x-2.5">
             <LayoutDashboard className="h-4 w-4" />
-            <p className="text-sm">Dashboard</p>
+            <p className="text-sm">Overview</p>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>

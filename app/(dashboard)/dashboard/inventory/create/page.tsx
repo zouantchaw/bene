@@ -3,17 +3,23 @@ import { DashboardShell } from "@/components/dashboard/shell"
 import { Button, buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { Icons } from "@/components/shared/icons";
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
+import { CardHeader, CardContent, Card } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { TextArea } from "@/components/ui/textarea";
+import { CreateProductForm } from "@/components/dashboard/inventory/create-product";
 
 export default async function CreateProductPage() {
   return (
     <DashboardShell>
       <DashboardHeader heading="Create Product" text="Add a new product to your inventory." backLink="/dashboard/inventory">
       {/* <Link href="/dashboard/inventory" className={cn(buttonVariants({ size: "default", variant: "default" }))}>
-        <Icons.arrowLeft className="h-4 w-4 mr-2" />
-        Back
+        Create Product
       </Link> */}
       </DashboardHeader>
+      {/* Create product form and preview */}
+      <CreateProductForm />
     </DashboardShell>
   );
 }
