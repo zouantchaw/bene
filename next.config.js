@@ -1,23 +1,32 @@
-/**
- * @type {import('next').NextConfig}
- */
-module.exports = {
-  experimental: {
-    serverActions: true,
-  },
+// FIX: I changed .mjs to .js 
+// More info: https://github.com/shadcn-ui/taxonomy/issues/100#issuecomment-1605867844
+
+const { createContentlayerPlugin } = require("next-contentlayer");
+
+import("./env.mjs");
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
   images: {
-    domains: [
-      "public.blob.vercel-storage.com",
-      "res.cloudinary.com",
-      "abs.twimg.com",
-      "pbs.twimg.com",
-      "avatars.githubusercontent.com",
-      "www.google.com",
-      "flag.vercel.app",
-      "illustrations.popsy.co",
-      "lnpzzrkfflhnr9j2.public.blob.vercel-storage.com",
-      "lh3.googleusercontent.com"
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'avatars.githubusercontent.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+      },
     ],
   },
-  reactStrictMode: false,
-};
+  experimental: {
+    serverComponentsExternalPackages: ["@prisma/client"],
+  },
+}
+
+const withContentlayer = createContentlayerPlugin({
+  // Additional Contentlayer config options
+});
+
+module.exports = withContentlayer(nextConfig);
