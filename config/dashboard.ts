@@ -14,25 +14,25 @@ export const dashboardConfig: DashboardConfig = {
   ],
   sidebarNav: [
     {
-      title: "Home",
+      title: "Overview",
       href: "/dashboard",
-      icon: "home",
+      icon: "layoutDashboard",
     },
     {
       title: "Inventory",
       href: "/dashboard/inventory",
       icon: "warehouse",
     },
-    {
-      title: "Orders",
-      href: "/dashboard/orders",
-      icon: "ganttChartSquare",
-    },
-    {
-      title: "Billing",
-      href: "/dashboard/billing",
-      icon: "billing",
-    },
+    // {
+    //   title: "Orders",
+    //   href: "/dashboard/orders",
+    //   icon: "ganttChartSquare",
+    // },
+    // {
+    //   title: "Billing",
+    //   href: "/dashboard/billing",
+    //   icon: "billing",
+    // },
     {
       title: "Settings",
       href: "/dashboard/settings",

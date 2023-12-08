@@ -28,6 +28,7 @@ import {
   ShoppingCart,
   GanttChartSquare,
   Warehouse,
+  LayoutDashboard,
 } from "lucide-react"
 
 export type Icon = LucideIcon
@@ -45,6 +46,7 @@ export const Icons = {
   shoppingCart: ShoppingCart,
   ganttChartSquare: GanttChartSquare,
   warehouse: Warehouse,
+  layoutDashboard: LayoutDashboard,
   gitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden="true"
