@@ -33,7 +33,7 @@ export function CreateProductForm() {
         <form className="grid gap-4 md:gap-10">
           <div className="grid gap-2">
             <Label className="text-base" htmlFor="productImages">
-              Product Images
+              Images
             </Label>
             <Dropzone
               onChange={(files) => {
@@ -47,19 +47,25 @@ export function CreateProductForm() {
           </div>
           <div className="grid gap-2">
             <Label className="text-base" htmlFor="name">
-              Product Name
+              Name
             </Label>
             <Input className="border p-2 rounded-md" id="name" value={productName} onChange={e => setProductName(e.target.value)} placeholder="Enter product name" />
           </div>
           <div className="grid gap-2">
+            <Label className="text-base" htmlFor="tags">
+              Tags
+            </Label>
+            <Input className="border p-2 rounded-md" id="tags" placeholder="Enter tags separated by commas" value={tags} onChange={e => setTags(e.target.value)} />
+          </div>
+          <div className="grid gap-2">
             <Label className="text-base" htmlFor="description">
-              Product Description
+              Description
             </Label>
             <TextArea className="border p-2 rounded-md" id="description" value={productDescription} onChange={e => setProductDescription(e.target.value)} placeholder="Enter product description" />
           </div>
           <div className="grid gap-2">
             <Label className="text-base" htmlFor="price">
-              Rental Price (per day)
+              Price (per day)
             </Label>
             <Input className="border p-2 rounded-md" id="price" value={rentalPrice} onChange={e => setRentalPrice(e.target.value)} placeholder="Enter rental price" type="number" />
           </div>
@@ -75,12 +81,6 @@ export function CreateProductForm() {
               placeholder="Enter quantity"
               type="number"
             />
-          </div>
-          <div className="grid gap-2">
-            <Label className="text-base" htmlFor="tags">
-              Tags
-            </Label>
-            <Input className="border p-2 rounded-md" id="tags" placeholder="Enter tags separated by commas" value={tags} onChange={e => setTags(e.target.value)} />
           </div>
         </form>
       </div>
@@ -111,7 +111,7 @@ export function CreateProductForm() {
           </CardContent>
         </Card>
       </div>
-      <Button size="lg">Create Product</Button>
+      <Button size="lg">Create Rental Product</Button>
     </div>
   )
 }

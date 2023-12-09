@@ -13,7 +13,7 @@ import { CreateProductForm } from "@/components/dashboard/inventory/create-produ
 export default async function CreateProductPage() {
   return (
     <DashboardShell>
-      <DashboardHeader heading="Create Product" text="Add a new product to your inventory." backLink="/dashboard/inventory">
+      <DashboardHeader heading="Create Rental Product" text="Add to your inventory." backLink="/dashboard/inventory">
       {/* <Link href="/dashboard/inventory" className={cn(buttonVariants({ size: "default", variant: "default" }))}>
         Create Product
       </Link> */}
