@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { CardHeader, CardContent, Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { TextArea } from "@/components/ui/textarea";
-import { CreateProductForm } from "@/components/dashboard/inventory/create-product";
+import { CreateProductForm } from "@/components/forms/create-product-form";
 
 export default async function CreateProductPage() {
   return (
@@ -18,7 +18,6 @@ export default async function CreateProductPage() {
         Create Product
       </Link> */}
       </DashboardHeader>
-      {/* Create product form and preview */}
       <CreateProductForm />
     </DashboardShell>
   );
