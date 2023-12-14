@@ -197,8 +197,8 @@ export function CreateProductForm() {
               />
             ) : <img src="https://placehold.co/600x400" alt="Placeholder" />}
           </CardHeader>
-          <CardContent className="p-4 bg-white dark:bg-gray-800">
-            <h2 className="font-bold text-2xl text-gray-900 dark:text-white">{name || "Product Name"}</h2>
+          <CardContent className="p-4">
+            <h2 className="font-bold text-2xl">{name || "Product Name"}</h2>
             <div className="flex flex-wrap mt-2">
               {tags.length > 0 ? tags.split(',').map((tag, index) => (
                 <Badge key={index} className="bg-blue-500 text-white px-2 py-1 rounded mr-2 mb-2">{tag}</Badge>
