@@ -91,7 +91,7 @@ export function CreateProductForm() {
           <Label className="text-base" htmlFor="name">
             Name
           </Label>
-          <input className="border p-2 rounded-md" id="name" name="name" value={name} onChange={e => setName(e.target.value)} placeholder="Enter product name" aria-describedby="name-error" />
+          <Input className="border p-2 rounded-md" id="name" name="name" value={name} onChange={e => setName(e.target.value)} placeholder="Enter product name" aria-describedby="name-error" />
           {state && state.errors?.name ? (
             <div
               id="name-error"
@@ -142,7 +142,7 @@ export function CreateProductForm() {
           <Label className="text-base" htmlFor="price">
             Price (per day)
           </Label>
-          <input className="border p-2 rounded-md" id="price" name="price" value={price} onChange={e => setPrice(e.target.value)} placeholder="Enter rental price" type="number" aria-describedby="price-error" />
+          <Input className="border p-2 rounded-md" id="price" name="price" value={price} onChange={e => setPrice(e.target.value)} placeholder="Enter rental price" type="number" aria-describedby="price-error" />
           {state && state.errors?.price ? (
             <div
               id="price-error"
@@ -159,7 +159,7 @@ export function CreateProductForm() {
           <Label className="text-base" htmlFor="quantity">
             Quantity
           </Label>
-          <input
+          <Input
             className="border p-2 rounded-md"
             id="quantity"
             name="quantity"
