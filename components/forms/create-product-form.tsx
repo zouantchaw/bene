@@ -5,9 +5,10 @@ import { CardHeader, CardContent, Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { TextArea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useFormState } from "react-dom";
 import { createProduct } from "@/lib/actions";
+import { X } from 'lucide-react';
 
 export function CreateProductForm() {
   const [name, setName] = useState("");
@@ -15,10 +16,12 @@ export function CreateProductForm() {
   const [price, setPrice] = useState("");
   const [tags, setTags] = useState("");
   const [images, setImages] = useState<string[]>([]);
+  const [imageNames, setImageNames] = useState<string[]>([]); // Added state for image names [1
   const [quantity, setQuantity] = useState(1); // Added state for quantity
   const [currentImageIndex, setCurrentImageIndex] = useState(0); // Added state for current image index
   const initialState = { message: null, errors: {} };
   const [state, dispatch] = useFormState(createProduct, initialState);
+  console.log(imageNames);
 
   useEffect(() => {
     if (currentImageIndex >= images.length) {
@@ -27,8 +30,18 @@ export function CreateProductForm() {
     console.log(name, description, price, tags, images, quantity)
   }, [images, currentImageIndex, name]);
 
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const handleImageClick = () => {
     setCurrentImageIndex((currentImageIndex + 1) % images.length);
+  }
+
+  const handleRemoveImage = (index: number) => {
+    setImageNames(imageNames.filter((_, i) => i !== index));
+    setImages(images.filter((_, i) => i !== index));
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
   }
 
   return (
@@ -38,8 +51,9 @@ export function CreateProductForm() {
           <Label className="text-base" htmlFor="images">
             Images
           </Label>
-          <div className="grid w-full max-w-sm items-center gap-1.5">
+          <div className="grid w-full items-center gap-1.5">
             <Input
+              ref={fileInputRef}
               id="images"
               name="images"
               type="file"
@@ -47,10 +61,19 @@ export function CreateProductForm() {
               multiple={true}
               accept=".png,.jpg,.jpeg"
               onChange={(e) => {
+                setImageNames(e.target.files ? Array.from(e.target.files).map(file => file.name) : []);
                 setImages(e.target.files ? Array.from(e.target.files).map(file => URL.createObjectURL(file)) : []);
                 setCurrentImageIndex(0);
               }} 
               />
+            {images.map((image, index) => (
+              <div key={index} className="flex items-center justify-between">
+                <img src={image} alt={`Uploaded ${index}`} className="w-10 h-10 object-cover" />
+                <button type="button" onClick={() => handleRemoveImage(index)}>
+                  <X size={24} />
+                </button>
+              </div>
+            ))}
           </div>
           {state && state.errors?.images ? (
             <div
