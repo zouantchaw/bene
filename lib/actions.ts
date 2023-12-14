@@ -1,32 +1,42 @@
 "use server";
 import { z } from "zod";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 const ProductSchema = z.object({
-  productName: z.string({
-    invalid_type_error: "Product name must be a string.",
+  id: z.string(),
+  name: z.string({
+    invalid_type_error: "Please enter a valid name.",
   }).min(1).max(255),
-  productDescription: z.string({
-    invalid_type_error: "Product description must be a string.",
-  }).min(1).max(255),
-  rentalPrice: z.number({
-    invalid_type_error: "Rental price must be a number.",
-  }).min(0),
+  description: z.string({
+    invalid_type_error: "Please enter a valid description.",
+  }).min(10).max(255),
+  price: z.coerce.number().gte(0, {
+    message: "Please enter a valid price.",
+  }),
   tags: z.array(z.string({}).min(1).max(255)),
-  productImages: z.array(z.string().min(1).max(255)),
-  quantity: z.number({
-    invalid_type_error: "Quantity must be a number.",
-  }).min(0),
+  images: z.array(z.object({
+    size: z.number({
+      invalid_type_error: "Please upload at least one image.",
+    }).min(1),
+    type: z.string(),
+    name: z.string(),
+    lastModified: z.number(),
+  })),
+  quantity: z.string(),
 });
 
-const CreateProduct = ProductSchema.strict();
+const CreateProduct = ProductSchema.omit({
+  id: true,
+});
 
 export type State = {
   errors?: {
-    productName?: string[];
-    productDescription?: string[];
-    rentalPrice?: string[];
+    name?: string[];
+    description?: string[];
+    price?: string[];
     tags?: string[];
-    productImages?: string[];
+    images?: string[];
     quantity?: string[];
   };
   message?: string | null;
@@ -34,15 +44,21 @@ export type State = {
 
 // Create a product 
 export async function createProduct(prevState: State, formData: FormData) {
-  console.log("createProduct");
-  console.log(formData);
+  console.log("===== Create Product =====");
+  console.log(formData.get("name"));
+  console.log(formData.get("description"));
+  console.log(formData.get("price"));
+  console.log(formData.getAll("tags"));
+  console.log(formData.getAll("images"));
+  console.log(formData.get("quantity"));
+
   // Validate the form with Zod
   const validatedFields = CreateProduct.safeParse({
-    productName: formData.get("productName"),
-    productDescription: formData.get("productDescription"),
-    rentalPrice: formData.get("rentalPrice"),
+    name: formData.get("name"),
+    description: formData.get("description"),
+    price: formData.get("price"),
     tags: formData.getAll("tags"),
-    productImages: formData.getAll("productImages"),
+    images: formData.getAll("images"),
     quantity: formData.get("quantity"),
   });
 
@@ -55,13 +71,20 @@ export async function createProduct(prevState: State, formData: FormData) {
   }
 
   // Prepare data for insertion into the database
+  const { name, description, price, tags, images, quantity } = validatedFields.data;
 
   // Insert data into the database
   try {
+    console.log("creating product");
+    console.log(name);
   } catch (error) {
     // If a database error occurs, return a more specific error.
     return {
       message: "Database Error: Failed to Create Product.",
     };
   }
+
+  // Revalidate the cache for the invoices page and redirect the user.
+  revalidatePath("/dashboard/inventory");
+  redirect("/dashboard/inventory");
 }
