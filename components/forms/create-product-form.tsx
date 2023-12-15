@@ -53,7 +53,7 @@ export function CreateProductForm() {
           </Label>
           <div className="grid w-full items-center gap-1.5">
             <Input
-              ref={fileInputRef}
+              // ref={fileInputRef}
               id="images"
               name="images"
               type="file"
