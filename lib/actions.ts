@@ -1,23 +1,11 @@
 "use server";
-import { z } from "zod";
 import { revalidatePath } from "next/cache";
+import { authOptions } from "@/lib/auth";
+import { prisma } from "@/lib/db";
+import { userNameSchema } from "@/lib/validations/user";
+import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-
-const ProductSchema = z.object({
-  id: z.string().uuid(),
-  name: z.string().min(1, { message: "Please enter a valid name." }).max(255),
-  description: z.string().min(10, { message: "Please enter a valid description." }).max(255),
-  price: z.coerce.number().gte(0, { message: "Please enter a valid price." }),  
-  tags: z.array(z.string().min(1).max(255)),
-  images: z.array(z.object({
-    size: z.number().min(1, { message: "Please upload at least one image." }),
-    type: z.string(),
-    name: z.string(),
-    lastModified: z.number(),
-  })),
-  quantity: z.string(),
-});
-
+import { ProductSchema } from "./validations/product";
 const CreateProduct = ProductSchema.omit({
   id: true,
 });
@@ -34,7 +22,38 @@ export type State = {
   message?: string | null;
 };
 
-// Create a product 
+export type UserNameFormData = {
+  name: string;
+};
+
+export async function updateUserName(userId: string, data: UserNameFormData) {
+  try {
+    const session = await getServerSession(authOptions)
+
+    if (!session?.user || session?.user.id !== userId) {
+      throw new Error("Unauthorized");
+    }
+
+    const { name } = userNameSchema.parse(data);
+
+    // Update the user name.
+    await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        name: name,
+      },
+    })
+
+    revalidatePath('/dashboard/settings');
+    return { status: "success" };
+  } catch (error) {
+    console.log(error)
+    return { status: "error" }
+  }
+}
+
 export async function createProduct(prevState: State, formData: FormData) {
   console.log("===== Create Product =====");
   console.log(formData.get("name"));
