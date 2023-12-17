@@ -1,10 +1,16 @@
 import { z } from 'zod';
 
-// Example schema for a rental product
 export const ProductSchema = z.object({
-  productName: z.string().min(1, 'Product name is required'),
-  rentalPrice: z.number().min(0, 'Rental price must be a positive number'),
-  rentalDuration: z.string().min(1, 'Rental duration is required'),
-  productDescription: z.string().optional(),
-  productImages: z.array(z.string()).max(3, 'You can upload a maximum of 3 images'),
+  id: z.string().uuid(),
+  name: z.string().min(1, { message: "Please enter a valid name." }).max(255),
+  description: z.string().min(10, { message: "Please enter a valid description." }).max(255),
+  price: z.coerce.number().gte(0, { message: "Please enter a valid price." }),  
+  tags: z.array(z.string().min(1).max(255)),
+  images: z.array(z.object({
+    size: z.number().min(1, { message: "Please upload at least one image." }),
+    type: z.string(),
+    name: z.string(),
+    lastModified: z.number(),
+  })),
+  quantity: z.string(),
 });
