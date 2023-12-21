@@ -15,7 +15,8 @@ export type ProductFormData = {
   name: string;
   description: string;
   price: number;
-  image: string;
+  tags: string[];
+  images: string[];
 };
 
 export async function updateUserName(userId: string, data: UserNameFormData) {
@@ -28,7 +29,6 @@ export async function updateUserName(userId: string, data: UserNameFormData) {
 
     const { name } = userNameSchema.parse(data);
 
-    // Update the user name.
     await prisma.user.update({
       where: {
         id: userId,
@@ -54,18 +54,7 @@ export async function createProduct(userId: string, data: ProductFormData) {
       throw new Error("Unauthorized");
     }
 
-    const { name, description, price, image } = ProductSchema.parse(data);
-
-    // Update the user name.
-    await prisma.product.create({
-      data: {
-        name: name,
-        description: description,
-        price: price,
-        image: image,
-        userId: userId
-      },
-    })
+    const { name, description, price, images } = ProductSchema.parse(data);
 
     revalidatePath('/dashboard/products');
     return { status: "success" };
