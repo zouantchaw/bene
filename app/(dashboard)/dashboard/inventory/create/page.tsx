@@ -18,6 +18,7 @@ export default async function CreateProductPage() {
         Create Product
       </Link> */}
       </DashboardHeader>
+      {/* CreateProductForm */}
       <CreateProductForm />
     </DashboardShell>
   );
