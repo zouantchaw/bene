@@ -56,11 +56,11 @@ export function ProductPreview({
         </CardHeader>
         <CardDescription className="text-gray-700 mb-2">{description}</CardDescription>
         <div className="flex items-center justify-between">
-          <div className="text-lg font-bold">Price: {price}</div>
-          <div className="text-lg font-bold">Quantity: {quantity}</div>
+          <div className="text-lg font-bold">${price}</div>
+          <div className="text-lg font-bold">{quantity}</div>
         </div>
         <div className="mt-2">
-          <div className="text-sm font-semibold">Tags:</div>
+          <div className="text-sm font-semibold"></div>
           {tags.map((tag, index) => (
             <span key={index} className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{tag}</span>
           ))}
