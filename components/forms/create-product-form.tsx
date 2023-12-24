@@ -22,6 +22,7 @@ import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/shared/icons"
 
 import { createProduct, type ProductFormData } from "@/lib//actions"
+import { ProductPreview } from "@/components/dashboard/inventory/product-preview";
 
 export function CreateProductForm() {
   const [isPending, startTransition] = useTransition();
@@ -246,7 +247,14 @@ export function CreateProductForm() {
         </Card>
       </div>
       <div className="md:col-span-1">
-        {/* Product preview will be displayed here */}
+        <ProductPreview
+          images={images}
+          name={name}
+          description={description}
+          tags={tags}
+          price={price}
+          quantity={quantity}
+        />
       </div>
     </form>
   );
