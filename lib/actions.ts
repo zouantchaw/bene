@@ -6,17 +6,20 @@ import { userNameSchema } from "@/lib/validations/user";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { ProductSchema } from "./validations/product";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export type UserNameFormData = {
   name: string;
 };
 
 export type ProductFormData = {
+  images: string[];
   name: string;
   description: string;
-  price: number;
   tags: string[];
-  images: string[];
+  price: number;
+  quantity: number;
 };
 
 export async function updateUserName(userId: string, data: UserNameFormData) {
