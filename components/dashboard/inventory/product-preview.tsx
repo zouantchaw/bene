@@ -17,6 +17,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel"
+import Image from "next/image";
 
 interface ProductPreviewProps {
   images?: string[]
@@ -28,7 +29,6 @@ interface ProductPreviewProps {
 }
 
 const placeholderImageLink = "https://placehold.co/600x400";
-
 
 export function ProductPreview({
   images = [],
@@ -46,7 +46,7 @@ export function ProductPreview({
           <CarouselContent>
             {(images.length > 0 ? images : [placeholderImageLink]).map((image, index) => (
               <CarouselItem key={index}>
-                <img src={image} alt={`${name} image ${index + 1}`} className="w-full h-64 object-cover" />
+                <Image src={image} alt={`${name} image ${index + 1}`} width={600} height={400} className="w-full h-full object-cover" />
               </CarouselItem>
             ))}
           </CarouselContent>

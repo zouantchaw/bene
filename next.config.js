@@ -9,6 +9,11 @@ import("./env.mjs");
 const nextConfig = {
   reactStrictMode: true,
   images: {
+    domains: [
+      'placehold.co',
+    ],
+    formats: ['image/avif', 'image/webp'],
+    dangerouslyAllowSVG: true,
     remotePatterns: [
       {
         protocol: 'https',
