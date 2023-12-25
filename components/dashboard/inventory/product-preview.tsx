@@ -19,21 +19,24 @@ import {
 } from "@/components/ui/carousel"
 
 interface ProductPreviewProps {
-  images: string[]
-  name: string
-  description: string
-  tags: string[]
-  price: number
-  quantity: number
+  images?: string[]
+  name?: string
+  description?: string
+  tags?: string[]
+  price?: number
+  quantity?: number
 }
 
+const placeholderImageLink = "https://placehold.co/600x400";
+
+
 export function ProductPreview({
-  images,
-  name,
-  description,
-  tags,
-  price,
-  quantity,
+  images = [],
+  name = "Product Name",
+  description = "Product Description",
+  tags = [],
+  price = 0,
+  quantity = 0,
 }: ProductPreviewProps) {
   return (
     <Card className="shadow-lg rounded-lg overflow-hidden">
@@ -41,7 +44,7 @@ export function ProductPreview({
         <Carousel>
           <CarouselPrevious className="absolute z-10 left-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 rounded-full p-2" />
           <CarouselContent>
-            {images.map((image, index) => (
+            {(images.length > 0 ? images : [placeholderImageLink]).map((image, index) => (
               <CarouselItem key={index}>
                 <img src={image} alt={`${name} image ${index + 1}`} className="w-full h-64 object-cover" />
               </CarouselItem>
