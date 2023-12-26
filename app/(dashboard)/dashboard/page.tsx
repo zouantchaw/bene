@@ -16,6 +16,9 @@ export const metadata = {
 // TODO: Add onboarding component and logic
 export default async function DashboardPage() {
   const user = await getCurrentUser()
+  const getNameFromEmail = user?.email?.split("@")[0];
+  console.log("getNameFromEmail", getNameFromEmail);
+  console.log("user", user);
 
   if (!user) {
     redirect(authOptions?.pages?.signIn || "/login")
@@ -23,7 +26,7 @@ export default async function DashboardPage() {
 
   return (
     <DashboardShell>
-      <DashboardHeader heading={Math.random() > 0.5 ? "Frederick Party Rentals" : "Diane Decorations"} text="Starter Plan. Upgrade">
+      <DashboardHeader heading={user.name ? `${user.name}` : `${getNameFromEmail}`} text="Welcome, here's what's happening with your rentals.">
         <CreateProduct variant="default" />
       </DashboardHeader>
       <div>
