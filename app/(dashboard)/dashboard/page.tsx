@@ -17,8 +17,6 @@ export const metadata = {
 export default async function DashboardPage() {
   const user = await getCurrentUser()
   const getNameFromEmail = user?.email?.split("@")[0];
-  console.log("getNameFromEmail", getNameFromEmail);
-  console.log("user", user);
 
   if (!user) {
     redirect(authOptions?.pages?.signIn || "/login")
