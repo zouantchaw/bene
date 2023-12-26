@@ -30,7 +30,7 @@ export const CreateProductModal = () => {
           </a>
         </div>
         <div className="flex flex-col space-y-4 bg-secondary/50 px-4 py-8 md:px-16">
-          <CreateProductForm />
+          {/* <CreateProductForm /> */}
         </div>
       </div>
     </Modal>
