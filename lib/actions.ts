@@ -17,7 +17,7 @@ export type ProductFormData = {
   images: string[];
   name: string;
   description: string;
-  tags: string[];
+  tags: string;
   price: number;
   quantity: number;
 };
@@ -50,6 +50,7 @@ export async function updateUserName(userId: string, data: UserNameFormData) {
 }
 
 export async function createProduct(userId: string, data: ProductFormData) {
+  console.log("=====IN CREATE PRODUCT=====")
   try {
     const session = await getServerSession(authOptions)
 
@@ -58,6 +59,10 @@ export async function createProduct(userId: string, data: ProductFormData) {
     }
 
     const { name, description, price, images } = ProductSchema.parse(data);
+    console.log("name: ", name)
+    console.log("description: ", description)
+    console.log("price: ", price)
+    console.log("images: ", images)
 
     revalidatePath('/dashboard/products');
     return { status: "success" };

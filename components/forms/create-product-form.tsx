@@ -20,18 +20,29 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/shared/icons"
+import { User } from "@prisma/client"
+
 
 import { createProduct, type ProductFormData } from "@/lib//actions"
 import { ProductPreview } from "@/components/dashboard/inventory/product-preview";
 
-export function CreateProductForm() {
+interface CreateProductFormProps {
+  user: Pick<User, "id" | "name">
+}
+
+export function CreateProductForm({ user }: CreateProductFormProps) {
   const [isPending, startTransition] = useTransition();
   const [images, setImages] = useState<string[]>([]);
+  console.log("images", images);
   const [name, setName] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [tags, setTags] = useState<string[]>([]);
+  console.log("tags", tags);
   const [price, setPrice] = useState<number>(0);
   const [quantity, setQuantity] = useState<number>(0);
+
+  const createProductWithParams = createProduct.bind(null, user.id);
+  
 
   const {
     register,
@@ -42,19 +53,20 @@ export function CreateProductForm() {
   });
 
   const onSubmit = handleSubmit(data => {
+    console.log("data", data);
     startTransition(async () => {
-      const result = await createProduct("user.id", data);
+      const { status } = await createProductWithParams(data);
 
-      if (result.status !== "success") {
+      if (status !== "success") {
         toast({
           title: "Something went wrong.",
-          description: "Your product was not created. Please try again.",
+          description: "Your name was not updated. Please try again.",
           variant: "destructive",
-        });
+        })
       } else {
         toast({
-          description: "Your product has been created.",
-        });
+          description: "Your name has been updated.",
+        })
       }
     });
   });

@@ -9,9 +9,6 @@ import("./env.mjs");
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: [
-      'placehold.co',
-    ],
     formats: ['image/avif', 'image/webp'],
     dangerouslyAllowSVG: true,
     remotePatterns: [
@@ -23,6 +20,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'lh3.googleusercontent.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'placehold.co',
+      }
     ],
   },
   experimental: {
