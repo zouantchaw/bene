@@ -1,11 +1,12 @@
 'use client'
 import * as React from "react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Product } from "@prisma/client"
 import { useForm } from "react-hook-form"
 import { X } from "lucide-react";
+import { useRouter } from 'next/navigation'
 
 import { cn } from "@/lib/utils"
 import { ProductSchema } from "@/lib/validations/product";
@@ -26,23 +27,27 @@ import { User } from "@prisma/client"
 import { createProduct, type ProductFormData } from "@/lib//actions"
 import { ProductPreview } from "@/components/dashboard/inventory/product-preview";
 
+import type { PutBlobResult } from '@vercel/blob';
+
+
 interface CreateProductFormProps {
   user: Pick<User, "id" | "name">
 }
 
 export function CreateProductForm({ user }: CreateProductFormProps) {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [images, setImages] = useState<string[]>([]);
-  console.log("images", images);
+  const [imageBlobs, setImageBlobs] = useState<Blob[]>([]);
+  const [uploadedImages, setUploadedImages] = useState<PutBlobResult[]>([]);
   const [name, setName] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [tags, setTags] = useState<string[]>([]);
-  console.log("tags", tags);
   const [price, setPrice] = useState<number>(0);
   const [quantity, setQuantity] = useState<number>(0);
+  const inputFileRef = useRef<HTMLInputElement>(null);
 
-  const createProductWithParams = createProduct.bind(null, user.id);
-  
+  const createProductWithParams = createProduct.bind(null, user.id);  
 
   const {
     register,
@@ -52,21 +57,37 @@ export function CreateProductForm({ user }: CreateProductFormProps) {
     resolver: zodResolver(ProductSchema),
   });
 
-  const onSubmit = handleSubmit(data => {
-    console.log("data", data);
+  const onSubmit = handleSubmit(async (data) => {
     startTransition(async () => {
-      const { status } = await createProductWithParams(data);
+      const uploadedImagesPromises = imageBlobs.map((image) => {
+        const file = image as File;
+        return fetch(`/api/upload?filename=${file.name}`, {
+          method: 'POST',
+          body: image,
+        }).then((response) => response.json());
+      });
+      const uploadedImages = await Promise.all(uploadedImagesPromises);
+      setUploadedImages(uploadedImages);
+
+      const modifiedData = {
+        ...data,
+        images: uploadedImages.map((image) => image.url),
+        tags: JSON.stringify(data.tags.split(',').map(tag => tag.trim())),
+      };
+
+      const { status } = await createProductWithParams(modifiedData);
 
       if (status !== "success") {
         toast({
           title: "Something went wrong.",
-          description: "Your name was not updated. Please try again.",
+          description: "Your product was not created. Please try again.",
           variant: "destructive",
         })
       } else {
         toast({
-          description: "Your name has been updated.",
+          description: "Your product has been created.",
         })
+        router.push("/dashboard/inventory");
       }
     });
   });
@@ -92,8 +113,8 @@ export function CreateProductForm({ user }: CreateProductFormProps) {
           return;
         }
       }
-
-      setImages(Array.from(e.target.files).map(file => URL.createObjectURL(file)));
+      setImages(Array.from(e.target.files).map((file) => URL.createObjectURL(file)));
+      setImageBlobs(Array.from(e.target.files));
     }
   };
 
@@ -117,6 +138,7 @@ export function CreateProductForm({ user }: CreateProductFormProps) {
                 multiple
                 accept=".png,.jpg,.jpeg"
                 onChange={handleImageChange}
+                ref={inputFileRef}
               />
               {images.map((image, index) => (
                 <div key={index} className="flex items-center justify-between mt-2">
@@ -187,7 +209,10 @@ export function CreateProductForm({ user }: CreateProductFormProps) {
                 {...register("tags")}
                 aria-describedby="tags-error"
                 value={tags}
-                onChange={(e) => setTags(e.target.value.split(','))}
+                onChange={(e) => {
+                  const tagsArray = e.target.value.split(',');
+                  setTags(e.target.value.split(','))
+                }}
               />
               {errors?.tags && (
                 <div
