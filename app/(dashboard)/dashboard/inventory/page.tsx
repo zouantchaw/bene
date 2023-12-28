@@ -6,8 +6,8 @@ import { EmptyPlaceholder } from "@/components/shared/empty-placeholder"
 import { DashboardHeader } from "@/components/dashboard/header"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { CreateProduct } from "@/components/dashboard/inventory/buttons"
-import { Product, columns } from "./columns"
-import { DataTable } from "./data-table"
+import { Product, columns } from "@/components/dashboard/inventory/columns"
+import { DataTable } from "@/components/dashboard/inventory/data-table"
 
 export const metadata = {
   title: "Inventory",
