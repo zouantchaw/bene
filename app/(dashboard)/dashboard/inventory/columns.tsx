@@ -17,14 +17,20 @@ import {
 // You can use a Zod schema here if you want.
 export type Product = {
   id: string
+  image: string
   name: string
   description: string
   tags: string[]
   price: number
   quantity: number
+  available: number
 }
 
 export const columns: ColumnDef<Product>[] = [
+  {
+    accessorKey: "image",
+    header: "Image",
+  },
   {
     accessorKey: "name",
     header: "Name",

@@ -18,11 +18,13 @@ async function getData(): Promise<Product[]> {
   return [
     {
       id: "728ed52f",
+      image: "https://placehold.co/600x400",
       name: "Gold Chair",
       description: "A luxurious gold chair",
       tags: ["furniture", "chair", "gold"],
-      price: 500,
-      quantity: 10
+      price: 3.99,
+      quantity: 100,
+      available: 78,
     },
     // ...
   ]
