@@ -8,7 +8,7 @@ import { DashboardShell } from "@/components/dashboard/shell"
 import { CreateProduct } from "@/components/dashboard/inventory/buttons"
 import { Product, columns } from "@/components/dashboard/inventory/columns"
 import { DataTable } from "@/components/dashboard/inventory/data-table"
-import { getAllProducts } from "@/lib/actions"
+import { getProducts } from "@/lib/actions"
 
 export const metadata = {
   title: "Inventory",
@@ -218,8 +218,16 @@ export default async function InventoryPage() {
   if (!user) {
     redirect(authOptions?.pages?.signIn || "/login")
   }
-  const products = await getAllProducts(user.id)
-  console.log(products)
+
+  const getProductsWithId = getProducts.bind(null, user.id)
+  const { products } = await getProductsWithId()
+  const formattedProducts = products.map((product) => {
+    return {
+      ...product,
+    }
+  }
+  )
+  console.log("formattedProducts", formattedProducts)
 
   return (
     <DashboardShell className="ml-1">

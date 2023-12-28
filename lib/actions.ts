@@ -76,7 +76,7 @@ export async function createProduct(userId: string, data: ProductFormData) {
   }
 }
 
-export async function getAllProducts(userId: string) {
+export async function getProducts(userId: string) {
   try {
     const session = await getServerSession(authOptions)
 
@@ -90,7 +90,7 @@ export async function getAllProducts(userId: string) {
       }
     })
 
-    return { status: "success", products: products };
+    return { status: "success", products };
   } catch (error) {
     console.log(error)
     return { status: "error" }
