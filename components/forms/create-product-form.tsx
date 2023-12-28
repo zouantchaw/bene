@@ -3,7 +3,6 @@ import * as React from "react";
 import { useState, useRef } from "react";
 import { useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Product } from "@prisma/client"
 import { useForm } from "react-hook-form"
 import { X } from "lucide-react";
 import { useRouter } from 'next/navigation'
