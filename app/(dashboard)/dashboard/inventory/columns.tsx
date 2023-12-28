@@ -28,7 +28,17 @@ export const columns: ColumnDef<Product>[] = [
   },
   {
     accessorKey: "price",
-    header: "Price",
+    header: () => <div className="text-right">Price</div>,
+    cell: ({ row }) => {
+      const price = parseFloat(row.getValue("price"))
+      const formatted = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+      }).format(price)
+ 
+      return <div className="text-right font-medium">{formatted}</div>
+    },
+
   },
   {
     accessorKey: "quantity",
