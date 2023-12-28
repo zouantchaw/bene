@@ -23,7 +23,11 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'placehold.co',
-      }
+      },
+      {
+        protocol: 'https',
+        hostname: 'p4elgieetexmhjeu.public.blob.vercel-storage.com',
+      },
     ],
   },
   experimental: {

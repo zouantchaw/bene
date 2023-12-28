@@ -41,7 +41,13 @@ export default async function InventoryPage() {
   const { products } = await getProductsWithId()
   const formattedProducts = products.map((product) => {
     return {
-      ...product,
+      id: product.id,
+      image: product.images[0],
+      name: product.name,
+      description: product.description,
+      tags: product.tags.map(tag => tag.split(' ').join(', ')),
+      price: product.price,
+      quantity: product.quantity,
     }
   }
   )
@@ -61,7 +67,7 @@ export default async function InventoryPage() {
           </EmptyPlaceholder.Description>
           <CreateProduct variant="outline" />
         </EmptyPlaceholder> */}
-        <DataTable columns={columns} data={data} />
+        <DataTable columns={columns} data={formattedProducts} />
       </div>
     </DashboardShell>
   )
