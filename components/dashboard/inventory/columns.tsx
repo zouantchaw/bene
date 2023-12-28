@@ -24,7 +24,6 @@ export type Product = {
   tags: string[]
   price: number
   quantity: number
-  available: number
 }
 
 export const columns: ColumnDef<Product>[] = [
@@ -71,20 +70,6 @@ export const columns: ColumnDef<Product>[] = [
   {
     accessorKey: "quantity",
     header: "Quantity",
-  },
-  {
-    accessorKey: "available",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Available
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      )
-    },
   },
   {
     id: "actions",
