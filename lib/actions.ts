@@ -75,3 +75,24 @@ export async function createProduct(userId: string, data: ProductFormData) {
     return { status: "error" }
   }
 }
+
+export async function getAllProducts(userId: string) {
+  try {
+    const session = await getServerSession(authOptions)
+
+    if (!session?.user || session?.user.id !== userId) {
+      throw new Error("Unauthorized");
+    }
+
+    const products = await prisma.product.findMany({
+      where: {
+        userId: userId
+      }
+    })
+
+    return { status: "success", products: products };
+  } catch (error) {
+    console.log(error)
+    return { status: "error" }
+  }
+}

@@ -8,6 +8,7 @@ import { DashboardShell } from "@/components/dashboard/shell"
 import { CreateProduct } from "@/components/dashboard/inventory/buttons"
 import { Product, columns } from "@/components/dashboard/inventory/columns"
 import { DataTable } from "@/components/dashboard/inventory/data-table"
+import { getAllProducts } from "@/lib/actions"
 
 export const metadata = {
   title: "Inventory",
@@ -211,16 +212,18 @@ async function getData(): Promise<Product[]> {
 }
 
 export default async function InventoryPage() {
-  const data = await getData()
   const user = await getCurrentUser()
+  const data = await getData()
 
   if (!user) {
     redirect(authOptions?.pages?.signIn || "/login")
   }
+  const products = await getAllProducts(user.id)
+  console.log(products)
 
   return (
     <DashboardShell className="ml-1">
-      <DashboardHeader heading="Inventory" text="">
+      <DashboardHeader heading="Inventory" text="Manage your inventory.">
         <CreateProduct variant="default" />
       </DashboardHeader>
       <div>
@@ -233,7 +236,6 @@ export default async function InventoryPage() {
           <CreateProduct variant="outline" />
         </EmptyPlaceholder> */}
         <DataTable columns={columns} data={data} />
-
       </div>
     </DashboardShell>
   )
