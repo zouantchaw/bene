@@ -19,7 +19,7 @@ async function getData(): Promise<Product[]> {
     {
       id: "728ed52f",
       image: "https://placehold.co/600x400",
-      name: "Gold Chair",
+      name: "Green Chair",
       description: "A luxurious gold chair",
       tags: ["furniture"],
       price: 3.99,
@@ -39,7 +39,7 @@ async function getData(): Promise<Product[]> {
     {
       id: "728ed52f",
       image: "https://placehold.co/600x400",
-      name: "Gold Chair",
+      name: "Safire Chair",
       description: "A luxurious gold chair",
       tags: ["furniture", "chair", "gold"],
       price: 3.99,
@@ -49,7 +49,7 @@ async function getData(): Promise<Product[]> {
     {
       id: "728ed52f",
       image: "https://placehold.co/600x400",
-      name: "Gold Chair",
+      name: "Pink Chair",
       description: "A luxurious gold chair",
       tags: ["furniture", "chair", "gold"],
       price: 3.99,
@@ -149,7 +149,7 @@ async function getData(): Promise<Product[]> {
     {
       id: "728ed52f",
       image: "https://placehold.co/600x400",
-      name: "Gold Chair",
+      name: "Blue Chair",
       description: "A luxurious gold chair",
       tags: ["furniture", "chair", "gold"],
       price: 3.99,
@@ -219,7 +219,7 @@ export default async function InventoryPage() {
   }
 
   return (
-    <DashboardShell>
+    <DashboardShell className="ml-1">
       <DashboardHeader heading="Inventory" text="">
         <CreateProduct variant="default" />
       </DashboardHeader>
