@@ -42,6 +42,7 @@ specifiers:
   '@t3-oss/env-nextjs': ^0.7.1
   '@tailwindcss/line-clamp': ^0.4.4
   '@tailwindcss/typography': ^0.5.10
+  '@tanstack/react-table': ^8.11.2
   '@types/node': ^20.8.9
   '@types/react': 18.2.33
   '@types/react-dom': 18.2.14
@@ -143,6 +144,7 @@ dependencies:
   '@react-email/components': 0.0.7
   '@react-email/html': 0.0.6_react@18.2.0
   '@t3-oss/env-nextjs': 0.7.1_5t6euwxcdh5fbfdut3slz5dieu
+  '@tanstack/react-table': 8.11.2_biqbaboplfbrettd7655fr4n2y
   '@typescript-eslint/parser': 6.12.0_6acznz3ehjwuvmze655r5sqk3e
   '@vercel/analytics': 1.1.1
   '@vercel/blob': 0.16.1
@@ -3633,6 +3635,23 @@ packages:
       postcss-selector-parser: 6.0.10
       tailwindcss: 3.3.5
     dev: true
+
+  /@tanstack/react-table/8.11.2_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-ztLg2OpM3HZIWzkQYjQER1inZuhbt79fBwZxc9bPXzsvqY+7RYI3dCZLw3CynYd9s4YltdrTbmSyh4xQSHexDQ==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      react: '>=16'
+      react-dom: '>=16'
+    dependencies:
+      '@tanstack/table-core': 8.11.2
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
+
+  /@tanstack/table-core/8.11.2:
+    resolution: {integrity: sha512-rR0VEQOtr0ARLvaNLaSQnt2BVwOp0OavOUA0LcZ3N45tLYXc4sXruNv8kJ7R7+5W1CrzGha217tzjBG83CpoMQ==}
+    engines: {node: '>=12'}
+    dev: false
 
   /@types/acorn/4.0.6:
     resolution: {integrity: sha512-veQTnWP+1D/xbxVrPC3zHnCZRjSrKfhbMUlEA43iMZLu7EsnTtkJklIuwrCPbOi8YkvDQAiW05VQQFvvz9oieQ==}
