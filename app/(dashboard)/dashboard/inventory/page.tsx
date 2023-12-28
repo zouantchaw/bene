@@ -14,24 +14,8 @@ export const metadata = {
   title: "Inventory",
 }
 
-async function getData(): Promise<Product[]> {
-  // Fetch data from your API here.
-  return [
-    {
-      id: "728ed52f",
-      image: "https://placehold.co/600x400",
-      name: "Green Chair",
-      description: "A luxurious gold chair",
-      tags: ["furniture"],
-      price: 3.99,
-      quantity: 100,
-    },
-  ]
-}
-
 export default async function InventoryPage() {
   const user = await getCurrentUser()
-  const data = await getData()
 
   if (!user) {
     redirect(authOptions?.pages?.signIn || "/login")
@@ -59,15 +43,18 @@ export default async function InventoryPage() {
         <CreateProduct variant="default" />
       </DashboardHeader>
       <div>
-        {/* <EmptyPlaceholder>
-          <EmptyPlaceholder.Icon name="warehouse" /> 
-          <EmptyPlaceholder.Title>No products</EmptyPlaceholder.Title>
-          <EmptyPlaceholder.Description>
-            You don&apos;t have any products yet. Get started by creating your first product.
-          </EmptyPlaceholder.Description>
-          <CreateProduct variant="outline" />
-        </EmptyPlaceholder> */}
-        <DataTable columns={columns} data={formattedProducts} />
+        {formattedProducts.length === 0 ? (
+          <EmptyPlaceholder>
+            <EmptyPlaceholder.Icon name="warehouse" /> 
+            <EmptyPlaceholder.Title>No products</EmptyPlaceholder.Title>
+            <EmptyPlaceholder.Description>
+              You don&apos;t have any products yet. Get started by creating your first product.
+            </EmptyPlaceholder.Description>
+            <CreateProduct variant="outline" />
+          </EmptyPlaceholder>
+        ) : (
+          <DataTable columns={columns} data={formattedProducts} />
+        )}
       </div>
     </DashboardShell>
   )
