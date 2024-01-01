@@ -8,7 +8,7 @@ import { X } from "lucide-react";
 import { useRouter } from 'next/navigation'
 
 import { cn } from "@/lib/utils"
-import { ProductSchema } from "@/lib/validations/product";
+import { CreateProductSchema } from "@/lib/validations/product";
 import { buttonVariants } from "@/components/ui/button"
 
 import {
@@ -23,7 +23,7 @@ import { Icons } from "@/components/shared/icons"
 import { User } from "@prisma/client"
 
 
-import { createProduct, type ProductFormData } from "@/lib//actions"
+import { createProduct, type CreateProductFormData } from "@/lib//actions"
 import { ProductPreview } from "@/components/dashboard/inventory/product-preview";
 
 import type { PutBlobResult } from '@vercel/blob';
@@ -52,8 +52,8 @@ export function CreateProductForm({ user }: CreateProductFormProps) {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<ProductFormData>({
-    resolver: zodResolver(ProductSchema),
+  } = useForm<CreateProductFormData>({
+    resolver: zodResolver(CreateProductSchema),
   });
 
   const onSubmit = handleSubmit(async (data) => {

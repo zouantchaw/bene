@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const ProductSchema = z.object({
+export const CreateProductSchema = z.object({
   id: z.string().uuid().optional(),
   name: z.string().min(1, { message: "Please enter a valid name." }).max(255),
   description: z.string().min(10, { message: "Please enter a valid description." }).max(255),
@@ -8,4 +8,8 @@ export const ProductSchema = z.object({
   tags: z.string().min(1, { message: "Please enter at least one tag." }).max(255),
   images: z.any(),
   quantity: z.string(),
+});
+
+export const DeleteProductSchema = z.object({
+  id: z.string().uuid(),
 });
