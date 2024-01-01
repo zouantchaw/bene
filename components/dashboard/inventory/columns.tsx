@@ -112,11 +112,6 @@ export const columns: ColumnDef<Product>[] = [
               Update
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="bg-red-500 text-white hover:bg-red-600" onClick={() => {
-              console.log(`Delete ${id} clicked`)
-            }}>
-              Delete
-            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )

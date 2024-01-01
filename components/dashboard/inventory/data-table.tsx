@@ -186,9 +186,7 @@ export function DataTable<TData, TValue>({
         </Button>
       </div>
       <div className="flex-1 text-sm text-muted-foreground flex items-center">
-        {table.getFilteredSelectedRowModel().rows.length > 0 && (
-          <DeleteProductForm user={user} selectedRows={selectedRowIds} />
-        )}
+        <DeleteProductForm user={user} selectedRows={selectedRowIds} disabled={table.getFilteredSelectedRowModel().rows.length === 0} />
         <span>
           {table.getFilteredSelectedRowModel().rows.length} of{" "}
           {table.getFilteredRowModel().rows.length} row(s) selected

@@ -17,9 +17,10 @@ import { deleteProduct, type DeleteProductFormData } from "@/lib//actions"
 interface DeleteProductFormProps {
   user: Pick<User, "id">
   selectedRows: string[]
+  disabled?: boolean
 }
 
-export function DeleteProductForm({ user, selectedRows }: DeleteProductFormProps) {
+export function DeleteProductForm({ user, selectedRows, disabled }: DeleteProductFormProps) {
   const [isPending, startTransition] = useTransition();
   const deleteProductWithId = deleteProduct.bind(null, user.id);
 
@@ -57,7 +58,7 @@ export function DeleteProductForm({ user, selectedRows }: DeleteProductFormProps
       <button
         type="submit"
         className={cn(buttonVariants({ size: "sm",variant: "destructive"  }))}
-        disabled={isPending}
+        disabled={disabled}
       >
         {isPending && (
           <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
