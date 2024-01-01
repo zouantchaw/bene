@@ -95,6 +95,7 @@ export const columns: ColumnDef<Product>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
+      const { id } = row.original
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -111,7 +112,9 @@ export const columns: ColumnDef<Product>[] = [
               Update
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="bg-red-500 text-white hover:bg-red-600">
+            <DropdownMenuItem className="bg-red-500 text-white hover:bg-red-600" onClick={() => {
+              console.log(`Delete ${id} clicked`)
+            }}>
               Delete
             </DropdownMenuItem>
           </DropdownMenuContent>

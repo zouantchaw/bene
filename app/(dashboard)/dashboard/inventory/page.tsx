@@ -53,7 +53,7 @@ export default async function InventoryPage() {
             <CreateProduct variant="outline" />
           </EmptyPlaceholder>
         ) : (
-          <DataTable columns={columns} data={formattedProducts} />
+          <DataTable user={user} columns={columns} data={formattedProducts} />
         )}
       </div>
     </DashboardShell>

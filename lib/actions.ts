@@ -4,19 +4,23 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { userNameSchema } from "@/lib/validations/user";
 import { getServerSession } from "next-auth";
-import { ProductSchema } from "./validations/product";
+import { CreateProductSchema, DeleteProductSchema } from "./validations/product";
 
 export type UserNameFormData = {
   name: string;
 };
 
-export type ProductFormData = {
+export type CreateProductFormData = {
   images: string[];
   name: string;
   description: string;
   tags: string;
   price: number;
   quantity: number;
+};
+
+export type DeleteProductFormData = {
+  id: string;
 };
 
 export async function updateUserName(userId: string, data: UserNameFormData) {
@@ -46,7 +50,7 @@ export async function updateUserName(userId: string, data: UserNameFormData) {
   }
 }
 
-export async function createProduct(userId: string, data: ProductFormData) {
+export async function createProduct(userId: string, data: CreateProductFormData) {
   try {
     const session = await getServerSession(authOptions)
 
@@ -54,7 +58,7 @@ export async function createProduct(userId: string, data: ProductFormData) {
       throw new Error("Unauthorized");
     }
 
-    const { name, description, price, quantity, images, tags } = ProductSchema.parse(data);
+    const { name, description, price, quantity, images, tags } = CreateProductSchema.parse(data);
 
     const product = await prisma.product.create({
       data: {
@@ -91,6 +95,32 @@ export async function getProducts(userId: string) {
     })
 
     return { status: "success", products };
+  } catch (error) {
+    console.log(error)
+    return { status: "error" }
+  }
+}
+
+export async function deleteProduct(userId: string, data: DeleteProductFormData) {
+  try {
+    const session = await getServerSession(authOptions)
+
+    if (!session?.user || session?.user.id !== userId) {
+      throw new Error("Unauthorized");
+    }
+
+    const { id } = DeleteProductSchema.parse(data);
+    console.log("id", id)
+
+    return { status: "success"}
+
+    await prisma.product.delete({
+      where: {
+        id: id,
+      },
+    })
+    revalidatePath('/dashboard/inventory');
+    return { status: "success" };
   } catch (error) {
     console.log(error)
     return { status: "error" }
