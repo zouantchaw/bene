@@ -35,7 +35,6 @@ export default async function InventoryPage() {
     }
   }
   )
-  console.log("formattedProducts", formattedProducts)
 
   return (
     <DashboardShell className="ml-1">

@@ -3,7 +3,6 @@ import * as React from "react"
 import {
   ColumnDef,
   ColumnFiltersState,
-  Row,
   SortingState,
   VisibilityState,
   flexRender,
@@ -31,10 +30,10 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { User, Product } from "@prisma/client"
+import { User } from "@prisma/client"
 
 import Image from "next/image"
-import { DeleteProductForm } from "@/components/forms/delete-product-form"
+import { DeleteProductsForm } from "@/components/forms/delete-product-form"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -75,7 +74,6 @@ export function DataTable<TData, TValue>({
 
   const selectedRows = table.getFilteredSelectedRowModel().rows
   const selectedRowIds = selectedRows.map((row: any) => row.original.id)
-  console.log("selectedRowIds", selectedRowIds)
 
   return (
     <div>
@@ -186,7 +184,7 @@ export function DataTable<TData, TValue>({
         </Button>
       </div>
       <div className="flex-1 text-sm text-muted-foreground flex items-center">
-        <DeleteProductForm user={user} selectedRows={selectedRowIds} disabled={table.getFilteredSelectedRowModel().rows.length === 0} />
+        <DeleteProductsForm user={user} selectedRows={selectedRowIds} disabled={table.getFilteredSelectedRowModel().rows.length === 0} />
         <span>
           {table.getFilteredSelectedRowModel().rows.length} of{" "}
           {table.getFilteredRowModel().rows.length} row(s) selected

@@ -4,7 +4,7 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { userNameSchema } from "@/lib/validations/user";
 import { getServerSession } from "next-auth";
-import { CreateProductSchema, DeleteProductSchema } from "./validations/product";
+import { CreateProductSchema, DeleteProductsSchema } from "./validations/product";
 
 export type UserNameFormData = {
   name: string;
@@ -19,8 +19,8 @@ export type CreateProductFormData = {
   quantity: number;
 };
 
-export type DeleteProductFormData = {
-  id: string;
+export type DeleteProductsFormData = {
+  ids: string[];
 };
 
 export async function updateUserName(userId: string, data: UserNameFormData) {
@@ -101,7 +101,7 @@ export async function getProducts(userId: string) {
   }
 }
 
-export async function deleteProduct(userId: string, data: DeleteProductFormData) {
+export async function deleteProducts(userId: string, data: DeleteProductsFormData) {
   try {
     const session = await getServerSession(authOptions)
 
@@ -109,15 +109,14 @@ export async function deleteProduct(userId: string, data: DeleteProductFormData)
       throw new Error("Unauthorized");
     }
 
-    const { id } = DeleteProductSchema.parse(data);
-    console.log("id", id)
-
-    return { status: "success"}
-
-    await prisma.product.delete({
+    const { ids } = DeleteProductsSchema.parse(data);
+    
+    await prisma.product.deleteMany({
       where: {
-        id: id,
-      },
+        id: {
+          in: ids
+        }
+      }
     })
     revalidatePath('/dashboard/inventory');
     return { status: "success" };

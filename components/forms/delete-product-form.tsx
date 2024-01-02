@@ -1,51 +1,55 @@
 "use client"
 
-import { useTransition } from "react";
+// import * as React from "react"
+import { useTransition, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { User } from "@prisma/client"
 import { useForm } from "react-hook-form"
 
 import { cn } from "@/lib/utils"
-import { userNameSchema } from "@/lib/validations/user"
+import { DeleteProductsSchema } from "@/lib/validations/product"
 import { buttonVariants } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/shared/icons"
 
-import { deleteProduct, type DeleteProductFormData } from "@/lib//actions"
+import { deleteProducts, type DeleteProductsFormData } from "@/lib//actions"
 
-interface DeleteProductFormProps {
+interface DeleteProductsFormProps {
   user: Pick<User, "id">
   selectedRows: string[]
   disabled?: boolean
 }
 
-export function DeleteProductForm({ user, selectedRows, disabled }: DeleteProductFormProps) {
+export function DeleteProductsForm({ user, selectedRows, disabled }: DeleteProductsFormProps) {
   const [isPending, startTransition] = useTransition();
-  const deleteProductWithId = deleteProduct.bind(null, user.id);
+  const deleteProductWithIds = deleteProducts.bind(null, user.id);
 
   const {
     handleSubmit,
     register,
+    setValue,
     formState: { errors },
-  } = useForm<DeleteProductFormData>({
-    resolver: zodResolver(userNameSchema),
+  } = useForm<DeleteProductsFormData>({
+    resolver: zodResolver(DeleteProductsSchema),
   })
 
-  const onSubmit = handleSubmit(data => {
-    console.log("data", data)
-    startTransition(async () => {
-      const { status } = await deleteProductWithId(data);
+  useEffect(() => {
+    setValue("ids", selectedRows);
+  }, [selectedRows, setValue])
 
+  const onSubmit = handleSubmit(data => {
+    startTransition(async () => {
+      const { status } = await deleteProductWithIds(data);
       if (status !== "success") {
         toast({
           title: "Something went wrong.",
-          description: "Your name was not updated. Please try again.",
+          description: selectedRows.length === 1 ? "Your product was not deleted. Please try again." : "Your products were not deleted. Please try again.",
           variant: "destructive",
         })
       } else {
         toast({
-          description: "Your name has been updated.",
+          description: selectedRows.length === 1 ? "Your product has been deleted." : "Your products have been deleted.",
         })
       }
     });
@@ -54,11 +58,11 @@ export function DeleteProductForm({ user, selectedRows, disabled }: DeleteProduc
 
   return (
     <form className="mr-2" onSubmit={onSubmit}>
-      <Input id="id" type="hidden" {...register("id")} value={selectedRows} />
+      <Input id="ids" type="hidden" {...register("ids")} />
       <button
         type="submit"
-        className={cn(buttonVariants({ size: "sm",variant: "destructive"  }))}
-        disabled={disabled}
+        className={cn(buttonVariants({ size: "sm", variant: "destructive" }))}
+        disabled={isPending || disabled}
       >
         {isPending && (
           <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />

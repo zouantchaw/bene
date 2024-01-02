@@ -10,6 +10,6 @@ export const CreateProductSchema = z.object({
   quantity: z.string(),
 });
 
-export const DeleteProductSchema = z.object({
-  id: z.string().uuid(),
+export const DeleteProductsSchema = z.object({
+  ids: z.array(z.string()),
 });
