@@ -38,6 +38,21 @@ export default async function middleware(req: NextRequest) {
     searchParams.length > 0 ? `?${searchParams}` : ""
   }`;
 
+  // Redirect / route to login subdomain
+  if (path === "/") {
+    const protocol = hostname.includes("localhost") ? "http" : "https";
+    return NextResponse.redirect(
+      new URL(
+        `${protocol}://app.${
+          hostname.includes("localhost")
+            ? "localhost:3000"
+            : process.env.NEXT_PUBLIC_ROOT_DOMAIN
+        }/login`,
+        req.url,
+      ),
+    );
+  }
+
   // rewrites for app pages
   if (hostname == `app.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`) {
     const session = await getToken({ req });
