@@ -1,13 +1,26 @@
-import { put } from '@vercel/blob';
-import { NextResponse } from 'next/server';
+import { put } from "@vercel/blob";
+import { nanoid } from "nanoid";
+import { NextResponse } from "next/server";
 
-export async function POST(request: Request): Promise<NextResponse> {
-  const filename = new URL(request.url).searchParams.get('filename');
-  const body = request.body;
+export const runtime = "edge";
 
-  const blob = body && filename ? await put(filename, body, { access: 'public' }) : null;
+export async function POST(req: Request) {
+  if (!process.env.BLOB_READ_WRITE_TOKEN) {
+    return new Response(
+      "Missing BLOB_READ_WRITE_TOKEN. Don't forget to add that to your .env file.",
+      {
+        status: 401,
+      },
+    );
+  }
 
-  return blob
-    ? NextResponse.json(blob)
-    : NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
+  const file = req.body || "";
+  const contentType = req.headers.get("content-type") || "text/plain";
+  const filename = `${nanoid()}.${contentType.split("/")[1]}`;
+  const blob = await put(filename, file, {
+    contentType,
+    access: "public",
+  });
+
+  return NextResponse.json(blob);
 }

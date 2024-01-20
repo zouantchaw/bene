@@ -1,101 +1,139 @@
-import { PrismaAdapter } from "@next-auth/prisma-adapter"
-import { NextAuthOptions } from "next-auth"
-import EmailProvider from "next-auth/providers/email"
-import GoogleProvider from "next-auth/providers/google"
+import { getServerSession, type NextAuthOptions } from "next-auth";
+import GitHubProvider from "next-auth/providers/github";
+import Auth0Provider from "next-auth/providers/auth0";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import prisma from "@/lib/prisma";
 
-import { siteConfig } from "@/config/site"
-import MagicLinkEmail from "@/emails/magic-link-email"
-import { env } from "@/env.mjs"
-import { prisma } from "@/lib/db"
-import { resend } from "./email"
+const VERCEL_DEPLOYMENT = !!process.env.VERCEL_URL;
 
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
-  session: {
-    strategy: "jwt",
-  },
-  pages: {
-    signIn: "/login",
-  },
   providers: [
-    GoogleProvider({
-      clientId: env.GOOGLE_CLIENT_ID,
-      clientSecret: env.GOOGLE_CLIENT_SECRET,
-    }),
-    EmailProvider({
-      sendVerificationRequest: async ({ identifier, url, provider }) => {
-        const user = await prisma.user.findUnique({
-          where: {
-            email: identifier,
-          },
-          select: {
-            name: true,
-            emailVerified: true,
-          },
-        });
-
-        const userVerified = user?.emailVerified ? true : false;
-        const authSubject = userVerified ? `Sign-in link for ${siteConfig.name}` : "Activate your account";
-
-        try {
-          const result = await resend.emails.send({
-            // from: 'Rent Bene <onboarding@resend.dev>',
-            from: "Rent Bene <welcome@onboarding.rentbene.com>",
-            // to: process.env.NODE_ENV === "development" ? 'delivered@resend.dev' : identifier,
-            to: identifier,
-            subject: authSubject,
-            react: MagicLinkEmail({
-              firstName: user?.name as string,
-              actionUrl: url,
-              mailType: userVerified ? "login" : "register",
-              siteName: siteConfig.name
-            }),
-            // Set this to prevent Gmail from threading emails.
-            // More info: https://resend.com/changelog/custom-email-headers
-            headers: {
-              'X-Entity-Ref-ID': new Date().getTime() + "",
-            },
-          });
-
-          console.log(result)
-        } catch (error) {
-          throw new Error("Failed to send verification email.")
-        }
+    GitHubProvider({
+      clientId: process.env.AUTH_GITHUB_ID as string,
+      clientSecret: process.env.AUTH_GITHUB_SECRET as string,
+      profile(profile) {
+        return {
+          id: profile.id.toString(),
+          name: profile.name || profile.login,
+          gh_username: profile.login,
+          email: profile.email,
+          image: profile.avatar_url,
+        };
       },
     }),
+    Auth0Provider({
+      clientId: process.env.AUTH0_CLIENT_ID as string,
+      clientSecret: process.env.AUTH0_CLIENT_SECRET as string,
+      issuer: process.env.AUTH0_ISSUER
+    })
   ],
-  callbacks: {
-    async session({ token, session }) {
-      if (token) {
-        session.user.id = token.id
-        session.user.name = token.name
-        session.user.email = token.email
-        session.user.image = token.picture
-      }
-
-      return session
-    },
-    async jwt({ token, user }) {
-      const dbUser = await prisma.user.findFirst({
-        where: {
-          email: token.email,
-        },
-      })
-
-      if (!dbUser) {
-        if (user) {
-          token.id = user?.id
-        }
-        return token
-      }
-
-      return {
-        id: dbUser.id,
-        name: dbUser.name,
-        email: dbUser.email,
-        picture: dbUser.image,
-      }
+  pages: {
+    signIn: `/login`,
+    verifyRequest: `/login`,
+    error: "/login", // Error code passed in query string as ?error=
+  },
+  adapter: PrismaAdapter(prisma),
+  session: { strategy: "jwt" },
+  cookies: {
+    sessionToken: {
+      name: `${VERCEL_DEPLOYMENT ? "__Secure-" : ""}next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        // When working on localhost, the cookie domain must be omitted entirely (https://stackoverflow.com/a/1188145)
+        domain: VERCEL_DEPLOYMENT
+          ? `.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`
+          : undefined,
+        secure: VERCEL_DEPLOYMENT,
+      },
     },
   },
-  // debug: process.env.NODE_ENV !== "production"
+  callbacks: {
+    jwt: async ({ token, user }) => {
+      if (user) {
+        token.user = user;
+      }
+      return token;
+    },
+    session: async ({ session, token }) => {
+      session.user = {
+        ...session.user,
+        // @ts-expect-error
+        id: token.sub,
+        // @ts-expect-error
+        username: token?.user?.username || token?.user?.gh_username,
+      };
+      return session;
+    },
+  },
+};
+
+export function getSession() {
+  return getServerSession(authOptions) as Promise<{
+    user: {
+      id: string;
+      name: string;
+      username: string;
+      email: string;
+      image: string;
+    };
+  } | null>;
+}
+
+export function withSiteAuth(action: any) {
+  return async (
+    formData: FormData | null,
+    siteId: string,
+    key: string | null,
+  ) => {
+    const session = await getSession();
+    if (!session) {
+      return {
+        error: "Not authenticated",
+      };
+    }
+    const site = await prisma.site.findUnique({
+      where: {
+        id: siteId,
+      },
+    });
+    if (!site || site.userId !== session.user.id) {
+      return {
+        error: "Not authorized",
+      };
+    }
+
+    return action(formData, site, key);
+  };
+}
+
+export function withPostAuth(action: any) {
+  return async (
+    formData: FormData | null,
+    postId: string,
+    key: string | null,
+  ) => {
+    const session = await getSession();
+    if (!session?.user.id) {
+      return {
+        error: "Not authenticated",
+      };
+    }
+    const post = await prisma.post.findUnique({
+      where: {
+        id: postId,
+      },
+      include: {
+        site: true,
+      },
+    });
+    if (!post || post.userId !== session.user.id) {
+      return {
+        error: "Post not found",
+      };
+    }
+
+    return action(formData, post, key);
+  };
 }
