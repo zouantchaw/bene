@@ -1,42 +1,24 @@
-// FIX: I changed .mjs to .js 
-// More info: https://github.com/shadcn-ui/taxonomy/issues/100#issuecomment-1605867844
-
-const { createContentlayerPlugin } = require("next-contentlayer");
-
-import("./env.mjs");
-
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: true,
-  images: {
-    formats: ['image/avif', 'image/webp'],
-    dangerouslyAllowSVG: true,
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'avatars.githubusercontent.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'lh3.googleusercontent.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'placehold.co',
-      },
-      {
-        protocol: 'https',
-        hostname: 'p4elgieetexmhjeu.public.blob.vercel-storage.com',
-      },
-    ],
-  },
+/**
+ * @type {import('next').NextConfig}
+ */
+module.exports = {
   experimental: {
-    serverComponentsExternalPackages: ["@prisma/client"],
+    serverActions: {
+      allowedOrigins: ["app.localhost:3000"],
+    },
   },
-}
-
-const withContentlayer = createContentlayerPlugin({
-  // Additional Contentlayer config options
-});
-
-module.exports = withContentlayer(nextConfig);
+  images: {
+    remotePatterns: [
+      { hostname: "public.blob.vercel-storage.com" },
+      { hostname: "res.cloudinary.com" },
+      { hostname: "abs.twimg.com" },
+      { hostname: "pbs.twimg.com" },
+      { hostname: "avatar.vercel.sh" },
+      { hostname: "avatars.githubusercontent.com" },
+      { hostname: "www.google.com" },
+      { hostname: "flag.vercel.app" },
+      { hostname: "illustrations.popsy.co" },
+      { hostname: "lh3.googleusercontent.com" },
+    ]
+  },
+};
