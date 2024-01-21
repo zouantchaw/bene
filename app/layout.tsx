@@ -44,7 +44,7 @@ export default function RootLayout({
           src="https://unpkg.com/@tinybirdco/flock.js"
           strategy="afterInteractive"
           data-host="https://api.us-east.tinybird.co"
-          data-token="p.eyJ1IjogImIxZTBmZGQ4LWFkNjgtNGIxYy1iMzVjLTg5ZTVmMzVjYjY0ZiIsICJpZCI6ICJlN2YyNmQyYi04MjM2LTRmZmQtODY4Yi0yZGY3OGNiM2QwOWUiLCAiaG9zdCI6ICJ1c19lYXN0In0.CoDQu-YIauNKDf6y484nGxYihVJk6nDXwN5nYezUjGM"
+          data-token="p.eyJ1IjogImMzYjNlMjkzLTVlOTktNDBmZS05MjU2LTcyNzY3NjRiZmIwNCIsICJpZCI6ICI1ZDc4ODBkOC1kNTdmLTRmODAtOTU5My0yNWMwYzAyNjQ4YmQiLCAiaG9zdCI6ICJ1c19lYXN0In0.WTouAuLbFxLjif4ZO82JLHq4QWY-pI1Wzh8TZh4hZCM"
         />
       </head>
       <body className={cn(cal.variable, inter.variable)}>
