@@ -1,16 +1,18 @@
 import { Suspense } from "react";
 import Sites from "@/components/sites";
+import RentalSites from "@/components/rental-sites";
 import PlaceholderCard from "@/components/placeholder-card";
 import CreateSiteButton from "@/components/create-site-button";
 import CreateSiteModal from "@/components/modal/create-site";
 
 export default function AllRentalSites({ params }: { params: { id: string } }) {
+  console.log(params);
   return (
     <div className="flex max-w-screen-xl flex-col space-y-12 p-8">
       <div className="flex flex-col space-y-6">
         <div className="flex items-center justify-between">
           <h1 className="font-cal text-3xl font-bold dark:text-white">
-            All Sites
+            All Rental Sites
           </h1>
           <CreateSiteButton>
             <CreateSiteModal />
@@ -26,7 +28,7 @@ export default function AllRentalSites({ params }: { params: { id: string } }) {
           }
         >
           {/* @ts-expect-error Server Component */}
-          <Sites siteId={decodeURIComponent(params.id)} />
+          <RentalSites siteId={decodeURIComponent(params.id)} />
         </Suspense>
       </div>
     </div>
