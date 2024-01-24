@@ -87,7 +87,6 @@ export const createRentalSite = async (formData: FormData) => {
         },
       },
     });
-    console.log("response", response);
     await revalidateTag(
       `${subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`,
     );
