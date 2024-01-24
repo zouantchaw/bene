@@ -1,9 +1,8 @@
 import { Suspense } from "react";
-import Sites from "@/components/sites";
 import RentalSites from "@/components/rental-sites";
 import PlaceholderCard from "@/components/placeholder-card";
 import CreateSiteButton from "@/components/create-site-button";
-import CreateSiteModal from "@/components/modal/create-site";
+import CreateRentalSiteModal from "@/components/modal/create-rental-site";
 
 export default function AllRentalSites({ params }: { params: { id: string } }) {
   console.log(params);
@@ -15,7 +14,7 @@ export default function AllRentalSites({ params }: { params: { id: string } }) {
             All Rental Sites
           </h1>
           <CreateSiteButton>
-            <CreateSiteModal />
+            <CreateRentalSiteModal />
           </CreateSiteButton>
         </div>
         <Suspense
