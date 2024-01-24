@@ -94,6 +94,32 @@ export default function Nav({ children }: { children: ReactNode }) {
           icon: <Settings width={18} />,
         },
       ];
+    } else if (segments[0] === "rental-site" && id) {
+      return [
+        {
+          name: "Back to Rental Sites",
+          href: "/rental-sites",
+          icon: <ArrowLeft width={18} />,
+        },
+        {
+          name: "Posts",
+          href: `/rental-site/${id}`,
+          isActive: segments.length === 2,
+          icon: <Newspaper width={18} />,
+        },
+        {
+          name: "Analytics",
+          href: `/rental-site/${id}/analytics`,
+          isActive: segments.includes("analytics"),
+          icon: <BarChart3 width={18} />,
+        },
+        {
+          name: "Settings",
+          href: `/rental-site/${id}/settings`,
+          isActive: segments.includes("settings"),
+          icon: <Settings width={18} />,
+        },
+      ];
     }
     return [
       {
