@@ -62,6 +62,49 @@ export const createSite = async (formData: FormData) => {
   }
 };
 
+export const createRentalSite = async (formData: FormData) => {
+  const session = await getSession();
+  if (!session?.user.id) {
+    return {
+      error: "Not authenticated",
+    };
+  }
+  const name = formData.get("name") as string;
+  const description = formData.get("description") as string;
+  const subdomain = formData.get("subdomain") as string;
+
+  try {
+    const response = await prisma.rentalSite.create({
+      data: {
+        name,
+        description,
+        subdomain,
+        users: {
+          create: {
+            userId: session.user.id,
+            role: "owner",
+          },
+        },
+      },
+    });
+    console.log("response", response);
+    await revalidateTag(
+      `${subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`,
+    );
+    return response;
+  } catch (error: any) {
+    if (error.code === "P2002") {
+      return {
+        error: `This subdomain is already taken`,
+      };
+    } else {
+      return {
+        error: error.message,
+      };
+    }
+  }
+};
+
 export const updateSite = withSiteAuth(
   async (formData: FormData, site: Site, key: string) => {
     const value = formData.get(key) as string;
