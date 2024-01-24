@@ -15,13 +15,16 @@ export default async function RentalSiteAnalyticsLayout({
   if (!session) {
     redirect("/login");
   }
-  const data = await prisma.site.findUnique({
+  const data = await prisma.rentalSite.findUnique({
     where: {
       id: decodeURIComponent(params.id),
     },
+    include: {
+      users: true,
+    },
   });
 
-  if (!data || data.userId !== session.user.id) {
+  if (!data || !data.users.some((user) => user.userId === session.user.id)) {
     notFound();
   }
 

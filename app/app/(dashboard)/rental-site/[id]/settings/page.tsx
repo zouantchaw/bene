@@ -8,11 +8,16 @@ export default async function RentalSiteSettingsIndex({
 }: {
   params: { id: string };
 }) {
-  const data = await prisma.site.findUnique({
+  const data = await prisma.rentalSite.findUnique({
     where: {
       id: decodeURIComponent(params.id),
     },
+    include: {
+      users: true, // Include RentalSiteUsers relation
+    },
   });
+
+  console.log(data);
 
   return (
     <div className="flex flex-col space-y-6">
