@@ -2,6 +2,7 @@ import { getSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
 import SiteCard from "./site-card";
+import RentalSiteCard from "./rental-site-card";
 import Image from "next/image";
 
 export default async function RentalSites({ limit }: { limit?: number }) {
@@ -26,7 +27,7 @@ export default async function RentalSites({ limit }: { limit?: number }) {
   return sites.length > 0 ? (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
       {sites.map((site) => (
-        <SiteCard key={site.id} data={site} />
+        <RentalSiteCard key={site.id} data={site} />
       ))}
     </div>
   ) : (
