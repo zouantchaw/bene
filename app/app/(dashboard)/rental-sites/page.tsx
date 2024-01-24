@@ -5,7 +5,6 @@ import CreateSiteButton from "@/components/create-site-button";
 import CreateRentalSiteModal from "@/components/modal/create-rental-site";
 
 export default function AllRentalSites({ params }: { params: { id: string } }) {
-  console.log(params);
   return (
     <div className="flex max-w-screen-xl flex-col space-y-12 p-8">
       <div className="flex flex-col space-y-6">
