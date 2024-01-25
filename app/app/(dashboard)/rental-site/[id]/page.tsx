@@ -1,8 +1,13 @@
+import { Suspense } from "react";
 import { getSession } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { notFound, redirect } from "next/navigation";
 import Posts from "@/components/posts";
 import CreatePostButton from "@/components/create-post-button";
+import OverviewSitesCTA from "@/components/overview-sites-cta";
+import PlaceholderCard from "@/components/placeholder-card";
+import OverviewStats from "@/components/overview-stats";
+import Sites from "@/components/sites";
 
 export default async function RentalSitePosts({
   params,
@@ -34,7 +39,7 @@ export default async function RentalSitePosts({
       <div className="flex flex-col items-center justify-between space-y-4 sm:flex-row sm:space-y-0">
         <div className="flex flex-col items-center space-y-2 sm:flex-row sm:space-x-4 sm:space-y-0">
           <h1 className="w-60 truncate font-cal text-xl font-bold dark:text-white sm:w-auto sm:text-3xl">
-            All Posts for {data.name}
+            Overview
           </h1>
           <a
             href={
@@ -51,7 +56,30 @@ export default async function RentalSitePosts({
         </div>
         <CreatePostButton />
       </div>
-      <Posts siteId={decodeURIComponent(params.id)} />
+      <div className="flex flex-col space-y-6">
+        <OverviewStats />
+      </div>
+      <div className="flex flex-col space-y-6">
+        <div className="flex items-center justify-between">
+          <h1 className="font-cal text-3xl font-bold dark:text-white">
+            Orders
+          </h1>
+          <Suspense fallback={null}>
+            <OverviewSitesCTA />
+          </Suspense>
+        </div>
+        <Suspense
+          fallback={
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <PlaceholderCard key={i} />
+              ))}
+            </div>
+          }
+        >
+          <Sites limit={4} />
+        </Suspense>
+      </div>
     </>
   );
 }
