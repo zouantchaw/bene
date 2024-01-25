@@ -38,7 +38,7 @@ export default function Overview() {
         </Suspense>
       </div>
 
-      <div className="flex flex-col space-y-6">
+      {/* <div className="flex flex-col space-y-6">
         <h1 className="font-cal text-3xl font-bold dark:text-white">
           Recent Posts
         </h1>
@@ -53,7 +53,7 @@ export default function Overview() {
         >
           <Posts limit={8} />
         </Suspense>
-      </div>
+      </div> */}
     </div>
   );
 }
