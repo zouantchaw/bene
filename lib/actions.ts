@@ -1,9 +1,9 @@
 "use server";
 
 import prisma from "@/lib/prisma";
-import { Post, Site } from "@prisma/client";
+import { Post, Site, Product, RentalSite  } from "@prisma/client";
 import { revalidateTag } from "next/cache";
-import { withPostAuth, withSiteAuth } from "./auth";
+import { withPostAuth, withSiteAuth, withRentalSiteAuth, withProductAuth } from "./auth";
 import { getSession } from "@/lib/auth";
 import {
   addDomainToVercel,
@@ -298,13 +298,15 @@ export const createPost = withSiteAuth(async (_: FormData, site: Site) => {
   return response;
 });
 
-export const createProduct = withSiteAuth(async (_: FormData, rentalSite: Site) => {
+export const createProduct = withRentalSiteAuth(async (_: FormData, rentalSite: RentalSite) => {
+  console.log("==== createProduct ====");
   const session = await getSession();
   if (!session?.user.id) {
     return {
       error: "Not authenticated",
     };
   }
+  console.log("rentalSite", rentalSite);
   const response = await prisma.product.create({
     data: {
       rentalSite: {
@@ -375,6 +377,72 @@ export const updatePost = async (data: Post) => {
     };
   }
 };
+export const updateProduct = async (data: Product) => {
+  const session = await getSession();
+  if (!session?.user.id) {
+    return {
+      error: "Not authenticated",
+    };
+  }
+  const product = await prisma.product.findUnique({
+    where: {
+      id: data.id,
+    },
+    include: {
+      rentalSite: {
+        include: {
+          users: true,
+        },
+      },
+    },
+  });
+
+  if (!product) {
+    return {
+      error: "Product not found",
+    };
+  }
+
+  const userIsOwner = product.rentalSite?.users.some(
+    (user) => user.userId === session.user.id && user.role === "owner"
+  );
+
+  if (!userIsOwner) {
+    return {
+      error: "User is not an owner of the rental site",
+    };
+  }
+  try {
+    const response = await prisma.product.update({
+      where: {
+        id: data.id,
+      },
+      data: {
+        title: data.title,
+        description: data.description,
+        content: data.content,
+      },
+    });
+
+    await revalidateTag(
+      `${product.rentalSite?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-inventory`,
+    );
+    await revalidateTag(
+      `${product.rentalSite?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-${product.slug}`,
+    );
+
+    // if the site has a custom domain, we need to revalidate those tags too
+    product.rentalSite?.customDomain &&
+      (await revalidateTag(`${product.rentalSite?.customDomain}-inventory`),
+      await revalidateTag(`${product.rentalSite?.customDomain}-${product.slug}`));
+
+    return response;
+  } catch (error: any) {
+    return {
+      error: error.message,
+    };
+  }
+};
 
 export const updatePostMetadata = withPostAuth(
   async (
@@ -429,6 +497,75 @@ export const updatePostMetadata = withPostAuth(
       post.site?.customDomain &&
         (await revalidateTag(`${post.site?.customDomain}-posts`),
         await revalidateTag(`${post.site?.customDomain}-${post.slug}`));
+
+      return response;
+    } catch (error: any) {
+      if (error.code === "P2002") {
+        return {
+          error: `This slug is already in use`,
+        };
+      } else {
+        return {
+          error: error.message,
+        };
+      }
+    }
+  },
+);
+
+export const updateProductMetadata = withProductAuth(
+  async (
+    formData: FormData,
+    product: Product & {
+      rentalSite: RentalSite;
+    },
+    key: string,
+  ) => {
+    const value = formData.get(key) as string;
+
+    try {
+      let response;
+      if (key === "image") {
+        const file = formData.get("image") as File;
+        const filename = `${nanoid()}.${file.type.split("/")[1]}`;
+
+        const { url } = await put(filename, file, {
+          access: "public",
+        });
+
+        const blurhash = await getBlurDataURL(url);
+
+        response = await prisma.product.update({
+          where: {
+            id: product.id,
+          },
+          data: {
+            image: url,
+            imageBlurhash: blurhash,
+          },
+        });
+      } else {
+        response = await prisma.product.update({
+          where: {
+            id: product.id,
+          },
+          data: {
+            [key]: key === "published" ? value === "true" : value,
+          },
+        });
+      }
+
+      await revalidateTag(
+        `${product.rentalSite?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-inventory`,
+      );
+      await revalidateTag(
+        `${product.rentalSite?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-${product.slug}`,
+      );
+
+      // if the site has a custom domain, we need to revalidate those tags too
+      product.rentalSite?.customDomain &&
+        (await revalidateTag(`${product.rentalSite?.customDomain}-inventory`),
+        await revalidateTag(`${product.rentalSite?.customDomain}-${product.slug}`));
 
       return response;
     } catch (error: any) {

@@ -108,6 +108,40 @@ export function withSiteAuth(action: any) {
   };
 }
 
+export function withRentalSiteAuth(action: any) {
+  return async (
+    formData: FormData | null,
+    rentalSiteId: string,
+    key: string | null,
+  ) => {
+    const session = await getSession();
+    if (!session) {
+      return {
+        error: "Not authenticated",
+      };
+    }
+    const rentalSiteUser = await prisma.rentalSiteUsers.findFirst({
+      where: {
+        rentalSiteId: rentalSiteId,
+        userId: session.user.id,
+      },
+    });
+    if (!rentalSiteUser) {
+      return {
+        error: "Not authorized",
+      };
+    }
+
+    const rentalSite = await prisma.rentalSite.findUnique({
+      where: {
+        id: rentalSiteId,
+      },
+    });
+
+    return action(formData, rentalSite, key);
+  };
+}
+
 export function withPostAuth(action: any) {
   return async (
     formData: FormData | null,
@@ -135,5 +169,46 @@ export function withPostAuth(action: any) {
     }
 
     return action(formData, post, key);
+  };
+}
+
+export function withProductAuth(action: any) {
+  return async (
+    formData: FormData | null,
+    productId: string,
+    key: string | null,
+  ) => {
+    const session = await getSession();
+    if (!session) {
+      return {
+        error: "Not authenticated",
+      };
+    }
+    const product = await prisma.product.findUnique({
+      where: {
+        id: productId,
+      },
+      include: {
+        rentalSite: true,
+      },
+    });
+    if (!product) {
+      return {
+        error: "Product not found",
+      };
+    }
+    const rentalSiteUser = await prisma.rentalSiteUsers.findFirst({
+      where: {
+        rentalSiteId: product.rentalSiteId,
+        userId: session.user.id,
+      },
+    });
+    if (!rentalSiteUser) {
+      return {
+        error: "Not authorized",
+      };
+    }
+
+    return action(formData, product, key);
   };
 }
