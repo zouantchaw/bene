@@ -2,8 +2,8 @@ import { Suspense } from "react";
 import { getSession } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { notFound, redirect } from "next/navigation";
-import Posts from "@/components/posts";
 import CreatePostButton from "@/components/create-post-button";
+import CreateProductButton from "@/components/create-product-button";
 import OverviewSitesCTA from "@/components/overview-sites-cta";
 import PlaceholderCard from "@/components/placeholder-card";
 import OverviewStats from "@/components/overview-stats";
@@ -54,7 +54,7 @@ export default async function RentalSitePosts({
             {url} ↗
           </a>
         </div>
-        <CreatePostButton />
+        <CreateProductButton />
       </div>
       <div className="flex flex-col space-y-6">
         <OverviewStats />

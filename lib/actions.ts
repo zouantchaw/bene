@@ -298,6 +298,31 @@ export const createPost = withSiteAuth(async (_: FormData, site: Site) => {
   return response;
 });
 
+export const createProduct = withSiteAuth(async (_: FormData, rentalSite: Site) => {
+  const session = await getSession();
+  if (!session?.user.id) {
+    return {
+      error: "Not authenticated",
+    };
+  }
+  const response = await prisma.product.create({
+    data: {
+      rentalSite: {
+        connect: {
+          id: rentalSite.id,
+        },
+      },
+    },
+  });
+
+  await revalidateTag(
+    `${rentalSite.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-inventory`,
+  );
+  rentalSite.customDomain && (await revalidateTag(`${rentalSite.customDomain}-inventory`));
+
+  return response;
+});
+
 // creating a separate function for this because we're not using FormData
 export const updatePost = async (data: Post) => {
   const session = await getSession();
