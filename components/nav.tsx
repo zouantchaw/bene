@@ -102,9 +102,15 @@ export default function Nav({ children }: { children: ReactNode }) {
           icon: <ArrowLeft width={18} />,
         },
         {
-          name: "Posts",
-          href: `/rental-site/${id}`,
+          name: "Overview",
+          href: "/rental-site/${id}",
           isActive: segments.length === 2,
+          icon: <LayoutDashboard width={18} />,
+        },
+        {
+          name: "Posts",
+          href: `/rental-site/${id}/posts`,
+          isActive: segments.includes("posts"),
           icon: <Newspaper width={18} />,
         },
         {
