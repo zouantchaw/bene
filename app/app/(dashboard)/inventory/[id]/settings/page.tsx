@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma";
 import { notFound, redirect } from "next/navigation";
 import Form from "@/components/form";
 import { updateProductMetadata } from "@/lib/actions";
-import DeletePostForm from "@/components/form/delete-post-form";
+import DeleteProductForm from "@/components/form/delete-product-form";
 
 export default async function InventorySettings({
   params,
@@ -61,7 +61,7 @@ export default async function InventorySettings({
           handleSubmit={updateProductMetadata}
         />
 
-        <DeletePostForm postName={data?.title!} />
+        <DeleteProductForm postName={data?.title!} />
       </div>
     </div>
   );

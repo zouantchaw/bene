@@ -614,6 +614,24 @@ export const deletePost = withPostAuth(async (_: FormData, post: Post) => {
   }
 });
 
+export const deleteProduct = withProductAuth(async (_: FormData, product: Product) => {
+  try {
+    const response = await prisma.product.delete({
+      where: {
+        id: product.id,
+      },
+      select: {
+        rentalSiteId: true,
+      },
+    });
+    return response;
+  } catch (error: any) {
+    return {
+      error: error.message,
+    };
+  }
+});
+
 export const editUser = async (
   formData: FormData,
   _id: unknown,
