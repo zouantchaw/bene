@@ -15,6 +15,7 @@ import {
   Settings,
   FileCode,
   Github,
+  Warehouse,
 } from "lucide-react";
 import {
   useParams,
@@ -122,6 +123,12 @@ export default function Nav({ children }: { children: ReactNode }) {
           href: `/rental-site/${id}`,
           isActive: segments.length === 2,
           icon: <LayoutDashboard width={18} />,
+        },
+        {
+          name: "Inventory",
+          href: `/rental-site/${id}/inventory`,
+          isActive: segments.includes("inventory"),
+          icon: <Warehouse width={18} />,
         },
         {
           name: "Posts",
