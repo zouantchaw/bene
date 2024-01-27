@@ -288,6 +288,18 @@ export const getRentalSiteFromProductId = async (productId: string) => {
   return product?.rentalSiteId;
 };
 
+export const getRentalSiteNameFromId = async (rentalSiteId: string) => {
+  const rentalSite = await prisma.rentalSite.findUnique({
+    where: {
+      id: rentalSiteId,
+    },
+    select: {
+      name: true,
+    },
+  });
+  return rentalSite?.name;
+};
+
 export const createPost = withSiteAuth(async (_: FormData, site: Site) => {
   const session = await getSession();
   if (!session?.user.id) {
@@ -389,6 +401,7 @@ export const updatePost = async (data: Post) => {
     };
   }
 };
+
 export const updateProduct = async (data: Product) => {
   const session = await getSession();
   if (!session?.user.id) {

@@ -22,7 +22,7 @@ import {
   useSelectedLayoutSegments,
 } from "next/navigation";
 import { ReactNode, useEffect, useMemo, useState } from "react";
-import { getSiteFromPostId, getRentalSiteFromProductId } from "@/lib/actions";
+import { getSiteFromPostId, getRentalSiteFromProductId, getRentalSiteNameFromId } from "@/lib/actions";
 import Image from "next/image";
 
 const externalLinks = [
@@ -39,6 +39,8 @@ export default function Nav({ children }: { children: ReactNode }) {
 
   const [siteId, setSiteId] = useState<string | null>();
   const [rentalSiteId, setRentalSiteId] = useState<string | null>();
+  const [rentalSiteName, setRentalSiteName] = useState<string | null>();
+
 
   useEffect(() => {
     if (segments[0] === "post" && id) {
@@ -52,6 +54,14 @@ export default function Nav({ children }: { children: ReactNode }) {
       });
     }
   }, [segments, id]);
+  
+  useEffect(() => {
+    if (rentalSiteId) {
+      getRentalSiteNameFromId(rentalSiteId).then((name) => {
+        setRentalSiteName(name);
+      });
+    }
+  }, [rentalSiteId]);
 
   const tabs = useMemo(() => {
     if (segments[0] === "site" && id) {
@@ -135,7 +145,7 @@ export default function Nav({ children }: { children: ReactNode }) {
     } else if (segments[0] === "inventory" && id) {
       return [
         {
-          name: "Back to Rental Site",
+          name: `Back to ${rentalSiteName}` || "Back to Rental Sites",
           href: `/rental-site/${rentalSiteId}`,
           icon: <ArrowLeft width={18} />,
         },
