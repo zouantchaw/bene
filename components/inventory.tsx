@@ -1,7 +1,6 @@
 import { getSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
-import PostCard from "./post-card";
 import InventoryCard from "./inventory-card";
 import Image from "next/image";
 
@@ -28,7 +27,6 @@ export default async function Inventory({
     },
     ...(limit ? { take: limit } : {}),
   });
-  console.log("inventory", inventory);
 
   return inventory.length > 0 ? (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
