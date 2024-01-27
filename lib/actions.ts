@@ -415,11 +415,11 @@ export const updateProduct = async (data: Product) => {
     };
   }
 
-  const userIsOwner = product.rentalSite?.users.some(
-    (user) => user.userId === session.user.id && user.role === "owner"
+  const userIsOwnerOrMember = product.rentalSite?.users.some(
+    (user) => user.userId === session.user.id && user.role === "owner" || user.role === "member",
   );
 
-  if (!userIsOwner) {
+  if (!userIsOwnerOrMember) {
     return {
       error: "User is not an owner of the rental site",
     };
@@ -432,6 +432,8 @@ export const updateProduct = async (data: Product) => {
       data: {
         title: data.title,
         description: data.description,
+        quantity: data.quantity,
+        price: data.price,
         content: data.content,
       },
     });

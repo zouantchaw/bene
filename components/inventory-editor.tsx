@@ -1,4 +1,6 @@
 "use client";
+import { DollarSign } from 'lucide-react';
+import { Boxes } from 'lucide-react';
 
 import { useEffect, useState, useTransition } from "react";
 import { Product } from "@prisma/client";
@@ -10,12 +12,19 @@ import LoadingDots from "./icons/loading-dots";
 import { ExternalLink } from "lucide-react";
 import { toast } from "sonner";
 
-type ProductWithSite = Product & { rentalSite: { subdomain: string | null } | null };
+type ProductWithSite = Product & {
+  rentalSite: { subdomain: string | null } | null;
+};
 
-export default function InventoryEditor({ product }: { product: ProductWithSite }) {
+export default function InventoryEditor({
+  product,
+}: {
+  product: ProductWithSite;
+}) {
   let [isPendingSaving, startTransitionSaving] = useTransition();
   let [isPendingPublishing, startTransitionPublishing] = useTransition();
   const [data, setData] = useState<ProductWithSite>(product);
+  console.log("data", data);
   const [hydrated, setHydrated] = useState(false);
 
   const url = process.env.NEXT_PUBLIC_VERCEL_ENV
@@ -60,16 +69,18 @@ export default function InventoryEditor({ product }: { product: ProductWithSite 
             console.log(data.published, typeof data.published);
             formData.append("published", String(!data.published));
             startTransitionPublishing(async () => {
-              await updateProductMetadata(formData, product.id, "published").then(
-                () => {
-                  toast.success(
-                    `Successfully ${
-                      data.published ? "unpublished" : "published"
-                    } your product.`,
-                  );
-                  setData((prev) => ({ ...prev, published: !prev.published }));
-                },
-              );
+              await updateProductMetadata(
+                formData,
+                product.id,
+                "published",
+              ).then(() => {
+                toast.success(
+                  `Successfully ${
+                    data.published ? "unpublished" : "published"
+                  } your product.`,
+                );
+                setData((prev) => ({ ...prev, published: !prev.published }));
+              });
             });
           }}
           className={cn(
@@ -90,14 +101,47 @@ export default function InventoryEditor({ product }: { product: ProductWithSite 
       <div className="mb-5 flex flex-col space-y-3 border-b border-stone-200 pb-5 dark:border-stone-700">
         <input
           type="text"
-          placeholder="Title"
+          placeholder="Gold Chiaviari Chair"
           defaultValue={product?.title || ""}
           autoFocus
           onChange={(e) => setData({ ...data, title: e.target.value })}
           className="dark:placeholder-text-600 border-none px-0 font-cal text-3xl placeholder:text-stone-400 focus:outline-none focus:ring-0 dark:bg-black dark:text-white"
         />
+        <div className="flex items-center">
+          <Boxes className="h-5 w-5 mr-2" />
+          <input
+            type="number"
+            min="0"
+            placeholder="120"
+            defaultValue={product?.quantity || ""}
+            onChange={(e) => {
+              const quantity = Number(e.target.value);
+              if (!isNaN(quantity)) {
+                setData({ ...data, quantity: quantity });
+              }
+            }}
+            className="dark:placeholder-text-600 w-[10%] border-none px-0 placeholder:text-stone-400 focus:outline-none focus:ring-0 dark:bg-black dark:text-white"
+          />
+        </div>
+        <div className="flex items-center">
+          <DollarSign className="h-5 w-5 mr-2" />
+          <input
+            type="number"
+            min="0"
+            step="0.01"
+            placeholder="4.99"
+            defaultValue={product?.price || ""}
+            onChange={(e) => {
+              const price = Number(e.target.value);
+              if (!isNaN(price)) {
+                setData({ ...data, price: price });
+              }
+            }}
+            className="dark:placeholder-text-600 w-[10%] border-none px-0 placeholder:text-stone-400 focus:outline-none focus:ring-0 dark:bg-black dark:text-white"
+          />
+        </div>
         <TextareaAutosize
-          placeholder="Description"
+          placeholder="The gold chiavari chair is a classic. It's perfect for weddings, parties, and other events. The chair is made of wood and has a padded seat. It's also lightweight, so it's easy to move around. You can rent this chair for $4.99 per day."
           defaultValue={product?.description || ""}
           onChange={(e) => setData({ ...data, description: e.target.value })}
           className="dark:placeholder-text-600 w-full resize-none border-none px-0 placeholder:text-stone-400 focus:outline-none focus:ring-0 dark:bg-black dark:text-white"

@@ -98,6 +98,8 @@ model Product {
   id            String  @id @default(cuid())
   title         String? @db.Text
   description   String? @db.Text
+  quantity      Int     @default(0)
+  price         Float   @default(0.0)
   content       String? @db.Text
   slug          String  @default(cuid())
   // tags        String? @db.Text
