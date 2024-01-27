@@ -1,7 +1,7 @@
 "use client";
-import { DollarSign } from 'lucide-react';
-import { Boxes } from 'lucide-react';
-import { useSearchParams } from 'next/navigation';
+import { DollarSign } from "lucide-react";
+import { Boxes } from "lucide-react";
+import { useSearchParams, useRouter } from "next/navigation";
 
 import { useEffect, useState, useTransition } from "react";
 import { Product } from "@prisma/client";
@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import LoadingDots from "./icons/loading-dots";
 import { ExternalLink } from "lucide-react";
 import { toast } from "sonner";
+import { ArrowLeft } from "lucide-react";
 
 type ProductWithSite = Product & {
   rentalSite: { subdomain: string | null } | null;
@@ -22,6 +23,7 @@ export default function InventoryEditor({
 }: {
   product: ProductWithSite;
 }) {
+  const router = useRouter();
   let [isPendingSaving, startTransitionSaving] = useTransition();
   let [isPendingPublishing, startTransitionPublishing] = useTransition();
   const [data, setData] = useState<ProductWithSite>(product);
@@ -49,6 +51,15 @@ export default function InventoryEditor({
 
   return (
     <div className="relative min-h-[500px] w-full max-w-screen-lg border-stone-200 p-12 px-8 dark:border-stone-700 sm:mb-[calc(20vh)] sm:rounded-lg sm:border sm:px-12 sm:shadow-lg">
+      <div className="absolute left-5 top-5 mb-5 flex items-center space-x-3">
+        <button
+          onClick={() => router.back()}
+          className="flex items-center space-x-1 text-sm text-stone-400 hover:text-stone-500"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          <span>Back to Inventory</span>
+        </button>
+      </div>
       <div className="absolute right-5 top-5 mb-5 flex items-center space-x-3">
         {data.published && (
           <a
@@ -108,7 +119,7 @@ export default function InventoryEditor({
           className="dark:placeholder-text-600 border-none px-0 font-cal text-3xl placeholder:text-stone-400 focus:outline-none focus:ring-0 dark:bg-black dark:text-white"
         />
         <div className="flex items-center">
-          <Boxes className="h-5 w-5 mr-2" />
+          <Boxes className="mr-2 h-5 w-5" />
           <input
             type="number"
             min="0"
@@ -124,7 +135,7 @@ export default function InventoryEditor({
           />
         </div>
         <div className="flex items-center">
-          <DollarSign className="h-5 w-5 mr-2" />
+          <DollarSign className="mr-2 h-5 w-5" />
           <input
             type="number"
             min="0"
