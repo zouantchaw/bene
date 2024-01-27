@@ -276,6 +276,18 @@ export const getSiteFromPostId = async (postId: string) => {
   return post?.siteId;
 };
 
+export const getRentalSiteFromProductId = async (productId: string) => {
+  const product = await prisma.product.findUnique({
+    where: {
+      id: productId,
+    },
+    select: {
+      rentalSiteId: true,
+    },
+  });
+  return product?.rentalSiteId;
+};
+
 export const createPost = withSiteAuth(async (_: FormData, site: Site) => {
   const session = await getSession();
   if (!session?.user.id) {

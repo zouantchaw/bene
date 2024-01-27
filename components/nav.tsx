@@ -22,7 +22,7 @@ import {
   useSelectedLayoutSegments,
 } from "next/navigation";
 import { ReactNode, useEffect, useMemo, useState } from "react";
-import { getSiteFromPostId } from "@/lib/actions";
+import { getSiteFromPostId, getRentalSiteFromProductId } from "@/lib/actions";
 import Image from "next/image";
 
 const externalLinks = [
@@ -38,11 +38,17 @@ export default function Nav({ children }: { children: ReactNode }) {
   const { id } = useParams() as { id?: string };
 
   const [siteId, setSiteId] = useState<string | null>();
+  const [rentalSiteId, setRentalSiteId] = useState<string | null>();
 
   useEffect(() => {
     if (segments[0] === "post" && id) {
       getSiteFromPostId(id).then((id) => {
         setSiteId(id);
+      });
+    }
+    if (segments[0] === "inventory" && id) {
+      getRentalSiteFromProductId(id).then((id) => {
+        setRentalSiteId(id);
       });
     }
   }, [segments, id]);
@@ -103,7 +109,7 @@ export default function Nav({ children }: { children: ReactNode }) {
         },
         {
           name: "Overview",
-          href: "/rental-site/${id}",
+          href: `/rental-site/${id}`,
           isActive: segments.length === 2,
           icon: <LayoutDashboard width={18} />,
         },
@@ -122,6 +128,26 @@ export default function Nav({ children }: { children: ReactNode }) {
         {
           name: "Settings",
           href: `/rental-site/${id}/settings`,
+          isActive: segments.includes("settings"),
+          icon: <Settings width={18} />,
+        },
+      ];
+    } else if (segments[0] === "inventory" && id) {
+      return [
+        {
+          name: "Back to Rental Site",
+          href: `/rental-site/${rentalSiteId}`,
+          icon: <ArrowLeft width={18} />,
+        },
+        {
+          name: "Editor",
+          href: `/inventory/${id}`,
+          isActive: segments.length === 2,
+          icon: <Edit3 width={18} />,
+        },
+        {
+          name: "Settings",
+          href: `/inventory/${id}/settings`,
           isActive: segments.includes("settings"),
           icon: <Settings width={18} />,
         },
