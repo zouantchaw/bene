@@ -20,7 +20,7 @@ export default function CreateProductButton() {
           console.log("product", product); 
           va.track("Created Product");
           router.refresh();
-          router.push(`/inventory/${product.id}`);
+          router.push(`/rental-site/${id}/inventory/${product.id}`);
         })
       }
       className={cn(

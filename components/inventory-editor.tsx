@@ -1,6 +1,7 @@
 "use client";
 import { DollarSign } from 'lucide-react';
 import { Boxes } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
 
 import { useEffect, useState, useTransition } from "react";
 import { Product } from "@prisma/client";
