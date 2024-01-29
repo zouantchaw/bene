@@ -23,7 +23,11 @@ import {
   useSelectedLayoutSegments,
 } from "next/navigation";
 import { ReactNode, useEffect, useMemo, useState } from "react";
-import { getSiteFromPostId, getRentalSiteFromProductId, getRentalSiteNameFromId } from "@/lib/actions";
+import {
+  getSiteFromPostId,
+  getRentalSiteFromProductId,
+  getRentalSiteNameFromId,
+} from "@/lib/actions";
 import Image from "next/image";
 
 const externalLinks = [
@@ -36,12 +40,19 @@ const externalLinks = [
 
 export default function Nav({ children }: { children: ReactNode }) {
   const segments = useSelectedLayoutSegments();
-  const { id } = useParams() as { id?: string };
+  console.log("segments", segments);
+  const { id, productId } = useParams() as {
+    id: string;
+    productId: string;
+  };
+  console.log("id", id);
+  console.log("productId", productId);
 
   const [siteId, setSiteId] = useState<string | null>();
   const [rentalSiteId, setRentalSiteId] = useState<string | null>();
+  console.log("rentalSiteId", rentalSiteId);
   const [rentalSiteName, setRentalSiteName] = useState<string | null>();
-
+  console.log("rentalSiteName", rentalSiteName);
 
   useEffect(() => {
     if (segments[0] === "post" && id) {
@@ -51,14 +62,16 @@ export default function Nav({ children }: { children: ReactNode }) {
     }
     if (segments[0] === "inventory" && id) {
       getRentalSiteFromProductId(id).then((id) => {
+        console.log("id", id);
         setRentalSiteId(id);
       });
     }
   }, [segments, id]);
-  
+
   useEffect(() => {
     if (rentalSiteId) {
       getRentalSiteNameFromId(rentalSiteId).then((name) => {
+        console.log("name", name);
         setRentalSiteName(name);
       });
     }
@@ -111,7 +124,7 @@ export default function Nav({ children }: { children: ReactNode }) {
           icon: <Settings width={18} />,
         },
       ];
-    } else if (segments[0] === "rental-site" && id) {
+    } else if (segments[0] === "rental-site" && id && segments.length === 2) {
       return [
         {
           name: "Back to Rental Sites",
@@ -150,6 +163,31 @@ export default function Nav({ children }: { children: ReactNode }) {
         },
       ];
     } else if (segments[0] === "inventory" && id) {
+      return [
+        {
+          name: `Back to ${rentalSiteName}` || "Back to Rental Sites",
+          href: `/rental-site/${rentalSiteId}`,
+          icon: <ArrowLeft width={18} />,
+        },
+        {
+          name: "Editor",
+          href: `/inventory/${id}`,
+          isActive: segments.length === 2,
+          icon: <Edit3 width={18} />,
+        },
+        {
+          name: "Settings",
+          href: `/inventory/${id}/settings`,
+          isActive: segments.includes("settings"),
+          icon: <Settings width={18} />,
+        },
+      ];
+    } else if (
+      segments[0] === "rental-site" &&
+      segments[1] === id &&
+      segments[2] === "inventory" &&
+      segments[3] === productId
+    ) {
       return [
         {
           name: `Back to ${rentalSiteName}` || "Back to Rental Sites",
