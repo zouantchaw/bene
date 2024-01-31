@@ -1,9 +1,7 @@
 import { getSession } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { notFound, redirect } from "next/navigation";
-import Posts from "@/components/posts";
 import Inventory from "@/components/inventory";
-import CreatePostButton from "@/components/create-post-button";
 import CreateProductButton from "@/components/create-product-button";
 
 export default async function RentalSiteInventory({
