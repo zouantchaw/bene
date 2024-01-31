@@ -33,7 +33,7 @@ import Image from "next/image";
 const externalLinks = [
   {
     name: "Read announcement",
-    href: "https://twitter.com",
+    href: "https://twitter.com/rentbene",
     icon: <Megaphone width={18} />,
   },
 ];
@@ -45,14 +45,9 @@ export default function Nav({ children }: { children: ReactNode }) {
     id: string;
     productId: string;
   };
-  console.log("id", id);
-  console.log("productId", productId);
 
   const [siteId, setSiteId] = useState<string | null>();
   const [rentalSiteId, setRentalSiteId] = useState<string | null>();
-  console.log("rentalSiteId", rentalSiteId);
-  const [rentalSiteName, setRentalSiteName] = useState<string | null>();
-  console.log("rentalSiteName", rentalSiteName);
 
   useEffect(() => {
     if (segments[0] === "post" && id) {
@@ -62,20 +57,10 @@ export default function Nav({ children }: { children: ReactNode }) {
     }
     if (segments[0] === "inventory" && id) {
       getRentalSiteFromProductId(id).then((id) => {
-        console.log("id", id);
         setRentalSiteId(id);
       });
     }
   }, [segments, id]);
-
-  useEffect(() => {
-    if (rentalSiteId) {
-      getRentalSiteNameFromId(rentalSiteId).then((name) => {
-        console.log("name", name);
-        setRentalSiteName(name);
-      });
-    }
-  }, [rentalSiteId]);
 
   const tabs = useMemo(() => {
     if (segments[0] === "site" && id) {
