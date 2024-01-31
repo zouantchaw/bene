@@ -124,7 +124,7 @@ export default function Nav({ children }: { children: ReactNode }) {
           icon: <Settings width={18} />,
         },
       ];
-    } else if (segments[0] === "rental-site" && id) {
+    } else if (segments[0] === "rental-site" && id && !productId) {
       return [
         {
           name: "Back to Rental Sites",
@@ -162,26 +162,6 @@ export default function Nav({ children }: { children: ReactNode }) {
           icon: <Settings width={18} />,
         },
       ];
-    } else if (segments[0] === "inventory" && id) {
-      return [
-        {
-          name: `Back to ${rentalSiteName}` || "Back to Rental Sites",
-          href: `/rental-site/${rentalSiteId}`,
-          icon: <ArrowLeft width={18} />,
-        },
-        {
-          name: "Editor",
-          href: `/inventory/${id}`,
-          isActive: segments.length === 2,
-          icon: <Edit3 width={18} />,
-        },
-        {
-          name: "Settings",
-          href: `/inventory/${id}/settings`,
-          isActive: segments.includes("settings"),
-          icon: <Settings width={18} />,
-        },
-      ];
     } else if (
       segments[0] === "rental-site" &&
       segments[1] === id &&
@@ -190,18 +170,18 @@ export default function Nav({ children }: { children: ReactNode }) {
       return [
         {
           name: `Back to Inventory`,
-          href: `/rental-site/${rentalSiteId}/inventory`,
+          href: `/rental-site/${id}/inventory`,
           icon: <ArrowLeft width={18} />,
         },
         {
           name: "Editor",
-          href: `/inventory/${id}`,
-          isActive: segments.length === 2,
+          href: `/rental-site/${id}/inventory/${productId}`,
+          isActive: segments.length === 4,
           icon: <Edit3 width={18} />,
         },
         {
           name: "Settings",
-          href: `/inventory/${id}/settings`,
+          href: `/rental-site/${id}/inventory/${productId}/settings`,
           isActive: segments.includes("settings"),
           icon: <Settings width={18} />,
         },
