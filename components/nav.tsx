@@ -124,7 +124,7 @@ export default function Nav({ children }: { children: ReactNode }) {
           icon: <Settings width={18} />,
         },
       ];
-    } else if (segments[0] === "rental-site" && id && segments.length === 2) {
+    } else if (segments[0] === "rental-site" && id) {
       return [
         {
           name: "Back to Rental Sites",
@@ -185,13 +185,12 @@ export default function Nav({ children }: { children: ReactNode }) {
     } else if (
       segments[0] === "rental-site" &&
       segments[1] === id &&
-      segments[2] === "inventory" &&
-      segments[3] === productId
+      segments[2] === "inventory"
     ) {
       return [
         {
-          name: `Back to ${rentalSiteName}` || "Back to Rental Sites",
-          href: `/rental-site/${rentalSiteId}`,
+          name: `Back to Inventory`,
+          href: `/rental-site/${rentalSiteId}/inventory`,
           icon: <ArrowLeft width={18} />,
         },
         {
