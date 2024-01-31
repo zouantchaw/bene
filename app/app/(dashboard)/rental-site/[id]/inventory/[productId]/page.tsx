@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma";
 import { notFound, redirect } from "next/navigation";
 import InventoryEditor from "@/components/inventory-editor";
 
-export default async function InventoryCreatePage({ params }: { params: { id: string, productId: string } }) {
+export default async function RentalProductCreatePage({ params }: { params: { id: string, productId: string } }) {
 
   const session = await getSession();
   if (!session) {
