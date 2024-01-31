@@ -12,7 +12,6 @@ import { cn } from "@/lib/utils";
 import LoadingDots from "./icons/loading-dots";
 import { ExternalLink } from "lucide-react";
 import { toast } from "sonner";
-import { ArrowLeft } from "lucide-react";
 
 type ProductWithSite = Product & {
   rentalSite: { subdomain: string | null } | null;
