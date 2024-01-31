@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma";
 import { notFound, redirect } from "next/navigation";
 import Form from "@/components/form";
 import { updateProductMetadata } from "@/lib/actions";
-import DeletePostForm from "@/components/form/delete-post-form";
+import DeleteProductForm from "@/components/form/delete-product-form";
 
 export default async function RentalProductSettings({ params }: { params: { id: string, productId: string } }) {
   const session = await getSession();
@@ -43,6 +43,7 @@ export default async function RentalProductSettings({ params }: { params: { id: 
             placeholder: "slug",
           }}
           handleSubmit={updateProductMetadata}
+          paramName="productId"
         />
 
         <Form
@@ -55,9 +56,10 @@ export default async function RentalProductSettings({ params }: { params: { id: 
             defaultValue: data?.image!,
           }}
           handleSubmit={updateProductMetadata}
+          paramName="productId"
         />
 
-        <DeletePostForm postName={data?.title!} />
+        <DeleteProductForm productName={data?.title!} />
       </div>
     </div>
   );

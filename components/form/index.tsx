@@ -17,6 +17,7 @@ export default function Form({
   helpText,
   inputAttrs,
   handleSubmit,
+  paramName = 'id' // Default to 'id' for backward compatibility
 }: {
   title: string;
   description: string;
@@ -30,8 +31,10 @@ export default function Form({
     pattern?: string;
   };
   handleSubmit: any;
+  paramName?: string; // Optional prop to specify the parameter name
 }) {
-  const { id } = useParams() as { id?: string };
+  const params = useParams() as { [key: string]: string };
+  const idOrProductId = params[paramName]; // Use the paramName to access the correct parameter
   const router = useRouter();
   const { update } = useSession();
   return (
@@ -45,12 +48,12 @@ export default function Form({
         ) {
           return;
         }
-        handleSubmit(data, id, inputAttrs.name).then(async (res: any) => {
+        handleSubmit(data, idOrProductId, inputAttrs.name).then(async (res: any) => {
           if (res.error) {
             toast.error(res.error);
           } else {
-            va.track(`Updated ${inputAttrs.name}`, id ? { id } : {});
-            if (id) {
+            va.track(`Updated ${inputAttrs.name}`, idOrProductId ? { idOrProductId } : {});
+            if (idOrProductId) {
               router.refresh();
             } else {
               await update();

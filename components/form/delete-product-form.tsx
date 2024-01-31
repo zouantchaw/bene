@@ -8,39 +8,39 @@ import { toast } from "sonner";
 import { deleteProduct } from "@/lib/actions";
 import va from "@vercel/analytics";
 
-export default function DeleteProductForm({ postName }: { postName: string }) {
-  const { id } = useParams() as { id: string };
+export default function DeleteProductForm({ productName }: { productName: string }) {
+  const { id, productId } = useParams() as { id: string; productId: string };
   const router = useRouter();
   return (
     <form
       action={async (data: FormData) =>
         window.confirm("Are you sure you want remove this product from your inventory?") &&
-        deleteProduct(data, id, "delete").then((res) => {
+        deleteProduct(data, productId, "delete").then((res) => {
           if (res.error) {
             toast.error(res.error);
           } else {
             va.track("Deleted Product");
             router.refresh();
-            router.push(`/rental-site/${res.rentalSiteId}`);
-            toast.success(`Successfully deleted post!`);
+            router.push(`/rental-site/${res.rentalSiteId}/inventory`);
+            toast.success(`Product Removed from Inventory`);
           }
         })
       }
       className="rounded-lg border border-red-600 bg-white dark:bg-black"
     >
       <div className="relative flex flex-col space-y-4 p-5 sm:p-10">
-        <h2 className="font-cal text-xl dark:text-white">Delete Post</h2>
+        <h2 className="font-cal text-xl dark:text-white">Delete Product</h2>
         <p className="text-sm text-stone-500 dark:text-stone-400">
-          Deletes your post permanently. Type in the name of your post{" "}
-          <b>{postName}</b> to confirm.
+          Deletes your Product permanently. Type in the name of your Product{" "}
+          <b>{productName}</b> to confirm.
         </p>
 
         <input
           name="confirm"
           type="text"
           required
-          pattern={postName}
-          placeholder={postName}
+          pattern={productName}
+          placeholder={productName}
           className="w-full max-w-md rounded-md border border-stone-300 text-sm text-stone-900 placeholder-stone-300 focus:border-stone-500 focus:outline-none focus:ring-stone-500 dark:border-stone-600 dark:bg-black dark:text-white dark:placeholder-stone-700"
         />
       </div>
