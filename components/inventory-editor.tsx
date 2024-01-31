@@ -51,15 +51,6 @@ export default function InventoryEditor({
 
   return (
     <div className="relative min-h-[500px] w-full max-w-screen-lg border-stone-200 p-12 px-8 dark:border-stone-700 sm:mb-[calc(20vh)] sm:rounded-lg sm:border sm:px-12 sm:shadow-lg">
-      <div className="absolute left-5 top-5 mb-5 flex items-center space-x-3">
-        <button
-          onClick={() => router.back()}
-          className="flex items-center space-x-1 text-sm text-stone-400 hover:text-stone-500"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          <span>Back to Inventory</span>
-        </button>
-      </div>
       <div className="absolute right-5 top-5 mb-5 flex items-center space-x-3">
         {data.published && (
           <a
