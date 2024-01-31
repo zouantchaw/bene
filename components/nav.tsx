@@ -144,12 +144,6 @@ export default function Nav({ children }: { children: ReactNode }) {
           icon: <Warehouse width={18} />,
         },
         {
-          name: "Posts",
-          href: `/rental-site/${id}/posts`,
-          isActive: segments.includes("posts"),
-          icon: <Newspaper width={18} />,
-        },
-        {
           name: "Analytics",
           href: `/rental-site/${id}/analytics`,
           isActive: segments.includes("analytics"),
