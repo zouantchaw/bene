@@ -61,7 +61,7 @@ export default async function InventorySettings({
           handleSubmit={updateProductMetadata}
         />
 
-        <DeleteProductForm postName={data?.title!} />
+        {/* <DeleteProductForm postName={data?.title!} /> */}
       </div>
     </div>
   );
