@@ -405,6 +405,26 @@ export const deleteSite = withSiteAuth(async (_: FormData, site: Site) => {
   }
 });
 
+export const deleteRentalSite = withRentalSiteAuth(async (_: FormData, rentalSite: RentalSite) => {
+  try {
+    const response = await prisma.rentalSite.delete({
+      where: {
+        id: rentalSite.id,
+      },
+    });
+    await revalidateTag(
+      `${rentalSite.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`,
+    );
+    rentalSite.customDomain &&
+      (await revalidateTag(`${rentalSite.customDomain}-metadata`));
+    return response;
+  } catch (error: any) {
+    return {
+      error: error.message,
+    };
+  }
+});
+
 export const getSiteFromPostId = async (postId: string) => {
   const post = await prisma.post.findUnique({
     where: {

@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
 import Form from "@/components/form";
-import { updateSite, updateRentalSite } from "@/lib/actions";
-import DeleteSiteForm from "@/components/form/delete-site-form";
+import { updateRentalSite } from "@/lib/actions";
+import DeleteRentalSiteForm from "@/components/form/delete-rental-site-form";
 
 export default async function RentalSiteSettingsIndex({
   params,
@@ -48,7 +48,7 @@ export default async function RentalSiteSettingsIndex({
         handleSubmit={updateRentalSite}
       />
 
-      <DeleteSiteForm siteName={data?.name!} />
+      <DeleteRentalSiteForm rentalSiteName={data?.name!} />
     </div>
   );
 }
