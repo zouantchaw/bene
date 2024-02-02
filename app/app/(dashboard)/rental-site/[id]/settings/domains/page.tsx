@@ -1,13 +1,13 @@
 import prisma from "@/lib/prisma";
 import Form from "@/components/form";
-import { updateSite } from "@/lib/actions";
+import { updateRentalSite } from "@/lib/actions";
 
 export default async function RentalSiteSettingsDomains({
   params,
 }: {
   params: { id: string };
 }) {
-  const data = await prisma.site.findUnique({
+  const data = await prisma.rentalSite.findUnique({
     where: {
       id: decodeURIComponent(params.id),
     },
@@ -26,7 +26,7 @@ export default async function RentalSiteSettingsDomains({
           placeholder: "subdomain",
           maxLength: 32,
         }}
-        handleSubmit={updateSite}
+        handleSubmit={updateRentalSite}
       />
       <Form
         title="Custom Domain"
@@ -40,7 +40,7 @@ export default async function RentalSiteSettingsDomains({
           maxLength: 64,
           pattern: "^[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}$",
         }}
-        handleSubmit={updateSite}
+        handleSubmit={updateRentalSite}
       />
     </div>
   );
