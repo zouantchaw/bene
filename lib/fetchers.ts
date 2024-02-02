@@ -23,6 +23,26 @@ export async function getSiteData(domain: string) {
   )();
 }
 
+export async function getRentalSiteData(domain: string) {
+  const subdomain = domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`)
+    ? domain.replace(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`, "")
+    : null;
+
+  return await unstable_cache(
+    async () => {
+      return prisma.rentalSite.findUnique({
+        where: subdomain ? { subdomain } : { customDomain: domain },
+        include: { users: true },
+      });
+    },
+    [`${domain}-metadata`],
+    {
+      revalidate: 900,
+      tags: [`${domain}-metadata`],
+    },
+  )();
+}
+
 export async function getPostsForSite(domain: string) {
   const subdomain = domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`)
     ? domain.replace(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`, "")
@@ -57,6 +77,44 @@ export async function getPostsForSite(domain: string) {
     },
   )();
 }
+
+export async function getProductsForRentalSite(domain: string) {
+  const subdomain = domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`)
+    ? domain.replace(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`, "")
+    : null;
+
+  return await unstable_cache(
+    async () => {
+      return prisma.product.findMany({
+        where: {
+          rentalSite: subdomain ? { subdomain } : { customDomain: domain },
+          published: true,
+        },
+        select: {
+          title: true,
+          description: true,
+          slug: true,
+          image: true,
+          imageBlurhash: true,
+          createdAt: true,
+          quantity: true,
+          price: true,
+        },
+        orderBy: [
+          {
+            createdAt: "desc",
+          },
+        ],
+      });
+    },
+    [`${domain}-products`],
+    {
+      revalidate: 900,
+      tags: [`${domain}-products`],
+    },
+  )();
+}
+
 
 export async function getPostData(domain: string, slug: string) {
   const subdomain = domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`)

@@ -4,7 +4,7 @@ import { ReactNode } from "react";
 import CTA from "@/components/cta";
 import ReportAbuse from "@/components/report-abuse";
 import { notFound, redirect } from "next/navigation";
-import { getSiteData } from "@/lib/fetchers";
+import { getRentalSiteData } from "@/lib/fetchers";
 import { fontMapper } from "@/styles/fonts";
 import { Metadata } from "next";
 
@@ -14,7 +14,8 @@ export async function generateMetadata({
   params: { domain: string };
 }): Promise<Metadata | null> {
   const domain = decodeURIComponent(params.domain);
-  const data = await getSiteData(domain);
+  const data = await getRentalSiteData(domain);
+  console.log("data", data);
   if (!data) {
     return null;
   }
@@ -65,7 +66,7 @@ export default async function SiteLayout({
   children: ReactNode;
 }) {
   const domain = decodeURIComponent(params.domain);
-  const data = await getSiteData(domain);
+  const data = await getRentalSiteData(domain);
 
   if (!data) {
     notFound();

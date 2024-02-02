@@ -173,12 +173,12 @@ export default function Nav({ children }: { children: ReactNode }) {
         isActive: segments.length === 0,
         icon: <LayoutDashboard width={18} />,
       },
-      {
-        name: "Sites",
-        href: "/sites",
-        isActive: segments[0] === "sites",
-        icon: <Globe width={18} />,
-      },
+      // {
+      //   name: "Sites",
+      //   href: "/sites",
+      //   isActive: segments[0] === "sites",
+      //   icon: <Globe width={18} />,
+      // },
       {
         name: "Rental Sites",
         href: "/rental-sites",
