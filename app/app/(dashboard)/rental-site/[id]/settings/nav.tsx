@@ -11,17 +11,17 @@ export default function RentalSiteSettingsNav() {
   const navItems = [
     {
       name: "General",
-      href: `/site/${id}/settings`,
+      href: `/rental-site/${id}/settings`,
       segment: null,
     },
     {
       name: "Domains",
-      href: `/site/${id}/settings/domains`,
+      href: `/rental-site/${id}/settings/domains`,
       segment: "domains",
     },
     {
       name: "Appearance",
-      href: `/site/${id}/settings/appearance`,
+      href: `/rental-site/${id}/settings/appearance`,
       segment: "appearance",
     },
   ];
