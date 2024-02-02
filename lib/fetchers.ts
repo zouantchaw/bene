@@ -175,6 +175,67 @@ export async function getPostData(domain: string, slug: string) {
   )();
 }
 
+export async function getProductData(domain: string, slug: string) {
+  const subdomain = domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`)
+    ? domain.replace(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`, "")
+    : null;
+
+  return await unstable_cache(
+    async () => {
+      const data = await prisma.product.findFirst({
+        where: {
+          rentalSite: subdomain ? { subdomain } : { customDomain: domain },
+          slug,
+          published: true,
+        },
+        include: {
+          rentalSite: {
+            include: {
+              users: true,
+            },
+          },
+        },
+      });
+
+      if (!data) return null;
+
+      const [mdxSource, adjacentProducts] = await Promise.all([
+        getMdxSource(data.description || ''),
+        prisma.product.findMany({
+          where: {
+            rentalSite: subdomain ? { subdomain } : { customDomain: domain },
+            published: true,
+            NOT: {
+              id: data.id,
+            },
+          },
+          select: {
+            slug: true,
+            title: true,
+            createdAt: true,
+            description: true,
+            image: true,
+            imageBlurhash: true,
+            price: true,
+            quantity: true,
+          },
+        }),
+      ]);
+
+      return {
+        ...data,
+        mdxSource,
+        adjacentProducts,
+      };
+    },
+    [`${domain}-${slug}-product`],
+    {
+      revalidate: 900, // 15 minutes
+      tags: [`${domain}-${slug}-product`],
+    },
+  )();
+}
+
 async function getMdxSource(postContents: string) {
   // transforms links like <link> to [link](link) as MDX doesn't support <link> syntax
   // https://mdxjs.com/docs/what-is-mdx/#markdown
