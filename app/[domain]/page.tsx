@@ -5,6 +5,7 @@ import { placeholderBlurhash } from "@/lib/utils";
 import { getProductsForRentalSite, getRentalSiteData } from "@/lib/fetchers";
 import Image from "next/image";
 import PostCard from "../../components/post-card";
+import BlogCard from "../../components/blog-card";
 
 export default async function RentalSiteHomePage({
   params,
@@ -35,56 +36,44 @@ export default async function RentalSiteHomePage({
             src={data.image ?? "/placeholder.png"}
           />
         </div>
-        {products.length > 0 ? (
-          <div className="mx-auto w-full max-w-screen-xl md:mb-28 lg:w-5/6">
-            {products.map((product: any, index: number) => (
-              <Link href={`/${product.slug}`} key={index}>
-                <div className="mx-auto mt-10 w-5/6 lg:w-full">
-                  <h2 className="my-10 font-title text-4xl dark:text-white md:text-6xl">
-                    {product.title}
-                  </h2>
-                  <p className="w-full text-base dark:text-white md:text-lg lg:w-2/3">
-                    {product.description}
-                  </p>
-                </div>
-              </Link>
-            ))}
-          </div>
-        ) : (
-          <div className="flex flex-col items-center justify-center py-20">
-            <Image
-              alt="no products"
-              src="https://illustrations.popsy.co/gray/success.svg"
-              width={400}
-              height={400}
-              className="dark:hidden"
-            />
-            <Image
-              alt="no products"
-              src="https://illustrations.popsy.co/white/success.svg"
-              width={400}
-              height={400}
-              className="hidden dark:block"
-            />
-            <p className="font-title text-2xl text-stone-600 dark:text-stone-400">
-              No products yet.
-            </p>
-          </div>
-        )}
-      </div>
-
-      {products.length > 1 && (
-        <div className="mx-5 mb-20 max-w-screen-xl lg:mx-24 2xl:mx-auto">
-          <h2 className="mb-10 font-title text-4xl dark:text-white md:text-5xl">
-            More products
-          </h2>
-          <div className="grid w-full grid-cols-1 gap-x-4 gap-y-8 md:grid-cols-2 xl:grid-cols-3">
-            {products.slice(1).map((metadata: any, index: number) => (
-              <PostCard key={index} data={metadata} />
-            ))}
-          </div>
+        <div className="mx-auto w-full max-w-screen-xl md:mb-28 lg:w-5/6">
+          {products.length > 0 ? (
+            <div className="mt-10">
+              <h1 className="text-center font-title text-5xl dark:text-white md:text-6xl">
+                {data.name}
+              </h1>
+              <p className="mx-auto mt-5 text-center text-lg dark:text-white md:text-xl lg:w-2/3">
+                {data.description}
+              </p>
+              <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {products.map((product: any, index: number) => (
+                  <BlogCard key={index} data={product} />
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center py-20">
+              <Image
+                alt="no products"
+                src="https://illustrations.popsy.co/gray/success.svg"
+                width={400}
+                height={400}
+                className="dark:hidden"
+              />
+              <Image
+                alt="no products"
+                src="https://illustrations.popsy.co/white/success.svg"
+                width={400}
+                height={400}
+                className="hidden dark:block"
+              />
+              <p className="font-title text-2xl text-stone-600 dark:text-stone-400">
+                No products yet.
+              </p>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </>
   );
 }
