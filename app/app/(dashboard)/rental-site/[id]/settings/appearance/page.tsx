@@ -1,13 +1,13 @@
 import prisma from "@/lib/prisma";
 import Form from "@/components/form";
-import { updateSite } from "@/lib/actions";
+import { updateRentalSite } from "@/lib/actions";
 
 export default async function RentalSiteSettingsAppearance({
   params,
 }: {
   params: { id: string };
 }) {
-  const data = await prisma.site.findUnique({
+  const data = await prisma.rentalSite.findUnique({
     where: {
       id: decodeURIComponent(params.id),
     },
@@ -24,7 +24,7 @@ export default async function RentalSiteSettingsAppearance({
           type: "file",
           defaultValue: data?.image!,
         }}
-        handleSubmit={updateSite}
+        handleSubmit={updateRentalSite}
       />
       <Form
         title="Logo"
@@ -35,7 +35,7 @@ export default async function RentalSiteSettingsAppearance({
           type: "file",
           defaultValue: data?.logo!,
         }}
-        handleSubmit={updateSite}
+        handleSubmit={updateRentalSite}
       />
       <Form
         title="Font"
@@ -46,7 +46,7 @@ export default async function RentalSiteSettingsAppearance({
           type: "select",
           defaultValue: data?.font!,
         }}
-        handleSubmit={updateSite}
+        handleSubmit={updateRentalSite}
       />
       <Form
         title="404 Page Message"
@@ -59,7 +59,7 @@ export default async function RentalSiteSettingsAppearance({
           placeholder: "Blimey! You've found a page that doesn't exist.",
           maxLength: 240,
         }}
-        handleSubmit={updateSite}
+        handleSubmit={updateRentalSite}
       />
     </div>
   );
