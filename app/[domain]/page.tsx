@@ -2,7 +2,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import BlurImage from "@/components/blur-image";
 import { placeholderBlurhash } from "@/lib/utils";
-// import ProductCard from "@/components/product-card";
 import { getProductsForRentalSite, getRentalSiteData } from "@/lib/fetchers";
 import Image from "next/image";
 import PostCard from "../../components/post-card";
@@ -25,28 +24,28 @@ export default async function RentalSiteHomePage({
   return (
     <>
       <div className="mb-20 w-full">
+        <div className="group relative mx-auto h-80 w-full overflow-hidden sm:h-150 lg:rounded-xl">
+          <BlurImage
+            alt={data.name ?? ""}
+            blurDataURL={data.imageBlurhash ?? placeholderBlurhash}
+            className="h-full w-full object-cover group-hover:scale-105 group-hover:duration-300"
+            width={1300}
+            height={630}
+            placeholder="blur"
+            src={data.image ?? "/placeholder.png"}
+          />
+        </div>
         {products.length > 0 ? (
           <div className="mx-auto w-full max-w-screen-xl md:mb-28 lg:w-5/6">
             {products.map((product: any, index: number) => (
               <Link href={`/${product.slug}`} key={index}>
-                <div className="group relative mx-auto h-80 w-full overflow-hidden sm:h-150 lg:rounded-xl">
-                  <BlurImage
-                    alt={data.name ?? ""}
-                    blurDataURL={data.imageBlurhash ?? placeholderBlurhash}
-                    className="h-full w-full object-cover group-hover:scale-105 group-hover:duration-300"
-                    width={1300}
-                    height={630}
-                    placeholder="blur"
-                    src={data.image ?? "/placeholder.png"}
-                  />
-                  <div className="mx-auto mt-10 w-5/6 lg:w-full">
-                    <h2 className="my-10 font-title text-4xl dark:text-white md:text-6xl">
-                      {product.title}
-                    </h2>
-                    <p className="w-full text-base dark:text-white md:text-lg lg:w-2/3">
-                      {product.description}
-                    </p>
-                  </div>
+                <div className="mx-auto mt-10 w-5/6 lg:w-full">
+                  <h2 className="my-10 font-title text-4xl dark:text-white md:text-6xl">
+                    {product.title}
+                  </h2>
+                  <p className="w-full text-base dark:text-white md:text-lg lg:w-2/3">
+                    {product.description}
+                  </p>
                 </div>
               </Link>
             ))}
