@@ -1,6 +1,6 @@
 import prisma from "@/lib/prisma";
 import Form from "@/components/form";
-import { updateSite } from "@/lib/actions";
+import { updateSite, updateRentalSite } from "@/lib/actions";
 import DeleteSiteForm from "@/components/form/delete-site-form";
 
 export default async function RentalSiteSettingsIndex({
@@ -32,7 +32,7 @@ export default async function RentalSiteSettingsIndex({
           placeholder: "My Awesome Site",
           maxLength: 32,
         }}
-        handleSubmit={updateSite}
+        handleSubmit={updateRentalSite}
       />
 
       <Form
@@ -45,7 +45,7 @@ export default async function RentalSiteSettingsIndex({
           defaultValue: data?.description!,
           placeholder: "A blog about really interesting things.",
         }}
-        handleSubmit={updateSite}
+        handleSubmit={updateRentalSite}
       />
 
       <DeleteSiteForm siteName={data?.name!} />
