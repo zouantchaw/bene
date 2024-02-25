@@ -24,6 +24,11 @@ export default function RentalSiteSettingsNav() {
       href: `/rental-site/${id}/settings/appearance`,
       segment: "appearance",
     },
+    {
+      name: "People",
+      href: `/rental-site/${id}/settings/people`,
+      segment: "people",
+    },
   ];
 
   return (
