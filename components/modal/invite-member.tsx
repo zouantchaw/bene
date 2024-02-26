@@ -1,21 +1,21 @@
 "use client";
 
 import { toast } from "sonner";
-import { inviteTeammate } from "@/lib/actions";
+import { inviteMember } from "@/lib/actions";
 import { useFormStatus } from "react-dom";
 import { cn } from "@/lib/utils";
 import LoadingDots from "@/components/icons/loading-dots";
 import { useModal } from "./provider";
 import { useState } from "react";
 
-export default function InviteTeammateModal() {
+export default function InviteMemberModal() {
   const modal = useModal();
 
   const [email, setEmail] = useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const result = await inviteTeammate({ email });
+    const result = await inviteMember({ email });
     if (result.error) {
       toast.error(result.error);
     } else {

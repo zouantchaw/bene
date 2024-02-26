@@ -841,7 +841,7 @@ export const editUser = async (
   }
 };
 
-export const inviteTeammate = async (data: { email: string }) => {
+export const inviteMember = async (data: { email: string }) => {
   const { email } = data;
   const isEmailExist = false; // This should be replaced with actual logic to check email existence
 
