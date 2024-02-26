@@ -10,15 +10,6 @@ import DomainStatus from "./domain-status";
 import DomainConfiguration from "./domain-configuration";
 import Uploader from "./uploader";
 import va from "@vercel/analytics";
-import {
-  Divider,
-  Tab,
-  TabGroup,
-  TabList,
-  TextInput,
-  TabPanel,
-  TabPanels,
-} from "@tremor/react";
 
 export default function Form({
   title,
@@ -124,42 +115,6 @@ export default function Form({
               </div>
             )}
           </div>
-        ) : inputAttrs.name === "people" ? (
-          <TabGroup className="mt-6">
-            <TabList>
-              <Tab>Members</Tab>
-              <Tab>Invitations</Tab>
-            </TabList>
-            <div className="mt-8 space-y-8">
-              <TabPanels>
-                <TabPanel>
-                  <div>
-                    <h4 className="font-semibold text-tremor-content-strong dark:text-dark-tremor-content-strong">
-                      Add Member
-                    </h4>
-                    <p className="mt-1 text-tremor-default text-tremor-content dark:text-dark-tremor-content">
-                      Enter the email address of the member you wish to add.
-                    </p>
-                    <div className="mt-6">
-                      <label
-                        htmlFor="member-email"
-                        className="text-tremor-default font-medium text-tremor-content-strong dark:text-dark-tremor-content-strong"
-                      >
-                        Member's email address
-                      </label>
-                      <TextInput
-                        type="email"
-                        id="member-email"
-                        name="member-email"
-                        placeholder="Enter member's email"
-                        className="mt-2 w-full rounded-tremor-small sm:max-w-lg"
-                      />
-                    </div>
-                  </div>
-                </TabPanel>
-              </TabPanels>
-            </div>
-          </TabGroup>
         ) : inputAttrs.name === "description" ? (
           <textarea
             {...inputAttrs}
