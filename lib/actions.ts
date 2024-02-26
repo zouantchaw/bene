@@ -384,7 +384,6 @@ export const updateRentalSite = withRentalSiteAuth(
   },
 );
 
-
 export const deleteSite = withSiteAuth(async (_: FormData, site: Site) => {
   try {
     const response = await prisma.site.delete({
@@ -839,5 +838,21 @@ export const editUser = async (
         error: error.message,
       };
     }
+  }
+};
+
+export const inviteTeammate = async (data: { email: string }) => {
+  const { email } = data;
+  const isEmailExist = false; // This should be replaced with actual logic to check email existence
+
+  if (isEmailExist) {
+    return {
+      error: "Email is already associated with a team member.",
+    };
+  } else {
+    console.log(`Invitation sent to ${email}`);
+    return {
+      message: `Invitation sent to ${email}`,
+    };
   }
 };
