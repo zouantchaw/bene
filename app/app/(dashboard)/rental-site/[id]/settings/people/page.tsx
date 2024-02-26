@@ -1,6 +1,4 @@
 import prisma from "@/lib/prisma";
-import Form from "@/components/form";
-import { updateRentalSite } from "@/lib/actions";
 import {
   Divider,
   Tab,
@@ -10,6 +8,8 @@ import {
   TabPanel,
   TabPanels,
 } from "@tremor/react";
+import InviteMemberButton from "@/components/invite-member-button";
+import InviteMemberModal from "@/components/modal/invite-member";
 
 export default async function RentalSiteSettingsPeople({
   params,
@@ -26,9 +26,9 @@ export default async function RentalSiteSettingsPeople({
     <div className="rounded-lg border border-stone-200 bg-white dark:border-stone-700 dark:bg-black">
       <div className="flex justify-between p-5">
         <h2 className="font-cal text-xl dark:text-white">People</h2>
-        <button className="flex items-center justify-center rounded-md border border-black bg-black px-4 py-2 text-sm text-white transition-all hover:bg-white hover:text-black dark:border-stone-700 dark:text-white dark:hover:bg-black dark:hover:text-white dark:active:bg-stone-800">
-          <p>Invite</p>
-        </button>
+        <InviteMemberButton>
+          <InviteMemberModal />
+        </InviteMemberButton>
       </div>
       <div className="relative flex flex-col space-y-4 p-5 sm:p-10">
         <p className="text-sm text-stone-500 dark:text-stone-400">
