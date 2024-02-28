@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@/lib/prisma";
-import { Post, Site, Product, RentalSite } from "@prisma/client";
+import { Post, Site, Product, RentalSite, Role } from "@prisma/client";
 import { revalidateTag } from "next/cache";
 import {
   withPostAuth,
@@ -899,3 +899,15 @@ export const sendRentalSiteInvite = async (data: { email: string, name: string, 
     };
   }
 };
+
+async function addUserToRentalSite(userId: string, siteId: string) {
+  const rentalSiteUser = await prisma.rentalSiteUsers.create({
+    data: {
+      role: Role.member,
+      userId: userId,
+      rentalSiteId: siteId,
+    },
+  });
+
+  return rentalSiteUser;
+}
