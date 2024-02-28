@@ -10,6 +10,8 @@ import {
 } from "@tremor/react";
 import InviteMemberButton from "@/components/invite-member-button";
 import InviteMemberModal from "@/components/modal/invite-member";
+import Image from "next/image";
+import { Trash2 } from 'lucide-react';
 
 export default async function RentalSiteSettingsPeople({
   params,
@@ -20,7 +22,21 @@ export default async function RentalSiteSettingsPeople({
     where: {
       id: decodeURIComponent(params.id),
     },
+    include: {
+      users: {
+        include: {
+          user: true, // Include the User relation
+        },
+      }, 
+    },
   });
+
+  if (!data) {
+    return <div>Not found</div>;
+  }
+
+  const owner = data.users.find((user) => user.role === "owner");
+  console.log("owner", owner);
 
   return (
     <div className="rounded-lg border border-stone-200 bg-white dark:border-stone-700 dark:bg-black">
@@ -41,7 +57,29 @@ export default async function RentalSiteSettingsPeople({
           </TabList>
           <div className="mt-8 space-y-8">
             <TabPanels>
-              <TabPanel>{/* Content for Members Tab */}</TabPanel>
+              <TabPanel>
+              {owner && (
+                <div className="flex justify-between items-center w-full">
+                  <div className="flex items-center space-x-3">
+                    <Image
+                      src={
+                        owner.user.image ??
+                        `https://avatar.vercel.sh/${owner.user.email}`
+                      }
+                      width={20}
+                      height={20}
+                      alt={owner.user.name ?? "Owner avatar"}
+                      className="h-10 w-10 rounded-full"
+                    />
+                    <span className="text-sm font-medium">{owner.user.email}</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <span className="text-sm font-medium">{owner.role}</span>
+                    <Trash2 size={15} className="cursor-pointer text-stone-700 hover:text-red-500" />
+                  </div>
+                </div>
+              )}
+              </TabPanel>
               <TabPanel>{/* Content for Invitations Tab */}</TabPanel>
             </TabPanels>
           </div>
