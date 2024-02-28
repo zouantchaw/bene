@@ -25,7 +25,7 @@ export default async function RentalSiteSettingsPeople({
     include: {
       users: {
         include: {
-          user: true, // Include the User relation
+          user: true, 
         },
       },
     },
@@ -37,7 +37,6 @@ export default async function RentalSiteSettingsPeople({
 
   const owner = data.users.find((user) => user.role === "owner");
   const members = data.users.filter((user) => user.role === "member");
-  console.log("owner", owner);
 
   return (
     <div className="rounded-lg border border-stone-200 bg-white dark:border-stone-700 dark:bg-black">
