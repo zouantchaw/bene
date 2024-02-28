@@ -11,7 +11,7 @@ import {
 import InviteMemberButton from "@/components/invite-member-button";
 import InviteMemberModal from "@/components/modal/invite-member";
 import Image from "next/image";
-import { Trash2 } from 'lucide-react';
+import { Trash2 } from "lucide-react";
 
 export default async function RentalSiteSettingsPeople({
   params,
@@ -27,7 +27,7 @@ export default async function RentalSiteSettingsPeople({
         include: {
           user: true, // Include the User relation
         },
-      }, 
+      },
     },
   });
 
@@ -36,6 +36,7 @@ export default async function RentalSiteSettingsPeople({
   }
 
   const owner = data.users.find((user) => user.role === "owner");
+  const members = data.users.filter((user) => user.role === "member");
   console.log("owner", owner);
 
   return (
@@ -58,27 +59,62 @@ export default async function RentalSiteSettingsPeople({
           <div className="mt-8 space-y-8">
             <TabPanels>
               <TabPanel>
-              {owner && (
-                <div className="flex justify-between items-center w-full">
-                  <div className="flex items-center space-x-3">
-                    <Image
-                      src={
-                        owner.user.image ??
-                        `https://avatar.vercel.sh/${owner.user.email}`
-                      }
-                      width={20}
-                      height={20}
-                      alt={owner.user.name ?? "Owner avatar"}
-                      className="h-10 w-10 rounded-full"
-                    />
-                    <span className="text-sm font-medium">{owner.user.email}</span>
+                {owner && (
+                  <div className="flex w-full items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <Image
+                        src={
+                          owner.user.image ??
+                          `https://avatar.vercel.sh/${owner.user.email}`
+                        }
+                        width={20}
+                        height={20}
+                        alt={owner.user.name ?? "Owner avatar"}
+                        className="h-10 w-10 rounded-full"
+                      />
+                      <span className="text-sm font-medium">
+                        {owner.user.email}
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <span className="text-sm font-medium">{owner.role}</span>
+                      <Trash2
+                        size={15}
+                        className="cursor-pointer text-stone-700 hover:text-red-500"
+                      />
+                    </div>
                   </div>
-                  <div className="flex items-center space-x-3">
-                    <span className="text-sm font-medium">{owner.role}</span>
-                    <Trash2 size={15} className="cursor-pointer text-stone-700 hover:text-red-500" />
+                )}
+                <Divider />
+                {members.map((member) => (
+                  <div
+                    className="flex w-full items-center justify-between"
+                    key={member.user.id}
+                  >
+                    <div className="flex items-center space-x-3">
+                      <Image
+                        src={
+                          member.user.image ??
+                          `https://avatar.vercel.sh/${member.user.email}`
+                        }
+                        width={20}
+                        height={20}
+                        alt={member.user.name ?? "Member avatar"}
+                        className="h-10 w-10 rounded-full"
+                      />
+                      <span className="text-sm font-medium">
+                        {member.user.email}
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <span className="text-sm font-medium">{member.role}</span>
+                      <Trash2
+                        size={15}
+                        className="cursor-pointer text-stone-700 hover:text-red-500"
+                      />
+                    </div>
                   </div>
-                </div>
-              )}
+                ))}
               </TabPanel>
               <TabPanel>{/* Content for Invitations Tab */}</TabPanel>
             </TabPanels>
