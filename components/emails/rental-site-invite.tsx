@@ -9,29 +9,33 @@ import {
   Tailwind,
   Text
 } from '@react-email/components';
-// import { Icons } from '../components/shared/icons';
 
 type RentalSiteInviteEmailProps = {
   inviteUrl: string;
+  name: string;
+  logo: string;
+  subdomain: string;
 }
 
 export const RentalSiteInviteEmail = ({
-  inviteUrl
+  inviteUrl,
+  name,
+  logo,
+  subdomain
 }: RentalSiteInviteEmailProps) => (
   <Html>
     <Head />
     <Preview>
-      You're invited to join our exclusive rental site community.
+      You're invited to join {name}, the #1 Party Rental service in the DMV.
     </Preview>
     <Tailwind>
       <Body className="bg-white font-sans">
         <Container className="mx-auto py-5 pb-12">
-          {/* <Icons.logo className="m-auto block size-10" /> */}
           <Text className="text-base">
             Hi there,
           </Text>
           <Text className="text-base">
-            You have been invited to join our exclusive rental site. Click the button below to accept your invitation:
+            You have been invited to join the team at {name}, our exclusive rental site. Click the button below to accept your invitation and start managing the site:
           </Text>
           <Section className="my-5 text-center">
             <Button
@@ -43,7 +47,7 @@ export const RentalSiteInviteEmail = ({
           </Section>
           <Hr className="my-4 border-t-2 border-gray-300" />
           <Text className="text-sm text-gray-600">
-            If you have any questions, feel free to contact us at support@rentalsite.com.
+            If you have any questions, feel free to contact us at support@{subdomain}.com.
           </Text>
         </Container>
       </Body>

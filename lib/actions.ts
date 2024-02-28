@@ -864,8 +864,8 @@ export const editUser = async (
   }
 };
 
-export const sendRentalSiteInvite = async (data: { email: string }) => {
-  const { email } = data;
+export const sendRentalSiteInvite = async (data: { email: string, name: string, logo: string, subdomain: string }) => {
+  const { email, name, logo, subdomain } = data;
   const isEmailExist = false; // This should be replaced with actual logic to check email existence
 
   if (isEmailExist) {
@@ -874,11 +874,15 @@ export const sendRentalSiteInvite = async (data: { email: string }) => {
     };
   } else {
     const { data, error } = await resend.emails.send({
-      from: "Bene <onboarding@onboarding.rentbene.com>",
+      from: `${name} <onboarding@onboarding.rentbene.com>`,
       to: email,
-      subject: "You have been invited to join our app!",
+      subject: `You're invited to join ${name}`,
       react: RentalSiteInviteEmail({
-        inviteUrl: `https://app.resend.dev/invite?email=${email}`,
+        // inviteUrl: `https://${subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}/invite/${email}`,
+        inviteUrl: `https://app.rentbene.com`,
+        name,
+        logo,
+        subdomain,
       }),
     });
     if (error) {

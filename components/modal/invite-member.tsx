@@ -8,14 +8,24 @@ import LoadingDots from "@/components/icons/loading-dots";
 import { useModal } from "./provider";
 import { useState } from "react";
 
-export default function InviteMemberModal() {
+interface InviteMemberModalProps {
+  name: string;
+  logo: string;
+  subdomain: string;
+}
+
+export default function InviteMemberModal({
+  name,
+  logo,
+  subdomain,
+}: InviteMemberModalProps) {
   const modal = useModal();
 
   const [email, setEmail] = useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const result = await sendRentalSiteInvite({ email });
+    const result = await sendRentalSiteInvite({ email, name, logo, subdomain });
     if (result.error) {
       toast.error(result.error);
     } else {
@@ -31,7 +41,10 @@ export default function InviteMemberModal() {
     >
       <div className="relative flex flex-col space-y-4 p-5 md:p-10">
         <h2 className="font-cal text-2xl dark:text-white">Invite Teammate</h2>
-        <p>Invite a teammate to join your project. Invitations will be valid for 14 days.</p>
+        <p>
+          Invite a teammate to join your project. Invitations will be valid for
+          14 days.
+        </p>
 
         <div className="flex flex-col space-y-2">
           <label

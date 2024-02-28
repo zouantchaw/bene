@@ -34,16 +34,18 @@ export default async function RentalSiteSettingsPeople({
   if (!data) {
     return <div>Not found</div>;
   }
-
   const owner = data.users.find((user) => user.role === "owner");
   const members = data.users.filter((user) => user.role === "member");
+  const rentalSiteName = data.name;
+  const rentalSiteLogo = data.logo;
+  const rentalSiteSubdomain = data.subdomain;
 
   return (
     <div className="rounded-lg border border-stone-200 bg-white dark:border-stone-700 dark:bg-black">
       <div className="flex justify-between p-5">
         <h2 className="font-cal text-xl dark:text-white">People</h2>
         <InviteMemberButton>
-          <InviteMemberModal />
+          <InviteMemberModal name={rentalSiteName || ""} logo={rentalSiteLogo || ""} subdomain={rentalSiteSubdomain || ""} />
         </InviteMemberButton>
       </div>
       <div className="relative flex flex-col space-y-4 p-5 sm:p-10">
