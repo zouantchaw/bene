@@ -1,9 +1,14 @@
 "use server";
 
 import prisma from "@/lib/prisma";
-import { Post, Site, Product, RentalSite  } from "@prisma/client";
+import { Post, Site, Product, RentalSite } from "@prisma/client";
 import { revalidateTag } from "next/cache";
-import { withPostAuth, withSiteAuth, withRentalSiteAuth, withProductAuth } from "./auth";
+import {
+  withPostAuth,
+  withSiteAuth,
+  withRentalSiteAuth,
+  withProductAuth,
+} from "./auth";
 import { getSession } from "@/lib/auth";
 import {
   addDomainToVercel,
@@ -15,6 +20,9 @@ import {
 import { put } from "@vercel/blob";
 import { customAlphabet } from "nanoid";
 import { getBlurDataURL } from "@/lib/utils";
+
+import resend from "../lib/email";
+import { RentalSiteInviteEmail } from "@/components/emails/rental-site-invite";
 
 const nanoid = customAlphabet(
   "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
@@ -287,7 +295,9 @@ export const updateRentalSite = withRentalSiteAuth(
 
         // if the site had a different customDomain before, we need to remove it from Vercel
         if (rentalSite.customDomain && rentalSite.customDomain !== value) {
-          response = await removeDomainFromVercelProject(rentalSite.customDomain);
+          response = await removeDomainFromVercelProject(
+            rentalSite.customDomain,
+          );
 
           /* Optional: remove domain from Vercel team 
 
@@ -404,25 +414,27 @@ export const deleteSite = withSiteAuth(async (_: FormData, site: Site) => {
   }
 });
 
-export const deleteRentalSite = withRentalSiteAuth(async (_: FormData, rentalSite: RentalSite) => {
-  try {
-    const response = await prisma.rentalSite.delete({
-      where: {
-        id: rentalSite.id,
-      },
-    });
-    await revalidateTag(
-      `${rentalSite.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`,
-    );
-    rentalSite.customDomain &&
-      (await revalidateTag(`${rentalSite.customDomain}-metadata`));
-    return response;
-  } catch (error: any) {
-    return {
-      error: error.message,
-    };
-  }
-});
+export const deleteRentalSite = withRentalSiteAuth(
+  async (_: FormData, rentalSite: RentalSite) => {
+    try {
+      const response = await prisma.rentalSite.delete({
+        where: {
+          id: rentalSite.id,
+        },
+      });
+      await revalidateTag(
+        `${rentalSite.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`,
+      );
+      rentalSite.customDomain &&
+        (await revalidateTag(`${rentalSite.customDomain}-metadata`));
+      return response;
+    } catch (error: any) {
+      return {
+        error: error.message,
+      };
+    }
+  },
+);
 
 export const getSiteFromPostId = async (postId: string) => {
   const post = await prisma.post.findUnique({
@@ -482,32 +494,35 @@ export const createPost = withSiteAuth(async (_: FormData, site: Site) => {
   return response;
 });
 
-export const createProduct = withRentalSiteAuth(async (_: FormData, rentalSite: RentalSite) => {
-  console.log("==== createProduct ====");
-  const session = await getSession();
-  if (!session?.user.id) {
-    return {
-      error: "Not authenticated",
-    };
-  }
-  console.log("rentalSite", rentalSite);
-  const response = await prisma.product.create({
-    data: {
-      rentalSite: {
-        connect: {
-          id: rentalSite.id,
+export const createProduct = withRentalSiteAuth(
+  async (_: FormData, rentalSite: RentalSite) => {
+    console.log("==== createProduct ====");
+    const session = await getSession();
+    if (!session?.user.id) {
+      return {
+        error: "Not authenticated",
+      };
+    }
+    console.log("rentalSite", rentalSite);
+    const response = await prisma.product.create({
+      data: {
+        rentalSite: {
+          connect: {
+            id: rentalSite.id,
+          },
         },
       },
-    },
-  });
+    });
 
-  await revalidateTag(
-    `${rentalSite.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-inventory`,
-  );
-  rentalSite.customDomain && (await revalidateTag(`${rentalSite.customDomain}-inventory`));
+    await revalidateTag(
+      `${rentalSite.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-inventory`,
+    );
+    rentalSite.customDomain &&
+      (await revalidateTag(`${rentalSite.customDomain}-inventory`));
 
-  return response;
-});
+    return response;
+  },
+);
 
 // creating a separate function for this because we're not using FormData
 export const updatePost = async (data: Post) => {
@@ -589,7 +604,9 @@ export const updateProduct = async (data: Product) => {
   }
 
   const userIsOwnerOrMember = product.rentalSite?.users.some(
-    (user) => user.userId === session.user.id && user.role === "owner" || user.role === "member",
+    (user) =>
+      (user.userId === session.user.id && user.role === "owner") ||
+      user.role === "member",
   );
 
   if (!userIsOwnerOrMember) {
@@ -621,7 +638,9 @@ export const updateProduct = async (data: Product) => {
     // if the site has a custom domain, we need to revalidate those tags too
     product.rentalSite?.customDomain &&
       (await revalidateTag(`${product.rentalSite?.customDomain}-inventory`),
-      await revalidateTag(`${product.rentalSite?.customDomain}-${product.slug}`));
+      await revalidateTag(
+        `${product.rentalSite?.customDomain}-${product.slug}`,
+      ));
 
     return response;
   } catch (error: any) {
@@ -752,7 +771,9 @@ export const updateProductMetadata = withProductAuth(
       // if the site has a custom domain, we need to revalidate those tags too
       product.rentalSite?.customDomain &&
         (await revalidateTag(`${product.rentalSite?.customDomain}-inventory`),
-        await revalidateTag(`${product.rentalSite?.customDomain}-${product.slug}`));
+        await revalidateTag(
+          `${product.rentalSite?.customDomain}-${product.slug}`,
+        ));
 
       return response;
     } catch (error: any) {
@@ -787,23 +808,25 @@ export const deletePost = withPostAuth(async (_: FormData, post: Post) => {
   }
 });
 
-export const deleteProduct = withProductAuth(async (_: FormData, product: Product) => {
-  try {
-    const response = await prisma.product.delete({
-      where: {
-        id: product.id,
-      },
-      select: {
-        rentalSiteId: true,
-      },
-    });
-    return response;
-  } catch (error: any) {
-    return {
-      error: error.message,
-    };
-  }
-});
+export const deleteProduct = withProductAuth(
+  async (_: FormData, product: Product) => {
+    try {
+      const response = await prisma.product.delete({
+        where: {
+          id: product.id,
+        },
+        select: {
+          rentalSiteId: true,
+        },
+      });
+      return response;
+    } catch (error: any) {
+      return {
+        error: error.message,
+      };
+    }
+  },
+);
 
 export const editUser = async (
   formData: FormData,
@@ -850,6 +873,22 @@ export const inviteMember = async (data: { email: string }) => {
       error: "Email is already associated with a team member.",
     };
   } else {
+    const { data, error } = await resend.emails.send({
+      from: "Bene <onboarding@onboarding.rentbene.com>",
+      to: email,
+      subject: "You have been invited to join our app!",
+      react: RentalSiteInviteEmail({
+        inviteUrl: `https://app.resend.dev/invite?email=${email}`,
+      }),
+    });
+    if (error) {
+      console.error(error);
+      const errorMessage = error.message || "An unexpected error occurred.";
+      return {
+        error: errorMessage,
+      };
+    }
+    console.log(data);
     console.log(`Invitation sent to ${email}`);
     return {
       message: `Invitation sent to ${email}`,
