@@ -1,7 +1,7 @@
 "use client";
 
 import { toast } from "sonner";
-import { inviteMember } from "@/lib/actions";
+import { sendRentalSiteInvite } from "@/lib/actions";
 import { useFormStatus } from "react-dom";
 import { cn } from "@/lib/utils";
 import LoadingDots from "@/components/icons/loading-dots";
@@ -15,7 +15,7 @@ export default function InviteMemberModal() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const result = await inviteMember({ email });
+    const result = await sendRentalSiteInvite({ email });
     if (result.error) {
       toast.error(result.error);
     } else {
