@@ -26,7 +26,7 @@ export const RentalSiteInviteEmail = ({
   <Html>
     <Head />
     <Preview>
-      You're invited to join {name}, the #1 Party Rental service in the DMV.
+      You&apos;re invited to join {name}, the #1 Party Rental service in the DMV.
     </Preview>
     <Tailwind>
       <Body className="bg-white font-sans">
