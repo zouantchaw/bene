@@ -15,7 +15,6 @@ export async function generateMetadata({
 }): Promise<Metadata | null> {
   const domain = decodeURIComponent(params.domain);
   const data = await getRentalSiteData(domain);
-  console.log("data", data);
   if (!data) {
     return null;
   }

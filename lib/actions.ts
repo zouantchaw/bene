@@ -496,14 +496,12 @@ export const createPost = withSiteAuth(async (_: FormData, site: Site) => {
 
 export const createProduct = withRentalSiteAuth(
   async (_: FormData, rentalSite: RentalSite) => {
-    console.log("==== createProduct ====");
     const session = await getSession();
     if (!session?.user.id) {
       return {
         error: "Not authenticated",
       };
     }
-    console.log("rentalSite", rentalSite);
     const response = await prisma.product.create({
       data: {
         rentalSite: {
@@ -892,8 +890,6 @@ export const sendRentalSiteInvite = async (data: { email: string, name: string, 
         error: errorMessage,
       };
     }
-    console.log(data);
-    console.log(`Invitation sent to ${email}`);
     return {
       message: `Invitation sent to ${email}`,
     };

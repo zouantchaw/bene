@@ -9,7 +9,6 @@ export default async function RentalProductCreatePage({ params }: { params: { id
   if (!session) {
     redirect("/login");
   }
-  console.log("params", params);
   const data = await prisma.product.findUnique({
     where: {
       id: decodeURIComponent(params.productId),

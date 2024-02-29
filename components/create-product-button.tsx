@@ -17,7 +17,6 @@ export default function CreateProductButton() {
       onClick={() =>
         startTransition(async () => {
           const product = await createProduct(null, id, null);
-          console.log("product", product); 
           va.track("Created Product");
           router.refresh();
           router.push(`/rental-site/${id}/inventory/${product.id}`);

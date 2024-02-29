@@ -17,8 +17,6 @@ export default async function RentalSiteSettingsIndex({
     },
   });
 
-  console.log(data);
-
   return (
     <div className="flex flex-col space-y-6">
       <Form

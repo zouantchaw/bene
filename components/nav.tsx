@@ -40,7 +40,6 @@ const externalLinks = [
 
 export default function Nav({ children }: { children: ReactNode }) {
   const segments = useSelectedLayoutSegments();
-  console.log("segments", segments);
   const { id, productId } = useParams() as {
     id: string;
     productId: string;
