@@ -883,6 +883,7 @@ export const sendRentalSiteInvite = async (data: { email: string, name: string, 
         subdomain,
       }),
     });
+    console.log("data", data);
     if (error) {
       console.error(error);
       const errorMessage = error.message || "An unexpected error occurred.";

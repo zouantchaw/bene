@@ -154,6 +154,7 @@ model RentalSite {
   users    RentalSiteUsers[]
   products Product[]
   posts    Post[]
+  invites  RentalSiteInvite[]
 }
 
 enum Role {
@@ -183,4 +184,15 @@ model Example {
   url           String?
   image         String? @db.Text
   imageBlurhash String? @db.Text
+}
+
+model RentalSiteInvite {
+  email        String
+  expires      DateTime
+  rentalSite   RentalSite @relation(fields: [rentalSiteId], references: [id], onDelete: Cascade)
+  rentalSiteId String
+  createdAt    DateTime   @default(now())
+
+  @@unique([email, rentalSiteId])
+  @@index([rentalSiteId])
 }

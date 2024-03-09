@@ -68,8 +68,8 @@ export default async function RentalSiteSettingsPeople({
                           owner.user.image ??
                           `https://avatar.vercel.sh/${owner.user.email}`
                         }
-                        width={20}
-                        height={20}
+                        width={18}
+                        height={18}
                         alt={owner.user.name ?? "Owner avatar"}
                         className="h-10 w-10 rounded-full"
                       />
@@ -77,13 +77,15 @@ export default async function RentalSiteSettingsPeople({
                         <span className="text-sm font-medium">
                           {owner.user.name}
                         </span>
-                        <span className="text-sm text-stone-500 dark:text-stone-400 font-medium">
+                        <span className="text-xs text-stone-500 dark:text-stone-400 font-medium">
                           {owner.user.email}
                         </span>
                       </div>
                     </div>
                     <div className="flex items-center space-x-3">
-                      <span className="text-sm font-medium">{owner.role.charAt(0).toUpperCase() + owner.role.slice(1)}</span>
+                      <span className="text-xs text-stone-500 dark:text-stone-400 ">
+                        {owner.role.charAt(0).toUpperCase() + owner.role.slice(1)}
+                      </span>
                       <Trash2
                         size={15}
                         className="cursor-pointer text-stone-700 hover:text-red-500"

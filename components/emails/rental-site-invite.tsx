@@ -35,7 +35,7 @@ export const RentalSiteInviteEmail = ({
             Hi there,
           </Text>
           <Text className="text-base">
-            You have been invited to join the team at {name}, our exclusive rental site. Click the button below to accept your invitation and start managing the site:
+            You have been invited to join the team at {name}. Click the button below to accept your invitation and start managing the site:
           </Text>
           <Section className="my-5 text-center">
             <Button
