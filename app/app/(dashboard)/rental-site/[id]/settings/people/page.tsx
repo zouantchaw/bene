@@ -62,7 +62,7 @@ export default async function RentalSiteSettingsPeople({
               <TabPanel>
                 {owner && (
                   <div className="flex w-full items-center justify-between">
-                    <div className="flex items-center space-x-3">
+                    <div className="flex space-x-3">
                       <Image
                         src={
                           owner.user.image ??
@@ -73,12 +73,17 @@ export default async function RentalSiteSettingsPeople({
                         alt={owner.user.name ?? "Owner avatar"}
                         className="h-10 w-10 rounded-full"
                       />
-                      <span className="text-sm font-medium">
-                        {owner.user.email}
-                      </span>
+                      <div className="text-stone-900 dark:text-stone-100 flex flex-col justify-center">
+                        <span className="text-sm font-medium">
+                          {owner.user.name}
+                        </span>
+                        <span className="text-sm text-stone-500 dark:text-stone-400 font-medium">
+                          {owner.user.email}
+                        </span>
+                      </div>
                     </div>
                     <div className="flex items-center space-x-3">
-                      <span className="text-sm font-medium">{owner.role}</span>
+                      <span className="text-sm font-medium">{owner.role.charAt(0).toUpperCase() + owner.role.slice(1)}</span>
                       <Trash2
                         size={15}
                         className="cursor-pointer text-stone-700 hover:text-red-500"
