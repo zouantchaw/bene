@@ -12,12 +12,14 @@ interface InviteMemberModalProps {
   name: string;
   logo: string;
   subdomain: string;
+  rentalSiteId: string;
 }
 
 export default function InviteMemberModal({
   name,
   logo,
   subdomain,
+  rentalSiteId,
 }: InviteMemberModalProps) {
   const modal = useModal();
 
@@ -25,7 +27,7 @@ export default function InviteMemberModal({
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const result = await sendRentalSiteInvite({ email, name, logo, subdomain });
+    const result = await sendRentalSiteInvite({ email, name, logo, subdomain, rentalSiteId });
     if (result.error) {
       toast.error(result.error);
     } else {

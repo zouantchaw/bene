@@ -25,7 +25,7 @@ export default async function RentalSiteSettingsPeople({
     include: {
       users: {
         include: {
-          user: true, 
+          user: true,
         },
       },
     },
@@ -39,13 +39,19 @@ export default async function RentalSiteSettingsPeople({
   const rentalSiteName = data.name;
   const rentalSiteLogo = data.logo;
   const rentalSiteSubdomain = data.subdomain;
+  const rentalSiteId = data.id;
 
   return (
     <div className="rounded-lg border border-stone-200 bg-white dark:border-stone-700 dark:bg-black">
       <div className="flex justify-between p-5">
         <h2 className="font-cal text-xl dark:text-white">People</h2>
         <InviteMemberButton>
-          <InviteMemberModal name={rentalSiteName || ""} logo={rentalSiteLogo || ""} subdomain={rentalSiteSubdomain || ""} />
+          <InviteMemberModal
+            name={rentalSiteName || ""}
+            logo={rentalSiteLogo || ""}
+            subdomain={rentalSiteSubdomain || ""}
+            rentalSiteId={rentalSiteId || ""}
+          />
         </InviteMemberButton>
       </div>
       <div className="relative flex flex-col space-y-4 p-5 sm:p-10">
@@ -73,18 +79,19 @@ export default async function RentalSiteSettingsPeople({
                         alt={owner.user.name ?? "Owner avatar"}
                         className="h-10 w-10 rounded-full"
                       />
-                      <div className="text-stone-900 dark:text-stone-100 flex flex-col justify-center">
+                      <div className="flex flex-col justify-center text-stone-900 dark:text-stone-100">
                         <span className="text-sm font-medium">
                           {owner.user.name}
                         </span>
-                        <span className="text-xs text-stone-500 dark:text-stone-400 font-medium">
+                        <span className="text-xs font-medium text-stone-500 dark:text-stone-400">
                           {owner.user.email}
                         </span>
                       </div>
                     </div>
                     <div className="flex items-center space-x-3">
                       <span className="text-xs text-stone-500 dark:text-stone-400 ">
-                        {owner.role.charAt(0).toUpperCase() + owner.role.slice(1)}
+                        {owner.role.charAt(0).toUpperCase() +
+                          owner.role.slice(1)}
                       </span>
                       <Trash2
                         size={15}

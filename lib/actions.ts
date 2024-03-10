@@ -23,6 +23,8 @@ import { getBlurDataURL } from "@/lib/utils";
 
 import resend from "../lib/email";
 import { RentalSiteInviteEmail } from "@/components/emails/rental-site-invite";
+import { randomBytes } from "crypto";
+import { TWO_WEEKS_IN_SECONDS } from "./constants";
 
 const nanoid = customAlphabet(
   "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
@@ -862,39 +864,59 @@ export const editUser = async (
   }
 };
 
-export const sendRentalSiteInvite = async (data: { email: string, name: string, logo: string, subdomain: string }) => {
-  const { email, name, logo, subdomain } = data;
-  const isEmailExist = false; // This should be replaced with actual logic to check email existence
+export const sendRentalSiteInvite = async (inviteData: {
+  email: string;
+  name: string;
+  logo: string;
+  subdomain: string;
+  rentalSiteId: string;
+}) => {
+  const { email, name, logo, subdomain, rentalSiteId } = inviteData;
+  // same method of generating a token as next-auth
+  const token = randomBytes(32).toString("hex");
+  const expires = new Date(Date.now() + TWO_WEEKS_IN_SECONDS * 1000);
+  console.log("cheers", rentalSiteId);
 
-  if (isEmailExist) {
-    return {
-      error: "Email is already associated with a team member.",
-    };
-  } else {
-    const { data, error } = await resend.emails.send({
-      from: `${name} <onboarding@onboarding.rentbene.com>`,
-      to: email,
-      subject: `You're invited to join ${name}`,
-      react: RentalSiteInviteEmail({
-        // inviteUrl: `https://${subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}/invite/${email}`,
-        inviteUrl: `https://app.rentbene.com`,
-        name,
-        logo,
-        subdomain,
-      }),
+  try {
+    const response = await prisma.rentalSiteInvite.create({
+      data: {
+        email,
+        expires,
+        rentalSiteId,
+      },
     });
-    console.log("data", data);
-    if (error) {
-      console.error(error);
-      const errorMessage = error.message || "An unexpected error occurred.";
+    console.log("response", response);
+  } catch (error: any) {
+    if (error.code === "P2002") {
       return {
-        error: errorMessage,
+        error: "This email has already been invited",
       };
     }
+  }
+
+  const { data, error } = await resend.emails.send({
+    from: `${name} <onboarding@onboarding.rentbene.com>`,
+    to: email,
+    subject: `You're invited to join ${name}`,
+    react: RentalSiteInviteEmail({
+      // inviteUrl: `https://${subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}/invite/${email}`,
+      inviteUrl: `https://app.rentbene.com`,
+      name,
+      logo,
+      subdomain,
+    }),
+  });
+  console.log("data", data);
+  if (error) {
+    console.error(error);
+    const errorMessage = error.message || "An unexpected error occurred.";
     return {
-      message: `Invitation sent to ${email}`,
+      error: errorMessage,
     };
   }
+  return {
+    message: `Invitation sent to ${email}`,
+  };
 };
 
 async function addUserToRentalSite(userId: string, siteId: string) {
