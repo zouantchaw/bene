@@ -901,13 +901,21 @@ export const sendRentalSiteInvite = async (inviteData: {
     },
   });
 
+  const params = new URLSearchParams({
+    callbackUrl: `${process.env.NEXTAUTH_URL}/rental-site/${rentalSiteId}`,
+    email,
+    token,
+  });
+
+  const url = `${process.env.NEXTAUTH_URL}/api/auth/callback/email?${params}`;
+
   const { data, error } = await resend.emails.send({
     from: `${name} <onboarding@onboarding.rentbene.com>`,
     to: email,
     subject: `You're invited to join ${name}`,
     react: RentalSiteInviteEmail({
       // inviteUrl: `https://${subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}/invite/${email}`,
-      inviteUrl: `https://app.rentbene.com`,
+      inviteUrl: url,
       name,
       logo,
       subdomain,
