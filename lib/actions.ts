@@ -876,7 +876,6 @@ export const sendRentalSiteInvite = async (inviteData: {
   // same method of generating a token as next-auth
   const token = randomBytes(32).toString("hex");
   const expires = new Date(Date.now() + TWO_WEEKS_IN_SECONDS * 1000);
-  console.log("cheers", rentalSiteId);
 
   try {
     await prisma.rentalSiteInvite.create({
