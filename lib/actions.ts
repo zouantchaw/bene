@@ -8,6 +8,7 @@ import {
   withSiteAuth,
   withRentalSiteAuth,
   withProductAuth,
+  hashToken,
 } from "./auth";
 import { getSession } from "@/lib/auth";
 import {
@@ -21,10 +22,10 @@ import { put } from "@vercel/blob";
 import { customAlphabet } from "nanoid";
 import { getBlurDataURL } from "@/lib/utils";
 
-import resend from "../lib/email";
+import resend from "@/lib/email";
 import { RentalSiteInviteEmail } from "@/components/emails/rental-site-invite";
 import { randomBytes } from "crypto";
-import { TWO_WEEKS_IN_SECONDS } from "./constants";
+import { TWO_WEEKS_IN_SECONDS } from "@/lib/constants";
 
 const nanoid = customAlphabet(
   "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
@@ -878,14 +879,13 @@ export const sendRentalSiteInvite = async (inviteData: {
   console.log("cheers", rentalSiteId);
 
   try {
-    const response = await prisma.rentalSiteInvite.create({
+    await prisma.rentalSiteInvite.create({
       data: {
         email,
         expires,
         rentalSiteId,
       },
     });
-    console.log("response", response);
   } catch (error: any) {
     if (error.code === "P2002") {
       return {
@@ -893,6 +893,14 @@ export const sendRentalSiteInvite = async (inviteData: {
       };
     }
   }
+
+  await prisma.verificationToken.create({
+    data: {
+      identifier: email,
+      token: hashToken(token),
+      expires,
+    },
+  });
 
   const { data, error } = await resend.emails.send({
     from: `${name} <onboarding@onboarding.rentbene.com>`,

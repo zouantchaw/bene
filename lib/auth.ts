@@ -3,6 +3,8 @@ import GitHubProvider from "next-auth/providers/github";
 import Auth0Provider from "next-auth/providers/auth0";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "@/lib/prisma";
+import { createHash } from "crypto";
+
 
 const VERCEL_DEPLOYMENT = !!process.env.VERCEL_URL;
 
@@ -212,3 +214,16 @@ export function withProductAuth(action: any) {
     return action(formData, product, key);
   };
 }
+
+export const hashToken = (
+  token: string,
+  {
+    noSecret = false,
+  }: {
+    noSecret?: boolean;
+  } = {},
+) => {
+  return createHash("sha256")
+    .update(`${token}${noSecret ? "" : process.env.NEXTAUTH_SECRET}`)
+    .digest("hex");
+};
