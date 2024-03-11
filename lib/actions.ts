@@ -921,7 +921,7 @@ export const sendRentalSiteInvite = async (inviteData: {
       subdomain,
     }),
   });
-  console.log("data", data);
+
   if (error) {
     console.error(error);
     const errorMessage = error.message || "An unexpected error occurred.";
